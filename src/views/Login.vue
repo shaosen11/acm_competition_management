@@ -19,7 +19,11 @@
                 </el-form-item>
                 <el-button-group>
                     <!--loading防止重复点击-->
-                    <el-button type="primary" @click="login" :loading="isLoading">登陆</el-button>
+                    <el-button type="primary"
+                               @click="login"
+                               :loading="isLoading"
+                               element-loading-text = "努力加载中..."
+                               v-loading.fullscreen.lock="isLoading">登陆</el-button>
                     <el-button type="primary" @click="reset">重置</el-button>
                 </el-button-group>
             </el-form>
@@ -73,12 +77,9 @@
                 /*验证登录表达*/
                 this.$refs.loginForm.validate(async (valid) => {
                     if (!valid) {
-                        console.log('验证失败');
                         return false;
                     }
-                    console.log('验证成功');
                     const res = await login(this.form.userId, this.form.password)
-                    this.isLoading = false
                     if (res.code !== 200) {
                         this.$message.error(res.message);
                         return true;
@@ -98,6 +99,7 @@
                         removeCookie('userId');
                         removeCookie('password');
                     }
+                    this.isLoading = false
                     await this.$router.replace('/');
                 })
             },

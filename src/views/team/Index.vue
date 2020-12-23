@@ -1,6 +1,10 @@
 <template>
     <div>
-        <el-form ref="form" :model="team" label-width="80px">
+        <el-form ref="form"
+                 :model="team"
+                 label-width="80px"
+                 v-loading="isLoading"
+                 element-loading-text="努力加载中...">
             <el-row :gutter="20">
                 <!--个人信息-->
                 <el-col :span="16">
@@ -9,7 +13,8 @@
                             <span>队伍信息</span>
                             <el-button style="float: right; padding: 3px 0"
                                        type="text"
-                                       @click="toUpdateTeamInfo">修改
+                                       @click="toUpdateTeamInfo"
+                                       v-if="this.updateFlag">修改
                             </el-button>
                         </div>
 
@@ -44,16 +49,16 @@
             </el-row>
         </el-form>
         <update ref="update"
-                :dialogFormVisible="dialogFormVisible"
+                :dialogUpdateFormVisible="dialogUpdateFormVisible"
                 :team="team"
-                @dialogFormVisibleFasle="dialogFormVisibleFasle"
+                @dialogUpdateFormVisibleFasle="dialogUpdateFormVisibleFasle"
                 @updateTeamInfo="updateTeamInfo"/>
     </div>
 
 </template>
 
 <script>
-    import {getTeamAllInfoByTeamName, updateTeamInfo} from '@/network/api/team';
+    import {getTeamAllInfoByTeamName, updateTeamInfo, judgeTeamUser} from '@/network/api/team';
     import TeamInfo from "./components/TeamInfo";
     import Update from "./Update";
 
@@ -66,44 +71,61 @@
         props: {},
         data() {
             return {
-                dialogFormVisible: false,
+                // 是否正在加载
+                isLoading: false,
+                // 是否队长，修改标记
+                updateFlag: false,
+                // 是否展示修改表单
+                dialogUpdateFormVisible: false,
+                //队伍信息
+                team: {},
+                //用户信息
                 users: [],
-                team: {}
+
             }
         },
         computed: {},
         created() {
+            //初始化
             this.init(this.$route.query.teamName)
         },
         mounted() {
         },
         methods: {
+            //初始化方法
             init(teamName) {
+                this.isLoading = true;
                 getTeamAllInfoByTeamName(teamName).then(res => {
                     if (res.code != 200) {
-                        this.$message.success(res.message);
+                        return this.$message.success(res.message);
                     }
-                    console.log(res.data)
                     this.team = res.data.team;
                     this.users = res.data.users;
+                    if (this.team.userId == this.$store.state.user.userId) {
+                        this.updateFlag = true;
+                    }
+                    this.isLoading = false;
                 })
             },
-            updateTeamInfo(team){
-                console.log(team);
+            //修改用户信息
+            updateTeamInfo(team) {
                 updateTeamInfo(team).then(res => {
+                    this.dialogFormVisible = false;
                     if (res.code != 200) {
                         this.$message.success(res.message);
                     }
-                    this.init(this.$route.query.teamName)
-                    this.dialogFormVisible = false;
+                    this.init(this.$route.query.teamName);
+                    this.dialogUpdateFormVisible = false;
                 })
             },
-            dialogFormVisibleFasle() {
-                this.dialogFormVisible = false;
+            //隐藏修改表单
+            dialogUpdateFormVisibleFasle() {
+                this.dialogUpdateFormVisible = false;
             },
-            toUpdateTeamInfo(){
+            //显示修改表单
+            toUpdateTeamInfo() {
                 this.$refs.update.init();
-                this.dialogFormVisible = true;
+                this.dialogUpdateFormVisible = true;
             }
         },
         filter: {},

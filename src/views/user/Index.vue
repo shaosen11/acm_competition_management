@@ -1,6 +1,10 @@
 <template>
     <div>
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="form"
+                 :model="form"
+                 label-width="80px"
+                 v-loading="isLoading"
+                 element-loading-text="努力加载中...">
             <el-row :gutter="20">
                 <!--个人信息-->
                 <el-col :span="16">
@@ -60,8 +64,8 @@
                 </el-col>
             </el-row>
         </el-form>
-        <update :dialogFormVisible="dialogFormVisible"
-                @dialogFormVisibleFasle="dialogFormVisibleFasle"
+        <update :dialogUpdateFormVisible="dialogUpdateFormVisible"
+                @dialogUpdateFormVisibleFasle="dialogUpdateFormVisibleFasle"
                 @updateUserInfo="updateUserInfo"/>
     </div>
 
@@ -83,7 +87,10 @@
         },
         data() {
             return {
-                dialogFormVisible: false,
+                // 是否正在加载
+                isLoading: '',
+                // 是否展示修改表单
+                dialogUpdateFormVisible: false,
                 form: {
                     userId: '',
                     userName: '',
@@ -94,36 +101,24 @@
             }
         },
         props: {},
-        computed:{
-        },
+        computed: {},
         created() {
+            //初始化
             this.init(this.$route.query.userId)
         },
-        mounted () {
+        mounted() {
         },
         methods: {
-            init(userId){
+            //初始化方法
+            init(userId) {
+                this.isLoading = true;
                 this.getUserInfo(userId);
                 this.getOrganization(userId);
+                this.isLoading = false;
             },
-            toUpdateUserInfo() {
-                this.dialogFormVisible = true
-            },
-            dialogFormVisibleFasle() {
-                this.dialogFormVisible = false
-            },
-            updateUserInfo(user){
-                updateUserInfo(user).then(res => {
-                    if (res.code != 200) {
-                        this.$message.success(res.message);
-                    }
-                    this.$store.dispatch('SetUserInfo', this.$store.state.user.userId);
-                    this.$refs.teamInfo.getTeamAllInfoByUserId(this.$store.state.user.userId);
-                    this.dialogFormVisible = false;
-                })
-            },
-            getUserInfo(userId){
-                getUserInfo(userId).then(res =>{
+            //获取用户信息
+            getUserInfo(userId) {
+                getUserInfo(userId).then(res => {
                     if (res.code != 200) {
                         this.$message.success(res.message);
                     }
@@ -132,21 +127,41 @@
                     this.form.userIcon = res.data.icon;
                 })
             },
-            getOrganization(userId){
-                getOrganizationByUserId(userId).then(res =>{
+            //获取班级信息
+            getOrganization(userId) {
+                getOrganizationByUserId(userId).then(res => {
                     if (res.code != 200) {
                         this.$message.success(res.message);
                     }
                     this.form.organizationYear = res.data.year;
                     this.form.organizationName = res.data.name;
                 })
+            },
+            //隐藏修改表单
+            dialogUpdateFormVisibleFasle() {
+                this.dialogUpdateFormVisible = false
+            },
+            //显示修改表单
+            toUpdateUserInfo() {
+                this.dialogUpdateFormVisible = true
+            },
+
+            updateUserInfo(user) {
+                updateUserInfo(user).then(res => {
+                    if (res.code != 200) {
+                        this.$message.success(res.message);
+                    }
+                    this.$store.dispatch('SetUserInfo', this.$store.state.user.userId);
+                    this.init(this.$store.state.user.userId);
+                    this.$refs.teamInfo.getTeamAllInfoByUserId(this.$store.state.user.userId);
+                    this.dialogUpdateFormVisible = false;
+                })
             }
 
+
         },
-        filter: {
-        },
-        watch: {
-        }
+        filter: {},
+        watch: {}
     }
 </script>
 

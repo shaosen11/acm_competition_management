@@ -49,8 +49,19 @@ export function getTeamList(teamQuery) {
         method: 'post',
         data: {
             name: teamQuery.name,
+            userCount: teamQuery.userCount,
             pageNum: teamQuery.pageNum,
-            pageSize: teamQuery.pageSize
+            pageSize: teamQuery.pageSize,
+        }
+    })
+}
+
+export function judgeTeamUser(userId) {
+    return request({
+        url: '/team/list',
+        method: 'post',
+        data: {
+            userId: userId,
         }
     })
 }

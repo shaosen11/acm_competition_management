@@ -1,5 +1,8 @@
 <template>
-    <el-dialog title="个人信息" :visible.sync="dialogFormVisible" width="50%" center @close="dialogFormVisibleFasle">
+    <el-dialog title="个人信息"
+               :visible.sync="dialogUpdateFormVisible"
+               width="50%" center
+               @close="dialogUpdateFormVisibleFasle">
         <el-form :model="form">
             <el-form-item label="队伍名称">
                 <el-input v-model="form.teamName" :disabled="true"></el-input>
@@ -13,7 +16,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="updateTeamInfo">提交</el-button>
-            <el-button type="primary" @click="dialogFormVisibleFasle">返回</el-button>
+            <el-button type="primary" @click="dialogUpdateFormVisibleFasle">返回</el-button>
         </div>
     </el-dialog>
 </template>
@@ -23,7 +26,7 @@
         name: "Update",
         props: {
             team: {},
-            dialogFormVisible: {
+            dialogUpdateFormVisible: {
                 type: Boolean
             }
         },
@@ -51,7 +54,7 @@
                 this.form.userId = this.team.userId;
                 this.form.teamMotto = this.team.motto;
             },
-            updateTeamInfo() {
+            dialogUpdateFormVisibleTrue() {
                 const team = {
                     teamId: this.form.teamId,
                     name: this.form.teamName,
@@ -61,8 +64,8 @@
                 };
                 this.$emit('updateTeamInfo', team)
             },
-            dialogFormVisibleFasle() {
-                this.$emit('dialogFormVisibleFasle')
+            dialogUpdateFormVisibleFasle() {
+                this.$emit('dialogUpdateFormVisibleFasle')
             }
         },
         filter: {

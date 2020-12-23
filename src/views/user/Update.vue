@@ -1,5 +1,10 @@
 <template>
-    <el-dialog title="个人信息" :visible.sync="dialogFormVisible" width="50%" center @close="dialogFormVisibleFasle">
+    <el-dialog
+            title="个人信息"
+            :visible.sync="dialogUpdateFormVisible"
+            width="50%"
+            center
+            @close="dialogUpdateFormVisibleFasle">
         <el-form :model="form">
             <el-form-item label="学号">
                 <el-input v-model="form.userId" :disabled="true"></el-input>
@@ -19,7 +24,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button type="primary" @click="updateUserInfo">提交</el-button>
-            <el-button type="primary" @click="dialogFormVisibleFasle">返回</el-button>
+            <el-button type="primary" @click="dialogUpdateFormVisibleFasle">返回</el-button>
         </div>
     </el-dialog>
 </template>
@@ -32,7 +37,7 @@
     export default {
         name: "update",
         props: {
-            dialogFormVisible: {
+            dialogUpdateFormVisible: {
                 type: Boolean
             }
         },
@@ -53,7 +58,7 @@
         created() {
             this.getUserInfo(store.getters.userId);
         },
-        mounted () {
+        mounted() {
         },
         methods: {
             getUserInfo(userId) {
@@ -73,14 +78,12 @@
                 }
                 this.$emit('updateUserInfo', user)
             },
-            dialogFormVisibleFasle() {
-                this.$emit('dialogFormVisibleFasle')
+            dialogUpdateFormVisibleFasle() {
+                this.$emit('dialogUpdateFormVisibleFasle')
             }
         },
-        filter: {
-        },
-        watch: {
-        }
+        filter: {},
+        watch: {}
     }
 </script>
 
