@@ -5,7 +5,7 @@ import {getToken} from '@/utils/auth' // 验权
 export function request(config) {
     const instance = axios.create({
         baseURL: 'http://localhost:8080',
-        timeout: 15000,
+        timeout: 150000,
     })
 
     //请求拦截

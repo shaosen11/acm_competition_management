@@ -40,6 +40,12 @@
 
 
         <el-card class="table-container">
+            <div slot="header" class="clearfix">
+                <span>队伍列表</span>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateTeam"><i
+                        class="el-icon-plus"></i>创建队伍
+                </el-button>
+            </div>
             <el-table
                     v-loading="listLoading"
                     element-loading-text="努力加载中..."
@@ -49,34 +55,36 @@
                 <el-table-column
                         prop="name"
                         label="队伍名称"
-                        width="200">
+                        width="250">
                 </el-table-column>
                 <el-table-column
                         prop="userName"
                         label="队长"
-                        width="200">
+                        width="150">
                 </el-table-column>
                 <el-table-column
                         prop="motto"
                         label="座右铭"
-                        width="200">
+                        width="250">
                 </el-table-column>
                 <el-table-column
                         prop="userCount"
-                        label="当前人数">
+                        label="当前人数"
+                        width="250">
                 </el-table-column>
                 <el-table-column
                         prop="operation"
-                        label="操作">
+                        label="操作"
+                        width="250">
                     <template slot-scope="scope">
-
                         <el-button
                                 size="mini"
                                 @click="toTeamInfo(scope.row.name)">查看
                         </el-button>
                         <el-button
                                 size="mini"
-                                type="primary">加入
+                                type="primary"
+                                @click="joinTeam(scope.row)">加入
                         </el-button>
                     </template>
                 </el-table-column>
@@ -96,11 +104,18 @@
             </div>
         </el-card>
 
+        <!--增加页面-->
+        <create ref="create"
+                :dialogCreateFormVisible="dialogCreateFormVisible"
+                :create-button-loading="createButtonLoading"
+                @dialogCreateFormVisibleFasle="dialogCreateFormVisibleFasle"
+                @createTeam="createTeam"/>
     </div>
 </template>
 
 <script>
-    import {getTeamList} from '@/network/api/team';
+    import {getTeamList, createTeam, joinTeam} from '@/network/api/team';
+    import Create from "./Create";
 
     const defaultTeamQuery = {
         name: null,
@@ -121,6 +136,9 @@
 
     export default {
         name: "List",
+        components: {
+            Create
+        },
         created() {
             this.init();
         },
@@ -148,9 +166,15 @@
                 //表单总数
                 total: null,
                 //是否正在加载
-                listLoading: true,
+                listLoading: false,
                 //是否分页隐藏
-                isHide: true
+                isHide: true,
+                //是否展示修改表单
+                dialogCreateFormVisible: false,
+                //是否正在创建
+                createButtonLoading: false,
+                //是否正在加入
+                joinButtonLoading: false
             }
         },
         methods: {
@@ -163,8 +187,8 @@
                 this.listLoading = true;
                 getTeamList(this.teamQuery).then(res => {
                     this.listLoading = false;
-                    if (res.code != 200) {
-                        this.$message.success(res.message);
+                    if (res.code !== 200) {
+                        this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
                     this.total = res.data.total;
@@ -200,6 +224,42 @@
             handleResetSearch() {
                 this.teamQuery = Object.assign({}, defaultTeamQuery);
             },
+            //隐藏修改表单
+            dialogCreateFormVisibleFasle() {
+                this.dialogCreateFormVisible = false;
+            },
+            //显示修改表单
+            toCreateTeam() {
+                this.dialogCreateFormVisible = true;
+            },
+            //完成队伍信息填写，跳转页面
+            createTeam(team) {
+                this.createButtonLoading = true;
+                createTeam(team).then(res => {
+                    if (res.code !== 200) {
+                        this.createButtonLoading = false;
+                        return this.$message.error(res.message);
+                    }
+                    this.createButtonLoading = false;
+                    this.$router.push({name: 'team', query: {teamName: team.name}})
+                })
+            },
+            //加入队伍
+            joinTeam(team) {
+                this.joinButtonLoading = true;
+                const teamUserRelation = {
+                    teamId: team.teamId,
+                    userId: this.$store.state.user.userId
+                }
+                joinTeam(teamUserRelation).then(res => {
+                    if (res.code !== 200) {
+                        this.joinButtonLoading = false;
+                        return this.$message.error(res.message);
+                    }
+                    this.joinButtonLoading = false;
+                    this.$router.push({name: 'team', query: {teamName: team.name}})
+                })
+            }
         }
     }
 </script>

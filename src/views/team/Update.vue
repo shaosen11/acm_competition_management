@@ -1,7 +1,7 @@
 <template>
-    <el-dialog title="个人信息"
+    <el-dialog title="队伍信息"
                :visible.sync="dialogUpdateFormVisible"
-               width="50%" center
+               width="30%" center
                @close="dialogUpdateFormVisibleFasle">
         <el-form :model="form">
             <el-form-item label="队伍名称">
@@ -15,7 +15,7 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="updateTeamInfo">提交</el-button>
+            <el-button type="primary" @click="dialogUpdateFormVisibleTrue">提交</el-button>
             <el-button type="primary" @click="dialogUpdateFormVisibleFasle">返回</el-button>
         </div>
     </el-dialog>

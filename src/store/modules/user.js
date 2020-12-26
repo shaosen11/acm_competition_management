@@ -7,7 +7,7 @@ const user = {
         userId: '',
         name: '',
         icon: '',
-        isLogin: ''
+        isLogin: false
     },
 
     mutations: {
@@ -50,12 +50,13 @@ const user = {
         },
 
         LoginOut({commit, state}) {
-            console.log(state.userId + "退出成功");
             commit('SET_TOKEN', '');
             commit('SET_IS_LOGIN', false);
             commit('SET_USERID', '');
             commit('SET_NAME', '');
             commit('SET_ICON', '');
+            commit('SET_MY_TEAM_FALG', false);
+            commit('SET_TEAM_NAME', '');
             removeToken();
         }
         // // 登出

@@ -2,7 +2,7 @@
     <el-dialog
             title="个人信息"
             :visible.sync="dialogUpdateFormVisible"
-            width="50%"
+            width="30%"
             center
             @close="dialogUpdateFormVisibleFasle">
         <el-form :model="form">
@@ -17,8 +17,8 @@
             </el-form-item>
             <el-form-item label="性别">
                 <template>
-                    <el-radio v-model="form.gender" label="1">男</el-radio>
-                    <el-radio v-model="form.gender" label="0">女</el-radio>
+                    <el-radio v-model="form.gender" label="1"><i class="el-icon-female"></i>男</el-radio>
+                    <el-radio v-model="form.gender" label="0"><i class="el-icon-male"></i>女</el-radio>
                 </template>
             </el-form-item>
         </el-form>

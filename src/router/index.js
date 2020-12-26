@@ -47,6 +47,12 @@ const routes = [
         name: 'loginOut',
         redirect: '/login',
         meta: {title: '登录'}
+    },
+    {
+        path: '/register',
+        name: 'register',
+        component: () => import('@/views/Register'),
+        meta: {title: '注册'}
     }
 ]
 

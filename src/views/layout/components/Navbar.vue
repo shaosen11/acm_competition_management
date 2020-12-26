@@ -12,9 +12,15 @@
         <el-menu-item index="4" @click="toBlog">
             论坛
         </el-menu-item>
-        <el-menu-item index="5" @click="toTeam">
-            队伍列表
-        </el-menu-item>
+        <el-submenu index="5">
+            <template slot="title">队伍</template>
+            <el-menu-item
+                    index="5-1"
+                    @click="toMyTeam"
+                    v-if="myTeamFlag">我的队伍
+            </el-menu-item>
+            <el-menu-item index="5-2" @click="toTeam">队伍列表</el-menu-item>
+        </el-submenu>
         <el-menu-item index="6" @click="toMessage">
             消息
         </el-menu-item>
@@ -49,17 +55,20 @@
 
 <script>
     import store from '@/store'
+    import {getTeamInfoByUserId} from "@/network/api/team";
 
     export default {
         name: "Navbar",
         data() {
             return {
-                isLogin: '',
-                icon: ''
+                isLogin: false,
+                icon: '',
+                myTeamFlag: false,
+                teamName: ''
             }
         },
         created() {
-            this.initStatus();
+            this.init();
         },
         methods: {
             toHome() {
@@ -73,6 +82,9 @@
             },
             toBlog() {
                 this.$router.push('/blog')
+            },
+            toMyTeam() {
+                this.$router.push({name: 'team', query: {teamName: this.teamName}})
             },
             toTeam() {
                 this.$router.push('/teamList')
@@ -90,11 +102,13 @@
                 this.$store.dispatch('LoginOut');
                 this.$router.push('/loginOut')
             },
-            initStatus() {
+            init() {
                 this.isLogin = store.getters.isLogin;
                 this.icon = store.getters.icon;
+                this.myTeamFlag = store.getters.myTeamFlag;
+                this.teamName = store.getters.teamName;
             }
-        }
+        },
     };
 </script>
 

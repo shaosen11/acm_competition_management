@@ -10,6 +10,12 @@ const routers = [
         name: 'teamList',
         component: () => import('@/views/team/List'),
         meta: {title: '队伍列表'}
+    },
+    {
+        path: '/team/create',
+        name: '/team/create',
+        component: () => import('@/views/team/Create'),
+        meta: {title: '创建队伍'}
     }
 ];
 
