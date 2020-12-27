@@ -7,8 +7,8 @@ const team = {
     },
 
     mutations: {
-        SET_MY_TEAM_FALG: (state, myTeamFalg) => {
-            state.myTeamFlag = myTeamFalg
+        SET_MY_TEAM_FLAG: (state, myTeamFlag) => {
+            state.myTeamFlag = myTeamFlag
         },
         SET_TEAM_NAME: (state, teamName) => {
             state.teamName = teamName
@@ -23,7 +23,7 @@ const team = {
                         this.$message.success(response.message);
                     }
                     if (response.data.name != null) {
-                        commit('SET_MY_TEAM_FALG', true)
+                        commit('SET_MY_TEAM_FLAG', true)
                         commit('SET_TEAM_NAME', response.data.name)
                     }
                     resolve(response)
@@ -34,8 +34,7 @@ const team = {
         },
 
         deleteTeamInfo({commit}){
-            console.log("删除队伍信息")
-            commit('SET_MY_TEAM_FALG', false);
+            commit('SET_MY_TEAM_FLAG', false);
             commit('SET_TEAM_NAME', '');
         }
     }

@@ -99,6 +99,7 @@
                     await this.$store.dispatch('LoginSuccess', token);
                     await this.$store.dispatch('SetUserInfo', this.form.userId);
                     await this.$store.dispatch('SetTeamInfo', this.form.userId);
+                    await this.$store.dispatch('SetOrganizationInfo', this.form.userId);
                     window.sessionStorage.setItem('token', token);
                     if (this.form.rem) {
                         setCookie('userId', this.form.userId, '7D');

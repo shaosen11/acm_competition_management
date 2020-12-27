@@ -12,6 +12,7 @@ import Layout from "@/views/layout/Layout";
 import blogRouters from '@/router/blog'
 import competitionRouters from '@/router/competition'
 import messageRouters from '@/router/message'
+import organizationRouters from '@/router/organization'
 import reportRouters from '@/router/report'
 import teamRouters from '@/router/team'
 import userRouters from '@/router/user'
@@ -31,6 +32,7 @@ const routes = [
             ...blogRouters,
             ...competitionRouters,
             ...messageRouters,
+            ...organizationRouters,
             ...reportRouters,
             ...teamRouters,
             ...userRouters

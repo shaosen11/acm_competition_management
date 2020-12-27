@@ -53,6 +53,7 @@ export function getTeamList(teamQuery) {
         url: '/team/list',
         method: 'post',
         data: {
+            userId: teamQuery.userId,
             name: teamQuery.name,
             userCount: teamQuery.userCount,
             pageNum: teamQuery.pageNum,
@@ -100,12 +101,26 @@ export function outTeam(teamUserRelation) {
 }
 
 //删除队伍
-export function deleteTeam(teamId) {
+export function deleteTeam(team) {
     return request({
         url: '/team/delete',
         method: 'post',
         data:{
-            teamId: teamId,
+            teamId: team.teamId,
+            name: team.name,
+            userId: team.userId
+        }
+    })
+}
+
+//申请加入队伍
+export function applyJoinTeam(teamUserCooperation){
+    return request({
+        url: '/TeamUserCooperation/insert',
+        method: 'post',
+        data:{
+            teamId: teamUserCooperation.teamId,
+            notInTeamUserId: teamUserCooperation.notInTeamUserId
         }
     })
 }

@@ -28,13 +28,15 @@
 
 <script>
     import {getTeamAllInfoByUserId} from "@/network/api/team";
-    import store from '@/store'
 
     export default {
         name: "TeamInfo",
         props: {
             userId: {
                 type: String
+            },
+            teamUserAllInfo: {
+                type: Object
             }
         },
         data() {
@@ -52,9 +54,15 @@
         methods: {
             getTeamAllInfoByUserId(userId) {
                 getTeamAllInfoByUserId(userId).then(res => {
-                    const team = res.data.team;
-                    this.teamName = team.name;
-                    this.users = res.data.users;
+                    if (res.code != 200) {
+                        this.dialogUpdateFormVisible = false;
+                        return this.$message.success(res.message);
+                    }
+                    if (res.data.team != null){
+                        const team = res.data.team;
+                        this.teamName = team.name;
+                        this.users = res.data.users;
+                    }
                 })
             },
             toUserInfo(userId) {

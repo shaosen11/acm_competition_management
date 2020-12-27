@@ -2,7 +2,7 @@
     <el-dialog
             title="个人信息"
             :visible.sync="dialogUpdateFormVisible"
-            width="30%"
+            width="40%"
             center
             @close="dialogUpdateFormVisibleFasle">
         <el-form :model="form">

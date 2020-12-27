@@ -46,13 +46,3 @@ export function updateUserInfo(user) {
         }
     })
 }
-
-export function getOrganizationByUserId(userId) {
-    return request({
-        url: '/organization/getByUserId',
-        method: 'post',
-        data: {
-            userId
-        }
-    })
-}

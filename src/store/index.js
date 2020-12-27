@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import user from "./modules/user";
-import team from "./modules/team";
+import user from './modules/user';
+import team from './modules/team';
+import organization from './modules/organization'
 import getters from "./getters";
 import createPersistedState from "vuex-persistedstate";
 
@@ -13,7 +14,8 @@ export default new Vuex.Store({
     actions: {},
     modules: {
         user,
-        team
+        team,
+        organization
     },
     getters,
     plugins: [createPersistedState({

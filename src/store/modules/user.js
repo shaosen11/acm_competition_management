@@ -55,8 +55,11 @@ const user = {
             commit('SET_USERID', '');
             commit('SET_NAME', '');
             commit('SET_ICON', '');
-            commit('SET_MY_TEAM_FALG', false);
+            commit('SET_MY_TEAM_FLAG', false);
             commit('SET_TEAM_NAME', '');
+            commit('SET_MY_ORGANIZATION_FLAG', false);
+            commit('SET_ORGANIZATION_NAME', '');
+            commit('SET_YEAR', '');
             removeToken();
         }
         // // 登出
