@@ -33,6 +33,18 @@ export function getTeamAllInfoByTeamName(name) {
     })
 }
 
+
+//通过队伍名称获取队伍信息
+export function getTeamByName(name) {
+    return request({
+        url: '/team/getTeamByName',
+        method: 'post',
+        data: {
+            name
+        }
+    })
+}
+
 //修改队伍信息
 export function updateTeamInfo(team) {
     return request({
@@ -116,11 +128,25 @@ export function deleteTeam(team) {
 //申请加入队伍
 export function applyJoinTeam(teamUserCooperation){
     return request({
-        url: '/TeamUserCooperation/insert',
+        url: '/TeamUserCooperation/applyJoinTeam',
         method: 'post',
         data:{
             teamId: teamUserCooperation.teamId,
             notInTeamUserId: teamUserCooperation.notInTeamUserId
+        }
+    })
+}
+
+
+export function getTeamUserCooperationListByTeamId(teamUserCooperationQueryParam){
+    console.log(teamUserCooperationQueryParam)
+    return request({
+        url: '/TeamUserCooperation/getListByTeamName',
+        method: 'post',
+        data:{
+            name: teamUserCooperationQueryParam.teamName,
+            pageNum: teamUserCooperationQueryParam.pageNum,
+            pageSize: teamUserCooperationQueryParam.pageSize
         }
     })
 }

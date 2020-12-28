@@ -59,7 +59,10 @@
                     width="200"
                     align="center">
                     <template slot-scope="scope">
-                        <el-link type="primary" @click="toTeamInfo(scope.row.teamName)">{{ scope.row.teamName }}</el-link>
+                        <el-link type="primary" @click="toTeamInfo(scope.row.teamName)">{{
+                                scope.row.teamName
+                            }}
+                        </el-link>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -71,8 +74,23 @@
                 <el-table-column
                     prop="gender"
                     label="性别"
-                    width="100"
+                    width="150"
                     align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                            el-button
+                            type="text"
+                            v-if="scope.row.gender==1">
+                            <i class="el-icon-male"></i>
+                        </el-button>
+                        <el-button
+                            el-button
+                            type="text"
+                            v-if="scope.row.gender==0">
+                            <i class="el-icon-female"></i>
+                        </el-button>
+
+                    </template>
                 </el-table-column>
             </el-table>
             <div class="pagination-container" style="float: right;">
@@ -139,8 +157,8 @@ export default {
             })
         },
         //获取学生信息
-        getOrganizationUserList(){
-            const OrganizationUserQueryParam ={
+        getOrganizationUserList() {
+            const OrganizationUserQueryParam = {
                 organizationId: this.organization.organizationId,
                 pageNum: this.pageNum,
                 pageSize: this.pageSize,

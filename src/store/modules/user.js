@@ -1,4 +1,4 @@
-import {login, getUserInfo} from '@/network/api/user'
+import {getUserInfo, getUserAllInfoByUserId} from '@/network/api/user'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 
 const user = {
@@ -35,18 +35,31 @@ const user = {
             commit('SET_IS_LOGIN', true);
         },
 
-        SetUserInfo({commit}, userId){
+
+        SetUserAllInfo({commit}, userId){
             return new Promise((resolve, reject) => {
-                getUserInfo(userId).then(response => {
-                    const data = response.data
+                getUserAllInfoByUserId(userId).then(response => {
+                    const data = response
+                    //设置用户信息
                     commit('SET_USERID', data.userId);
                     commit('SET_NAME', data.name);
                     commit('SET_ICON', data.icon);
+                    //设置队伍信息
+                    if (data.teamName != null) {
+                        commit('SET_MY_TEAM_FLAG', true)
+                        commit('SET_TEAM_NAME', data.teamName)
+                    }
+                    //设置班级
+                    if (data.organizationName != null && data.year) {
+                        commit('SET_MY_ORGANIZATION_FLAG', true)
+                        commit('SET_ORGANIZATION_NAME', data.organizationName)
+                        commit('SET_YEAR', data.year)
+                    }
                     resolve(response)
                 }).catch(error => {
                     reject(error)
                 })
-            });
+            })
         },
 
         LoginOut({commit, state}) {

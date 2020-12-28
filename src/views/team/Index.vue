@@ -1,63 +1,71 @@
 <template>
     <div>
-
-        <!--队伍信息-->
-        <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>队伍信息</span>
-                <el-dropdown trigger="click" style="float: right;" v-if="this.teamUserFlag">
+        <el-row :gutter="10" type="flex" justify="center">
+            <!--个人信息-->
+            <el-col :span="16">
+                <!--队伍信息-->
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>队伍信息</span>
+                        <el-dropdown trigger="click" style="float: right;" v-if="this.teamUserFlag">
                               <span class="el-dropdown-link">
                                 操作<i class="el-icon-arrow-down el-icon--right"></i>
                               </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item
-                            @click.native="toUpdateTeamInfo"
-                            v-if="this.updateFlag">修改信息
-                        </el-dropdown-item>
-                        <el-dropdown-item
-                            @click.native="deleteTeamDialogVisible = true"
-                            v-if="this.updateFlag">删除队伍
-                        </el-dropdown-item>
-                        <el-dropdown-item
-                            @click.native="outTeamDialogVisible = true"
-                            v-if="!this.updateFlag">退出队伍
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item
+                                    @click.native="toUpdateTeamInfo"
+                                    v-if="this.updateFlag">修改信息
+                                </el-dropdown-item>
+                                <el-dropdown-item
+                                    @click.native="deleteTeamDialogVisible = true"
+                                    v-if="this.updateFlag">删除队伍
+                                </el-dropdown-item>
+                                <el-dropdown-item
+                                    @click.native="outTeamDialogVisible = true"
+                                    v-if="!this.updateFlag">退出队伍
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </div>
 
-            <el-form ref="form"
-                     :model="team"
-                     label-width="80px"
-                     v-loading="isLoading"
-                     element-loading-text="努力加载中...">
-                <!--个人信息-->
-                <el-row :gutter="10" type="flex" justify="center">
-                    <el-col :span="20">
-                        <el-form-item label="名称">
-                            <span>{{ this.team.name }}</span>
-                        </el-form-item>
-                        <el-form-item label="队长">
-                            <span>{{ this.team.userName }}</span>
-                        </el-form-item>
-                        <el-form-item label="座右铭">
-                            <span>{{ this.team.motto }}</span>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+                    <el-form ref="form"
+                             :model="team"
+                             label-width="80px"
+                             v-loading="isLoading"
+                             element-loading-text="努力加载中...">
+                        <!--个人信息-->
+                        <el-row :gutter="10" type="flex" justify="center">
+                            <el-col :span="20">
+                                <el-form-item label="名称">
+                                    <span>{{ this.team.name }}</span>
+                                </el-form-item>
+                                <el-form-item label="队长">
+                                    <span>{{ this.team.userName }}</span>
+                                </el-form-item>
+                                <el-form-item label="座右铭">
+                                    <span>{{ this.team.motto }}</span>
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
 
 
-                <!--队伍信息-->
-                <el-row type="flex" justify="center">
-                    <el-col :span="20">
-                        <el-divider>队员信息</el-divider>
-                    </el-col>
-                </el-row>
-                <el-row type="flex" justify="center">
-                    <team-info ref="teamInfo" :users="this.users"/>
-                </el-row>
-            </el-form>
-        </el-card>
+                        <!--队伍信息-->
+                        <el-row type="flex" justify="center">
+                            <el-col :span="20">
+                                <el-divider>队员信息</el-divider>
+                            </el-col>
+                        </el-row>
+                        <el-row type="flex" justify="center">
+                            <team-info ref="teamInfo" :users="this.users"/>
+                        </el-row>
+                    </el-form>
+                </el-card>
+            </el-col>
+            <el-col :span="8">
+                <team-user-cooperation :team-name="this.$route.query.teamName"/>
+            </el-col>
+        </el-row>
+
 
 
         <!--修改弹出框-->
@@ -104,12 +112,14 @@
 import {getTeamAllInfoByTeamName, updateTeamInfo, outTeam, deleteTeam} from '@/network/api/team';
 import TeamInfo from "./components/TeamInfo";
 import Update from "./Update";
+import TeamUserCooperation from "./components/TeamUserCooperation";
 
 export default {
     name: "Index",
     components: {
         TeamInfo,
-        Update
+        Update,
+        TeamUserCooperation
     },
     props: {},
     data() {
@@ -145,7 +155,7 @@ export default {
             this.isLoading = true;
             getTeamAllInfoByTeamName(teamName).then(res => {
                 if (res.code != 200) {
-                    return this.$message.success(res.message);
+                    return this.$message.error(res.message);
                 }
                 this.team = res.data.team;
                 this.users = res.data.users;

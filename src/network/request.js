@@ -1,6 +1,4 @@
 import axios from 'axios';
-import store from '@/store';
-import {getToken} from '@/utils/auth' // 验权
 
 export function request(config) {
     const instance = axios.create({

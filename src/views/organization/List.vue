@@ -60,7 +60,7 @@
                 <el-table-column
                     prop="year"
                     label="年级"
-                    width="100"
+                    width="150"
                     align="center">
                 </el-table-column>
                 <el-table-column

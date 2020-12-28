@@ -241,6 +241,7 @@ export default {
         },
         //完成队伍信息填写，跳转页面
         createTeam(team) {
+            console.log(team)
             this.createButtonLoading = true;
             createTeam(team).then(res => {
                 if (res.code !== 200) {
@@ -253,6 +254,10 @@ export default {
         },
         //申请加入队伍
         applyJoinTeam(teamId) {
+            if (this.$store.state.user.userId==''){
+                this.$message.error("请先登录");
+                return false;
+            }
             this.joinButtonLoading = true;
             const teamUserCooperation = {
                 teamId: teamId,

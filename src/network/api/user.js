@@ -46,3 +46,33 @@ export function updateUserInfo(user) {
         }
     })
 }
+
+export function getByUserId(userId){
+    return request({
+        url: '/user/getByUserId',
+        method: 'post',
+        data: {
+            userId
+        }
+    })
+}
+
+export function getByEmail(email){
+    return request({
+        url: '/user/getByEmail',
+        method: 'post',
+        data: {
+            email
+        }
+    })
+}
+
+export function getUserAllInfoByUserId(userId){
+    return request({
+        url: '/user/getUserAllInfoByUserId',
+        method: 'post',
+        data: {
+            userId
+        }
+    })
+}
