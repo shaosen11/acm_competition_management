@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import NProgress from 'nprogress' // Progress 进度条
+import 'nprogress/nprogress.css'// Progress 进度条样式
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -65,10 +67,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    NProgress.start()
     document.title = to.meta.title
     next()
 })
 
 
+router.afterEach(() => {
+    NProgress.done() // 结束Progress
+})
 
 export default router
