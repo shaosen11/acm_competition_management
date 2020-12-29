@@ -55,7 +55,7 @@
                 <el-table-column
                     prop="name"
                     label="队伍名称"
-                    width="200"
+                    width="250"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toTeamInfo(scope.row.name)">{{ scope.row.name }}</el-link>
@@ -64,7 +64,7 @@
                 <el-table-column
                     prop="userName"
                     label="队长"
-                    width="150"
+                    width="170"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
@@ -73,19 +73,19 @@
                 <el-table-column
                     prop="motto"
                     label="座右铭"
-                    width="200"
+                    width="250"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="userCount"
                     label="当前人数"
-                    width="150"
+                    width="200"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="operation"
                     label="操作"
-                    width="250"
+                    width="300"
                     align="center">
                     <template slot-scope="scope">
                         <el-button

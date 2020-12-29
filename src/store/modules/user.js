@@ -35,14 +35,13 @@ const user = {
             commit('SET_IS_LOGIN', true);
         },
 
-
-        SetUserAllInfo({commit}, userId){
+        SetUserAllInfo({commit}, userId) {
             return new Promise((resolve, reject) => {
                 getUserAllInfoByUserId(userId).then(response => {
                     const data = response
                     //设置用户信息
                     commit('SET_USERID', data.userId);
-                    commit('SET_NAME', data.name);
+                    commit('SET_NAME', data.userName);
                     commit('SET_ICON', data.icon);
                     //设置队伍信息
                     if (data.teamName != null) {
@@ -50,7 +49,7 @@ const user = {
                         commit('SET_TEAM_NAME', data.teamName)
                     }
                     //设置班级
-                    if (data.organizationName != null && data.year) {
+                    if (data.organizationName != null && data.year != null) {
                         commit('SET_MY_ORGANIZATION_FLAG', true)
                         commit('SET_ORGANIZATION_NAME', data.organizationName)
                         commit('SET_YEAR', data.year)
@@ -75,27 +74,6 @@ const user = {
             commit('SET_YEAR', '');
             removeToken();
         }
-        // // 登出
-        // LogOut({ commit, state }) {
-        //     return new Promise((resolve, reject) => {
-        //         logout(state.token).then(() => {
-        //             commit('SET_TOKEN', '')
-        //             removeToken()
-        //             resolve()
-        //         }).catch(error => {
-        //             reject(error)
-        //         })
-        //     })
-        // },
-        //
-        // // 前端 登出
-        // FedLogOut({ commit }) {
-        //     return new Promise(resolve => {
-        //         commit('SET_TOKEN', '')
-        //         removeToken()
-        //         resolve()
-        //     })
-        // }
     }
 }
 

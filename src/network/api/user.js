@@ -47,6 +47,17 @@ export function updateUserInfo(user) {
     })
 }
 
+export function updatePassword(user) {
+    return request({
+        url: '/user/updatePassword',
+        method: 'post',
+        data: {
+            userId: user.userId,
+            password: user.password
+        }
+    })
+}
+
 export function getByUserId(userId){
     return request({
         url: '/user/getByUserId',

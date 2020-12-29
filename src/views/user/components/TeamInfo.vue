@@ -1,7 +1,11 @@
 <template>
     <el-col :span="20">
         <el-form-item label="队伍名称">
-            <el-link type="primary" :underline="false" @click="toTeamInfo(teamName)">{{teamName}}</el-link>
+            <el-link
+                    type="primary"
+                    :underline="false"
+                    @click="toTeamInfo(teamName)">{{teamName}}
+            </el-link>
         </el-form-item>
         <el-row :gutter="20" type="flex" justify="center">
             <el-col :span="8" v-for="item in this.users">
@@ -13,7 +17,10 @@
                     <el-col :span="16">
                         <div>
                             <div class="bottom clearfix">
-                                <el-button type="text" class="button" @click="toUserInfo(item.userId)">{{item.name}}
+                                <el-button
+                                        type="text"
+                                        class="button"
+                                        @click="toUserInfo(item.userId)">{{item.name}}
                                 </el-button>
                             </div>
                             <span>{{item.userId}}</span>
@@ -45,11 +52,8 @@
                 users: ''
             }
         },
-        computed: {},
         created() {
-            this.getTeamAllInfoByUserId(this.$route.query.userId);
-        },
-        mounted() {
+            this.getTeamAllInfoByUserId(this.userId);
         },
         methods: {
             getTeamAllInfoByUserId(userId) {
@@ -58,7 +62,7 @@
                         this.dialogUpdateFormVisible = false;
                         return this.$message.success(res.message);
                     }
-                    if (res.data.team != null){
+                    if (res.data.team != null) {
                         const team = res.data.team;
                         this.teamName = team.name;
                         this.users = res.data.users;
@@ -71,9 +75,7 @@
             toTeamInfo(teamName) {
                 this.$router.push({name: 'team', query: {teamName: teamName}})
             }
-        },
-        filter: {},
-        watch: {}
+        }
     }
 </script>
 

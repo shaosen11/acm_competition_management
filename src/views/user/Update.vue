@@ -32,7 +32,6 @@
 <script>
     import store from '@/store';
     import {getUserInfo} from '@/network/api/user';
-    import {mapGetters} from 'vuex';
 
     export default {
         name: "update",
@@ -82,8 +81,6 @@
                 this.$emit('dialogUpdateFormVisibleFasle')
             }
         },
-        filter: {},
-        watch: {}
     }
 </script>
 

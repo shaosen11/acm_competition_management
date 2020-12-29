@@ -5,7 +5,8 @@
             <el-button
                     style="float: right; padding: 3px 0"
                     type="text"
-                    v-if="this.$store.state.user.userId==this.$route.query.userId">添加</el-button>
+                    v-if="this.$store.state.user.userId==this.userId">添加
+            </el-button>
         </div>
         <div v-for="o in 4" :key="o" class="text item">
             {{'列表内容 ' + o }}
@@ -17,24 +18,21 @@
     export default {
         name: "ReportList",
         props: {
-            userId:{
+            userId: {
                 type: String
             }
         },
-        data () {
+        data() {
             return {}
         },
-        computed: {},
-        created () {
-        },
-        mounted () {
+        created() {
+            this.init()
         },
         methods: {
+            init() {
+                console.log(this.userId)
+            }
         },
-        filter: {
-        },
-        watch: {
-        }
     }
 </script>
 

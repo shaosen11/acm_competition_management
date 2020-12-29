@@ -40,8 +40,6 @@
 
     export default {
         name: "Login",
-        components: {},
-        props: {},
         data() {
             return {
                 isLoading: false,
@@ -64,14 +62,10 @@
                 }
             }
         },
-        computed: {},
         /*初始化的时候，从cookies中获取用户信息*/
         created() {
             this.form.userId = getCookie('userId')
             this.form.password = getCookie('password')
-        },
-        mounted() {
-
         },
         methods: {
             login() {
@@ -120,9 +114,7 @@
             toRegister() {
                 this.$router.push('/register')
             }
-        },
-        filter: {},
-        watch: {}
+        }
     }
 </script>
 

@@ -54,31 +54,31 @@
                 <el-table-column
                     prop="collegeName"
                     label="学院"
-                    width="200"
+                    width="250"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="year"
                     label="年级"
-                    width="150"
+                    width="200"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="organizationName"
                     label="班级名称"
-                    width="200"
+                    width="250"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="userCount"
                     label="当前人数"
-                    width="150"
+                    width="200"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="operation"
                     label="操作"
-                    width="250"
+                    width="270"
                     align="center">
                     <template slot-scope="scope">
                         <el-button
