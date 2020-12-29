@@ -137,9 +137,8 @@ export function applyJoinTeam(teamUserCooperation){
     })
 }
 
-
+//获取申请加入和邀请加入队伍列表
 export function getTeamUserCooperationListByTeamId(teamUserCooperationQueryParam){
-    console.log(teamUserCooperationQueryParam)
     return request({
         url: '/TeamUserCooperation/getListByTeamName',
         method: 'post',

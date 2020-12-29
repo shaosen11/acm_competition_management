@@ -170,7 +170,6 @@
                         return false;
                     }
                     const res = await register(this.form);
-                    console.log(res);
                     if (res.code != 200) {
                         this.$message.error(res.message);
                         this.isLoading = false;

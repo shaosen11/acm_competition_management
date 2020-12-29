@@ -68,7 +68,6 @@ export default {
                 if (res.code != 200) {
                     return this.$message.success(res.message);
                 }
-                console.log(res.data.list)
                 this.tableData = res.data.list;
             })
         },

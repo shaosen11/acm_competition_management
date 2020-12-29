@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-tabs tab-position="left" style="height: 500px;" type="border-card">
+        <el-tabs tab-position="left" style="height: 550px;" type="border-card">
             <el-tab-pane label="个人设置">
                 <h4>个人设置</h4>
                 <el-row :gutter="10" type="flex" justify="center">

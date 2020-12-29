@@ -88,15 +88,13 @@
                     width="300"
                     align="center">
                     <template slot-scope="scope">
+<!--                        <el-button-->
+<!--                            v-if="judgeApplyTeam(scope.row)"-->
+<!--                            size="mini"-->
+<!--                            :disabled="judgeApplyTeam(scope.row)"-->
+<!--                            round>正在申请-->
+<!--                        </el-button>-->
                         <el-button
-                            v-if="judgeApplyTeam(scope.row)"
-                            size="mini"
-                            @click="applyJoinTeam(scope.row.teamId)"
-                            :disabled="judgeApplyTeam(scope.row)"
-                            round>正在申请
-                        </el-button>
-                        <el-button
-                            v-else
                             size="mini"
                             type="primary"
                             @click="applyJoinTeam(scope.row.teamId)"
@@ -258,24 +256,21 @@ export default {
                 this.$message.error("请先登录");
                 return false;
             }
-            this.joinButtonLoading = true;
             const teamUserCooperation = {
                 teamId: teamId,
                 notInTeamUserId: this.$store.state.user.userId
             }
             applyJoinTeam(teamUserCooperation).then(res => {
                 if (res.code !== 200) {
-                    this.joinButtonLoading = false;
                     return this.$message.error(res.message);
                 }
                 return this.$message.success(res.message);
-                this.joinButtonLoading = false;
             })
         },
-        //判断是否加入的队伍
-        judgeApplyTeam(team){
-            return team.type==2&&team.finishFlag==1&&team.notInTeamUserId==this.$store.state.user.userId
-        },
+        // //判断是否加入的队伍
+        // judgeApplyTeam(team){
+        //     return team.type==2&&team.finishFlag==1&&team.notInTeamUserId==this.$store.state.user.userId
+        // },
     },
     computed:{
 

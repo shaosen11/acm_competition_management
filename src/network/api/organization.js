@@ -26,7 +26,7 @@ export function getOrganizationByUserId(userId) {
 }
 
 //获取年级
-export function getOrganizationYearlist() {
+export function getOrganizationYearList() {
     return request({
         url: '/organization/listYear',
         method: 'get'
@@ -46,14 +46,43 @@ export function getOrganizationByYearAndName(organization) {
 }
 
 //获取班级学生信息
-export function getUserListByOrganizationId(OrganizationUserQueryParam) {
+export function getUserListByYearAndName(OrganizationUserQueryParam) {
     return request({
-        url: '/organization/getUserListByOrganizationId',
+        url: '/organization/getUserListByYearAndName',
         method: 'post',
         data: {
-            organizationId: OrganizationUserQueryParam.organizationId,
+            year: OrganizationUserQueryParam.year,
+            name: OrganizationUserQueryParam.name,
             pageNum: OrganizationUserQueryParam.pageNum,
             pageSize: OrganizationUserQueryParam.pageSize,
+        }
+    })
+}
+
+//申请加入班级
+export function applyJoinOrganization(OrganizationUserCooperationQueryParam) {
+    return request({
+        url: '/organizationUserCooperation/applyJoinOrganization',
+        method: 'post',
+        data: {
+            organizationId: OrganizationUserCooperationQueryParam.organizationId,
+            userId: OrganizationUserCooperationQueryParam.userId,
+            pageNum: OrganizationUserCooperationQueryParam.pageNum,
+            pageSize: OrganizationUserCooperationQueryParam.pageSize,
+        }
+    })
+}
+
+//获取申请加入班级列表
+export function getOrganizationUserCooperationList(OrganizationUserCooperationQueryParam) {
+    return request({
+        url: '/organizationUserCooperation/getByYearAndName',
+        method: 'post',
+        data: {
+            year: OrganizationUserCooperationQueryParam.year,
+            name: OrganizationUserCooperationQueryParam.name,
+            pageNum: OrganizationUserCooperationQueryParam.pageNum,
+            pageSize: OrganizationUserCooperationQueryParam.pageSize,
         }
     })
 }

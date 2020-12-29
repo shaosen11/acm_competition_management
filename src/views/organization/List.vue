@@ -86,9 +86,18 @@
                             @click="toOrganizationInfo(scope.row)"
                             round>查看详情
                         </el-button>
+<!--                        <el-button-->
+<!--                            v-if="judgeApplyOrganization(scope.row)"-->
+<!--                            size="mini"-->
+<!--                            type="primary"-->
+<!--                            :disabled="judgeApplyOrganization(scope.row)"-->
+<!--                            round>正在申请-->
+<!--                        </el-button>-->
                         <el-button
                             size="mini"
                             type="primary"
+                            @click="applyJoinOrganization(scope.row.organizationId)"
+                            :disabled="scope.row.userCount>=3"
                             round>申请加入
                         </el-button>
                     </template>
@@ -112,7 +121,7 @@
 </template>
 
 <script>
-import {getOrganizationList, getOrganizationYearlist} from '@/network/api/organization';
+import {getOrganizationList, getOrganizationYearList, applyJoinOrganization} from '@/network/api/organization';
 
 const defaultOrganizationQuery = {
     year: '',
@@ -123,9 +132,6 @@ const defaultOrganizationQuery = {
 
 export default {
     name: "List",
-    created() {
-        this.init();
-    },
     data() {
         return{
             //队伍查询条件
@@ -135,6 +141,10 @@ export default {
                 pageNum: 1,
                 pageSize: 10,
                 options: []
+            },
+            OrganizationUserCooperationQuery:{
+                pageNum: 1,
+                pageSize: 10,
             },
             //表单信息
             tableData: [],
@@ -146,6 +156,9 @@ export default {
             isHide: true,
         }
 
+    },
+    created() {
+        this.init();
     },
     methods: {
         //初始化方法
@@ -174,7 +187,7 @@ export default {
         },
         //获取年级信息
         getYearList(){
-            getOrganizationYearlist().then(res => {
+            getOrganizationYearList().then(res => {
                 if (res.code !== 200) {
                     this.$message.error(res.message);
                 }
@@ -194,7 +207,7 @@ export default {
             this.organizationQuery.pageNum = val;
             this.getList();
         },
-        //跳转用户信息
+        //跳转班级信息
         toOrganizationInfo(organization) {
             this.$router.push({name: 'organizationInfo',
                 query: {
@@ -212,7 +225,30 @@ export default {
         handleResetSearch() {
             this.organizationQuery = Object.assign({}, defaultOrganizationQuery);
         },
-
+        //申请加入班级
+        applyJoinOrganization(organizationId){
+            if (this.$store.state.user.userId==''){
+                this.$message.error("请先登录");
+                return false;
+            }
+            const organizationUserCooperationQueryParam = {
+                organizationId: organizationId,
+                userId: this.$store.state.user.userId,
+                pageNum: this.OrganizationUserCooperationQuery.pageNum,
+                pageSize: this.OrganizationUserCooperationQuery.pageSize,
+            }
+            console.log(organizationUserCooperationQueryParam)
+            applyJoinOrganization(organizationUserCooperationQueryParam).then(res =>{
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                return this.$message.success(res.message);
+            })
+        },
+        // //判断是否加入的班级
+        // judgeApplyOrganization(organization){
+        //     return organization.finishFlag==1&&this.$store.state.user.userId!=''
+        // },
     }
 }
 </script>

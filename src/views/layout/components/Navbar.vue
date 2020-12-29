@@ -49,7 +49,7 @@
                         <el-dropdown-item icon="el-icon-user" @click.native="toUserInfo">
                             个人中心
                         </el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-user" @click.native="toUserSetting">
+                        <el-dropdown-item icon="el-icon-setting" @click.native="toUserSetting">
                             个人设置
                         </el-dropdown-item>
                         <el-dropdown-item icon="el-icon-circle-plus" @click.native="toLoginOut">退出登录</el-dropdown-item>

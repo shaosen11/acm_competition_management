@@ -1,42 +1,10 @@
 <template>
     <div>
-        <!--班级信息-->
-        <el-card class="box-card" shadow="never">
-            <div slot="header" class="clearfix">
-                <span>班级信息</span>
-            </div>
-            <el-form ref="form"
-                     :inline="true"
-                     :model="organization"
-                     label-width="150px"
-                     v-loading="isLoading"
-                     element-loading-text="努力加载中...">
-                <el-row :gutter="10" type="flex" justify="center">
-                    <el-col :span="20">
-                        <el-form-item label="年级">
-                            <span>{{ this.organization.year }}</span>
-                        </el-form-item>
-                        <el-form-item label="班级">
-                            <span>{{ this.organization.organizationName }}</span>
-                        </el-form-item>
-                        <el-form-item label="人数">
-                            <span>{{ this.organization.userCount }}</span>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-        </el-card>
-
         <!--学生列表-->
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>学生列表</span>
-                <el-button
-                    style="float: right; padding: 3px 0"
-                    @click="toApplicationList()"
-                    type="text">
-                    申请列表
-                </el-button>
+                <el-page-header @back="toOrganizationInfo" content="申请列表">
+                </el-page-header>
             </div>
             <el-table
                 v-loading="listLoading"
@@ -117,18 +85,14 @@
 </template>
 
 <script>
-import {getOrganizationByYearAndName, getUserListByYearAndName} from '@/network/api/organization';
+import {getOrganizationUserCooperationList} from '@/network/api/organization';
 
 export default {
-    name: "index",
+    name: "ApplicationList",
     data() {
         return {
             pageNum: 1,
             pageSize: 10,
-            // 是否正在加载
-            isLoading: false,
-            //班级信息
-            organization: {},
             //表单信息
             tableData: [],
             //表单总数
@@ -145,35 +109,20 @@ export default {
     },
     methods: {
         init() {
-            this.getOrganizationByYearAndName()
+            this.getList()
         },
-        //获取班级信息
-        getOrganizationByYearAndName() {
-            const organization = {
-                year: this.$route.query.year,
-                name: this.$route.query.name
-            }
-            getOrganizationByYearAndName(organization).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
-                }
-                this.organization = res.data
-                this.getOrganizationUserList()
-            })
-        },
-        //获取学生信息
-        getOrganizationUserList() {
+        //获取表单信息
+        getList() {
             this.listLoading = true
-            const OrganizationUserQueryParam = {
-                organizationId: this.organization.organizationId,
+            const OrganizationUserCooperationQueryParam = {
                 year: this.$route.query.year,
                 name: this.$route.query.name,
                 pageNum: this.pageNum,
-                pageSize: this.pageSize,
+                pageSize: this.pageSize
             }
-            getUserListByYearAndName(OrganizationUserQueryParam).then(res => {
+            getOrganizationUserCooperationList(OrganizationUserCooperationQueryParam).then(res => {
                 if (res.code !== 200) {
-                    this.listLoading = false
+                    this.listLoading = false;
                     return this.$message.error(res.message);
                 }
                 this.tableData = res.data.list;
@@ -184,25 +133,8 @@ export default {
                 if (this.total > this.pageSize) {
                     this.isHide = false;
                 }
-                this.listLoading = false
+                this.listLoading = false;
             })
-        },
-        //跳转团队信息
-        toTeamInfo(teamName) {
-            this.$router.push({name: 'team', query: {teamName: teamName}})
-        },
-        //跳转用户信息
-        toUserInfo(userId) {
-            this.$router.push({name: 'userInfo', query: {userId: userId}});
-        },
-        //跳转申请列表
-        toApplicationList() {
-            this.$router.push({
-                name: 'ApplicationList', query: {
-                    year: this.$route.query.year,
-                    name: this.$route.query.name
-                }
-            });
         },
         //处理页面大小变化
         handleSizeChange(val) {
@@ -215,12 +147,27 @@ export default {
             this.pageNum = val;
             this.getList();
         },
+        //跳转团队信息
+        toTeamInfo(teamName) {
+            this.$router.push({name: 'team', query: {teamName: teamName}})
+        },
+        //跳转用户信息
+        toUserInfo(userId) {
+            this.$router.push({name: 'userInfo', query: {userId: userId}});
+        },
+        //跳转班级信息
+        toOrganizationInfo() {
+            this.$router.push({name: 'organizationInfo',
+                query: {
+                    year: this.$route.query.year,
+                    name: this.$route.query.name,
+                }
+            })
+        },
     }
 }
 </script>
 
 <style scoped>
-.table-container, .pagination-container {
-    margin: 30px auto;
-}
+
 </style>
