@@ -101,7 +101,9 @@
                         removeCookie('password');
                     }
                     this.isLoading = false
-                    this.$message.success("登录成功");
+                    if (this.$store.state.user.passwordFlag == 0) {
+                        this.passwordUpdateAlert()
+                    }
                     await this.$router.replace('/');
                 })
             },
@@ -113,7 +115,15 @@
             },
             toRegister() {
                 this.$router.push('/register')
-            }
+            },
+            passwordUpdateAlert() {
+                const h = this.$createElement;
+                this.$notify.warning({
+                    title: '安全提醒',
+                    message: h('i', {style: 'color: teal'}, '你的密码还未修改过，请点击右上角头像->个人设置->安全设置修改密码'),
+                    offset: 70
+                });
+            },
         }
     }
 </script>

@@ -11,6 +11,7 @@ VueRouter.prototype.push = function push (location) {
 
 import Login from '@/views/Login'
 import Layout from "@/views/layout/Layout";
+import adminRouters from '@/router/admin'
 import blogRouters from '@/router/blog'
 import competitionRouters from '@/router/competition'
 import messageRouters from '@/router/message'
@@ -37,7 +38,8 @@ const routes = [
             ...organizationRouters,
             ...reportRouters,
             ...teamRouters,
-            ...userRouters
+            ...userRouters,
+            ...adminRouters
         ]
     },
     {

@@ -52,7 +52,15 @@
                         <el-dropdown-item icon="el-icon-setting" @click.native="toUserSetting">
                             个人设置
                         </el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-circle-plus" @click.native="toLoginOut">退出登录</el-dropdown-item>
+                        <el-dropdown-item
+                                v-if="this.$store.state.user.identityFlag==1"
+                                icon="el-icon-s-data"
+                                @click.native="toAdmin">
+                            后台管理
+                        </el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-guide" @click.native="toLoginOut">
+                            退出登录
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-menu-item>
@@ -120,6 +128,9 @@
             toUserSetting() {
                 this.$router.push('/userSetting')
             },
+            toAdmin(){
+                this.$router.push('/admin')
+            },
             toLogin() {
                 this.$router.push('/login')
             },
@@ -130,6 +141,8 @@
             init() {
                 this.isLogin = store.getters.isLogin;
                 this.icon = store.getters.icon;
+            },
+            isAdmin(){
             }
         }
     };
