@@ -60,15 +60,13 @@ export function getUserListByYearAndName(OrganizationUserQueryParam) {
 }
 
 //申请加入班级
-export function applyJoinOrganization(OrganizationUserCooperationQueryParam) {
+export function applyJoinOrganization(organizationUserCooperation) {
     return request({
         url: '/organizationUserCooperation/applyJoinOrganization',
         method: 'post',
         data: {
-            organizationId: OrganizationUserCooperationQueryParam.organizationId,
-            userId: OrganizationUserCooperationQueryParam.userId,
-            pageNum: OrganizationUserCooperationQueryParam.pageNum,
-            pageSize: OrganizationUserCooperationQueryParam.pageSize,
+            organizationId: organizationUserCooperation.organizationId,
+            userId: organizationUserCooperation.userId,
         }
     })
 }
@@ -83,6 +81,17 @@ export function getOrganizationUserCooperationList(OrganizationUserCooperationQu
             name: OrganizationUserCooperationQueryParam.name,
             pageNum: OrganizationUserCooperationQueryParam.pageNum,
             pageSize: OrganizationUserCooperationQueryParam.pageSize,
+        }
+    })
+}
+
+//批处理同意
+export function organizationUserCooperationBatchAgree(ids) {
+    return request({
+        url: '/organizationUserCooperation/batchAgree',
+        method: 'post',
+        data: {
+            ids
         }
     })
 }

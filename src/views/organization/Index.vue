@@ -33,6 +33,7 @@
                 <span>学生列表</span>
                 <el-button
                     style="float: right; padding: 3px 0"
+                    v-if="this.$store.state.user.identityFlag==1"
                     @click="toApplicationList()"
                     type="text">
                     申请列表

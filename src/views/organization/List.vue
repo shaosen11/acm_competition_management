@@ -231,14 +231,11 @@ export default {
                 this.$message.error("请先登录");
                 return false;
             }
-            const organizationUserCooperationQueryParam = {
+            const organizationUserCooperation = {
                 organizationId: organizationId,
                 userId: this.$store.state.user.userId,
-                pageNum: this.OrganizationUserCooperationQuery.pageNum,
-                pageSize: this.OrganizationUserCooperationQuery.pageSize,
             }
-            console.log(organizationUserCooperationQueryParam)
-            applyJoinOrganization(organizationUserCooperationQueryParam).then(res =>{
+            applyJoinOrganization(organizationUserCooperation).then(res =>{
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
