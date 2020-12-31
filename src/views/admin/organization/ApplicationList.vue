@@ -22,13 +22,13 @@
                 <el-table-column
                     prop="userId"
                     label="学号"
-                    width="100"
+                    width="150"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="userName"
                     label="名称"
-                    width="150"
+                    width="100"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
@@ -61,6 +61,7 @@
                         <el-button
                             size="mini"
                             type="primary"
+                            @click="agreeJoin(scope.row)"
                             round>同意申请
                         </el-button>
                     </template>
@@ -168,6 +169,17 @@ export default {
         //多选
         handleSelectionChange(val) {
             this.multipleSelection = val;
+        },
+        //同意加入
+        agreeJoin(row){
+            console.log(row)
+            let ids = row.id;
+            organizationUserCooperationBatchAgree(ids).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
         },
         //批量同意
         handleBatchOperate() {

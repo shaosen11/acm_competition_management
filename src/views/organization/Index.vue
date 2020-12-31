@@ -81,7 +81,7 @@
                 <el-table-column
                     prop="gender"
                     label="性别"
-                    width="220"
+                    width="200"
                     align="center">
                     <template slot-scope="scope">
                         <el-button

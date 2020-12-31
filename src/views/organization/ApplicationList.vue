@@ -7,23 +7,31 @@
                     @back="toOrganizationInfo"
                     content="申请列表">
                 </el-page-header>
+                <el-button
+                        style="float: right; padding: 3px 0px"
+                        @click="handleBatchOperate"
+                        type="text">
+                    批量同意
+                </el-button>
             </div>
             <el-table
                 v-loading="listLoading"
                 element-loading-text="努力加载中..."
+                @selection-change="handleSelectionChange"
                 :data="tableData"
                 stripe
                 style="width: 100%">
+                <el-table-column type="selection" width="60" align="center"></el-table-column>
                 <el-table-column
                     prop="userId"
                     label="学号"
-                    width="250"
+                    width="150"
                     align="center">
                 </el-table-column>
                 <el-table-column
                     prop="userName"
                     label="名称"
-                    width="200"
+                    width="150"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
@@ -32,7 +40,7 @@
                 <el-table-column
                     prop="teamName"
                     label="队伍名称"
-                    width="250"
+                    width="200"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toTeamInfo(scope.row.teamName)">{{
@@ -50,7 +58,7 @@
                 <el-table-column
                     prop="gender"
                     label="性别"
-                    width="220"
+                    width="200"
                     align="center">
                     <template slot-scope="scope">
                         <el-button
@@ -64,6 +72,20 @@
                             type="text"
                             v-if="scope.row.gender==0">
                             <i class="el-icon-female"></i>
+                        </el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="operation"
+                        label="操作"
+                        width="150"
+                        align="center">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                type="primary"
+                                @click="agreeJoin(scope.row)"
+                                round>同意申请
                         </el-button>
                     </template>
                 </el-table-column>
@@ -86,7 +108,7 @@
 </template>
 
 <script>
-import {getOrganizationUserCooperationList} from '@/network/api/organization';
+import {getOrganizationUserCooperationList, organizationUserCooperationBatchAgree} from '@/network/api/organization';
 
 export default {
     name: "ApplicationList",
@@ -102,6 +124,8 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
+            //多选
+            multipleSelection: ''
         }
     },
     created() {
@@ -165,6 +189,36 @@ export default {
                 }
             })
         },
+        //多选
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+        },
+        //同意加入
+        agreeJoin(row){
+            let ids = row.id;
+            organizationUserCooperationBatchAgree(ids).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
+        },
+        //批量同意
+        handleBatchOperate() {
+            let ids = '';
+            for (let i = 0; i < this.multipleSelection.length; i++) {
+                if (i != 0) {
+                    ids += ',';
+                }
+                ids += this.multipleSelection[i].id;
+            }
+            organizationUserCooperationBatchAgree(ids).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
+        }
     }
 }
 </script>
