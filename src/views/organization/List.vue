@@ -37,7 +37,6 @@
                 </el-form>
             </div>
         </el-card>
-
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>班级列表</span>
@@ -97,7 +96,6 @@
                             size="mini"
                             type="primary"
                             @click="applyJoinOrganization(scope.row.organizationId)"
-                            :disabled="scope.row.userCount>=3"
                             round>申请加入
                         </el-button>
                     </template>

@@ -4,6 +4,7 @@ const routers = [
         name: 'admin',
         component: () => import('@/views/admin/Index'),
         meta: {title: '管理中心'},
+        redirect: 'admin/teacher',
         children: [
             {
                 path: 'student',
@@ -30,11 +31,19 @@ const routers = [
                 }
             },
             {
-                path: 'applicationList',
-                name: 'applicationList',
+                path: 'applyList',
+                name: 'applyList',
                 meta: {title: '申请列表'},
                 components: {
-                    admin: () => import('@/views/admin/organization/ApplicationList'),
+                    admin: () => import('@/views/admin/organization/ApplyList'),
+                }
+            },
+            {
+                path: 'team',
+                name: 'team',
+                meta: {title: '队伍管理'},
+                components: {
+                    admin: () => import('@/views/admin/Team'),
                 }
             },
             {

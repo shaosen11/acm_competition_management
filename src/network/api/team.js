@@ -11,7 +11,7 @@ export function getTeamInfoByUserId(userId) {
     })
 }
 
-//通过用户id获取队伍虽有信息
+//通过用户id获取队伍所有信息
 export function getTeamAllInfoByUserId(userId) {
     return request({
         url: '/team/getTeamAllInfoByUserId',
@@ -88,18 +88,6 @@ export function createTeam(team) {
     })
 }
 
-//加入队伍
-export function joinTeam(teamUserRelation) {
-    return request({
-        url: '/team/join',
-        method: 'post',
-        data:{
-            teamId: teamUserRelation.teamId,
-            userId: teamUserRelation.userId
-        }
-    })
-}
-
 //退出队伍
 export function outTeam(teamUserRelation) {
     return request({
@@ -138,7 +126,7 @@ export function applyJoinTeam(teamUserCooperation){
 }
 
 //获取申请加入和邀请加入队伍列表
-export function getTeamUserCooperationListByTeamId(teamUserCooperationQueryParam){
+export function getTeamUserCooperationListByTeamName(teamUserCooperationQueryParam){
     return request({
         url: '/TeamUserCooperation/getListByTeamName',
         method: 'post',
@@ -146,6 +134,17 @@ export function getTeamUserCooperationListByTeamId(teamUserCooperationQueryParam
             name: teamUserCooperationQueryParam.teamName,
             pageNum: teamUserCooperationQueryParam.pageNum,
             pageSize: teamUserCooperationQueryParam.pageSize
+        }
+    })
+}
+
+//同意申请加入队伍
+export function agreeJoinTeam(id){
+    return request({
+        url: '/TeamUserCooperation/agreeJoinTeam',
+        method: 'post',
+        data:{
+            id
         }
     })
 }

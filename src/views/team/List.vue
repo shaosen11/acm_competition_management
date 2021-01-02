@@ -213,7 +213,7 @@ export default {
         },
         //跳转团队信息
         toTeamInfo(teamName) {
-            this.$router.push({name: 'team', query: {teamName: teamName}})
+            this.$router.push({name: 'teamInfo', query: {teamName: teamName}})
         },
         //跳转用户信息
         toUserInfo(userId) {
@@ -239,7 +239,6 @@ export default {
         },
         //完成队伍信息填写，跳转页面
         createTeam(team) {
-            console.log(team)
             this.createButtonLoading = true;
             createTeam(team).then(res => {
                 if (res.code !== 200) {

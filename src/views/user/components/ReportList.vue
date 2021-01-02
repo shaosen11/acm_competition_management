@@ -30,7 +30,6 @@
         },
         methods: {
             init() {
-                console.log(this.userId)
             }
         },
     }

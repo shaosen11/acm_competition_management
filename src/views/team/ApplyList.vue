@@ -1,24 +1,15 @@
 <template>
     <div>
-        <!--学生列表-->
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>申请列表</span>
-                <el-button
-                    style="float: right; padding: 3px 0"
-                    @click="handleBatchOperate"
-                    type="text">
-                    批量同意
-                </el-button>
             </div>
             <el-table
                 v-loading="listLoading"
                 element-loading-text="努力加载中..."
                 :data="tableData"
-                @selection-change="handleSelectionChange"
                 stripe
                 style="width: 100%">
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
                 <el-table-column
                     prop="userId"
                     label="学号"
@@ -27,18 +18,12 @@
                 </el-table-column>
                 <el-table-column
                     prop="userName"
-                    label="名称"
+                    label="姓名"
                     width="100"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
                     </template>
-                </el-table-column>
-                <el-table-column
-                    prop="email"
-                    label="邮箱"
-                    width="200"
-                    align="center">
                 </el-table-column>
                 <el-table-column
                     prop="year"
@@ -48,7 +33,13 @@
                 </el-table-column>
                 <el-table-column
                     prop="organizationName"
-                    label="申请班级"
+                    label="班级"
+                    width="200"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="time"
+                    label="申请时间"
                     width="200"
                     align="center">
                 </el-table-column>
@@ -85,12 +76,18 @@
 </template>
 
 <script>
-import {getOrganizationUserCooperationList, organizationUserCooperationBatchAgree} from '@/network/api/organization';
+import {getTeamUserCooperationListByTeamName, agreeJoinTeam} from '@/network/api/team'
 
 export default {
-    name: "ApplicationList",
+    name: "ApplyList",
     data() {
         return {
+            //队伍查询条件
+            teamUserCooperationQueryParam: {
+                teamName: null,
+                pageNum: 1,
+                pageSize: 10,
+            },
             pageNum: 1,
             pageSize: 10,
             //表单信息
@@ -101,8 +98,6 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
-            //多选
-            multipleSelection: ''
         }
     },
     created() {
@@ -116,16 +111,12 @@ export default {
         //获取表单信息
         getList() {
             this.listLoading = true
-            const OrganizationUserCooperationQueryParam = {
-                pageNum: this.pageNum,
-                pageSize: this.pageSize
-            }
-            getOrganizationUserCooperationList(OrganizationUserCooperationQueryParam).then(res => {
-                if (res.code !== 200) {
+            this.teamUserCooperationQueryParam.teamName = this.$store.state.team.teamName
+            getTeamUserCooperationListByTeamName(this.teamUserCooperationQueryParam).then(res => {
+                if (res.code != 200) {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }
-                console.log(res.data.list)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.totalPage = res.data.totalPage;
@@ -166,41 +157,21 @@ export default {
                 }
             })
         },
-        //多选
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
         //同意加入
         agreeJoin(row){
-            console.log(row)
-            let ids = row.id;
-            organizationUserCooperationBatchAgree(ids).then(res => {
+            agreeJoinTeam(row.id).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-                this.getList()
+                this.init()
             })
         },
-        //批量同意
-        handleBatchOperate() {
-            let ids = '';
-            for (let i = 0; i < this.multipleSelection.length; i++) {
-                if (i != 0) {
-                    ids += ',';
-                }
-                ids += this.multipleSelection[i].id;
-            }
-            organizationUserCooperationBatchAgree(ids).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
-                }
-                this.getList()
-            })
-        }
     }
 }
 </script>
 
 <style scoped>
-
+.table-container {
+    width: 1000px;
+}
 </style>

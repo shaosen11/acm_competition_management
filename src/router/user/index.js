@@ -2,14 +2,33 @@ const routers = [
     {
         path: '/userInfo',
         name: 'userInfo',
-        component: () => import('@/views/user/Index'),
+        component: () => import('@/views/user/Info'),
         meta: {title: '个人中心'}
     },
     {
-        path: '/userSetting',
-        name: 'userSetting',
-        component: () => import('@/views/user/Setting'),
-        meta: {title: '个人设置'}
+        path: 'user',
+        name: 'user',
+        component: () => import('@/views/user/Index'),
+        meta: {title: '个人中心'},
+        redirect: 'user/setting',
+        children: [
+            {
+                path: 'setting',
+                name: 'setting',
+                meta: {title: '个人设置'},
+                components: {
+                    user: () => import('@/views/user/Setting')
+                }
+            },
+            {
+                path: 'password',
+                name: 'password',
+                meta: {title: '安全设置'},
+                components: {
+                    user: () => import('@/views/user/Password')
+                }
+            },
+        ]
     }
 ];
 

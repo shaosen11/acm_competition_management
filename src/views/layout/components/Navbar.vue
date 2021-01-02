@@ -102,7 +102,7 @@
                 this.$router.push('/blog')
             },
             toMyTeam() {
-                this.$router.push({name: 'team', query: {teamName: this.$store.state.team.teamName}})
+                this.$router.push({name: 'teamInfo', query: {teamName: this.$store.state.team.teamName}})
             },
             toTeam() {
                 this.$router.push('/teamList')
@@ -126,7 +126,7 @@
                 this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
             },
             toUserSetting() {
-                this.$router.push('/userSetting')
+                this.$router.push('/user/setting')
             },
             toAdmin(){
                 this.$router.push('/admin')

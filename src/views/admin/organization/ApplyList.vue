@@ -3,28 +3,19 @@
         <!--学生列表-->
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <el-row>
-                    <el-col :span="20">
-                        <el-page-header
-                            @back="toOrganizationInfo"
-                            content="申请列表">
-                        </el-page-header>
-                    </el-col>
-                    <el-col :span="4">
-                        <el-button
-                            style="float: right; padding: 3px 0px"
-                            @click="handleBatchOperate"
-                            type="text">
-                            批量同意
-                        </el-button>
-                    </el-col>
-                </el-row>
+                <span>申请列表</span>
+                <el-button
+                    style="float: right; padding: 3px 0"
+                    @click="handleBatchOperate"
+                    type="text">
+                    批量同意
+                </el-button>
             </div>
             <el-table
                 v-loading="listLoading"
                 element-loading-text="努力加载中..."
-                @selection-change="handleSelectionChange"
                 :data="tableData"
+                @selection-change="handleSelectionChange"
                 stripe
                 style="width: 100%">
                 <el-table-column type="selection" width="60" align="center"></el-table-column>
@@ -36,62 +27,42 @@
                 </el-table-column>
                 <el-table-column
                     prop="userName"
-                    label="名称"
-                    width="150"
+                    label="姓名"
+                    width="100"
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="teamName"
-                    label="队伍名称"
-                    width="200"
-                    align="center">
-                    <template slot-scope="scope">
-                        <el-link type="primary" @click="toTeamInfo(scope.row.teamName)">{{
-                                scope.row.teamName
-                            }}
-                        </el-link>
-                    </template>
-                </el-table-column>
-                <el-table-column
                     prop="email"
                     label="邮箱"
-                    width="250"
-                    align="center">
-                </el-table-column>
-                <el-table-column
-                    prop="gender"
-                    label="性别"
                     width="200"
                     align="center">
-                    <template slot-scope="scope">
-                        <el-button
-                            el-button
-                            type="text"
-                            v-if="scope.row.gender==1">
-                            <i class="el-icon-male"></i>
-                        </el-button>
-                        <el-button
-                            el-button
-                            type="text"
-                            v-if="scope.row.gender==0">
-                            <i class="el-icon-female"></i>
-                        </el-button>
-                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="operation"
-                        label="操作"
-                        width="150"
-                        align="center">
+                    prop="year"
+                    label="年级"
+                    width="100"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="organizationName"
+                    label="申请班级"
+                    width="200"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="operation"
+                    label="操作"
+                    width="150"
+                    align="center">
                     <template slot-scope="scope">
                         <el-button
-                                size="mini"
-                                type="primary"
-                                @click="agreeJoin(scope.row)"
-                                round>同意申请
+                            size="mini"
+                            type="primary"
+                            @click="agreeJoin(scope.row)"
+                            round>同意申请
                         </el-button>
                     </template>
                 </el-table-column>
@@ -117,7 +88,7 @@
 import {getOrganizationUserCooperationList, organizationUserCooperationBatchAgree} from '@/network/api/organization';
 
 export default {
-    name: "ApplicationList",
+    name: "ApplyList",
     data() {
         return {
             pageNum: 1,
@@ -146,8 +117,6 @@ export default {
         getList() {
             this.listLoading = true
             const OrganizationUserCooperationQueryParam = {
-                year: this.$route.query.year,
-                name: this.$route.query.name,
                 pageNum: this.pageNum,
                 pageSize: this.pageSize
             }
@@ -188,7 +157,8 @@ export default {
         },
         //跳转班级信息
         toOrganizationInfo() {
-            this.$router.push({name: 'organizationInfo',
+            this.$router.push({
+                name: 'organizationInfo',
                 query: {
                     year: this.$route.query.year,
                     name: this.$route.query.name,
@@ -224,7 +194,8 @@ export default {
                 }
                 this.getList()
             })
-        }
+        },
+
     }
 }
 </script>
