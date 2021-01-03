@@ -47,7 +47,7 @@
                 form: {
                     userId: '',
                     password: '',
-                    rem: false
+                    rem: true
                 },
                 /*校验规则*/
                 rules: {

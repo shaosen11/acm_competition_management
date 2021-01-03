@@ -18,6 +18,7 @@
                         <el-menu-item-group>
                             <el-menu-item index="3-1" @click="toOrganizationList">班级列表</el-menu-item>
                             <el-menu-item index="3-2" @click="toApplyList">审批加入</el-menu-item>
+                            <el-menu-item index="3-3" @click="toCreateOrganization">创建班级</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="4" @click="toTeam">
@@ -57,6 +58,9 @@ export default {
         },
         toApplyList() {
             this.$router.push("/admin/applyList")
+        },
+        toCreateOrganization() {
+            this.$router.push("/admin/createOrganization")
         },
         toTeam() {
             this.$router.push("/admin/team")

@@ -20,11 +20,11 @@
 
             </div>
             <div style="margin-top: 15px">
-                <el-form :inline="true" :model="organizationQuery" size="small" label-width="140px">
+                <el-form :inline="true" :model="organizationQuery" size="small" label-width="100px">
                     <el-form-item label="选择年级：">
                         <el-select v-model="organizationQuery.year" placeholder="请选择">
                             <el-option
-                                v-for="item in organizationQuery.options"
+                                v-for="item in this.options"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
@@ -41,19 +41,18 @@
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>班级列表</span>
-                <el-button style="float: right; padding: 3px 0" type="text"><i
-                    class="el-icon-plus"></i>创建班级
+                <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateOrganization">
+                    <i class="el-icon-plus"></i>创建班级
                 </el-button>
             </div>
             <el-table
                 v-loading="listLoading"
                 element-loading-text="努力加载中..."
                 :data="tableData"
-                @selection-change="handleSelectionChange"
                 stripe
                 border
                 style="width: 100%">
-                <el-table-column type="selection" width="60" align="center"></el-table-column>
+<!--                <el-table-column type="selection" width="60" align="center"></el-table-column>-->
                 <el-table-column
                     prop="collegeName"
                     label="学院"
@@ -139,7 +138,7 @@ const defaultOrganizationQuery = {
     year: '',
     name: '',
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 5,
 };
 
 export default {
@@ -151,13 +150,9 @@ export default {
                 year: '',
                 name: '',
                 pageNum: 1,
-                pageSize: 10,
-                options: []
+                pageSize: 5,
             },
-            OrganizationUserCooperationQuery: {
-                pageNum: 1,
-                pageSize: 10,
-            },
+            options: [],
             //表单信息
             tableData: [],
             //表单总数
@@ -166,8 +161,6 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
-            //多选
-            multipleSelection: '',
             value: true
         }
 
@@ -207,7 +200,7 @@ export default {
                     this.$message.error(res.message);
                 }
                 for (let i = 0; i < res.data.length; i++) {
-                    this.organizationQuery.options.push({value: res.data[i].year, label: res.data[i].year})
+                    this.options.push({value: res.data[i].year, label: res.data[i].year})
                 }
             })
         },
@@ -232,6 +225,9 @@ export default {
                 }
             })
         },
+        toCreateOrganization() {
+            this.$router.push("/admin/createOrganization")
+        },
         //点击搜索按钮
         handleSearchList() {
             this.organizationQuery.pageNum = 1;
@@ -240,10 +236,6 @@ export default {
         //点击重置按钮
         handleResetSearch() {
             this.organizationQuery = Object.assign({}, defaultOrganizationQuery);
-        },
-        //多选
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
         },
         //处理是否显示
         handleVisitStatusChange(row) {

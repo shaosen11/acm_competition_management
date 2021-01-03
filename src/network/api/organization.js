@@ -113,3 +113,38 @@ export function updateOrganization(organization) {
         }
     })
 }
+
+//获取学院信息
+export function collegeList() {
+    return request({
+        url: '/college/list',
+        method: 'get',
+    })
+}
+
+//获取班级信息
+export function getByOrganizationId(organizationId) {
+    return request({
+        url: '/organization/getByOrganizationId',
+        method: 'post',
+        data: {
+            organizationId
+        }
+    })
+}
+
+//创建班级
+export function createOrganization(organization) {
+    return request({
+        url: '/organization/create',
+        method: 'post',
+        data: {
+            organizationId: organization.organizationId,
+            name: organization.name,
+            year: organization.year,
+            collegeId: organization.collegeId,
+            userId: organization.userId,
+            userName: organization.userName
+        }
+    })
+}

@@ -39,6 +39,14 @@ const routers = [
                 }
             },
             {
+                path: 'createOrganization',
+                name: 'createOrganization',
+                meta: {title: '创建班级', requireAuth: true},
+                components: {
+                    admin: () => import('@/views/admin/organization/CreateOrganization'),
+                }
+            },
+            {
                 path: 'team',
                 name: 'team',
                 meta: {title: '队伍管理', requireAuth: true},
