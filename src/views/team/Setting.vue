@@ -71,7 +71,7 @@
             :visible.sync="deleteTeamDialogVisible"
             width="30%"
             :before-close="deleteTeamHandleClose">
-            <span>确认删除队伍？</span>
+            <span>确认删除队伍吗，所有队员都将会离开对队伍？</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="deleteTeamDialogVisible = false">取 消</el-button>
                 <el-button
@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import {deleteTeam, getTeamByName, outTeam, updateTeamInfo} from "@/network/api/team";
+import {deleteTeam, getTeamByName, outTeam, updateTeam} from "@/network/api/team";
 
 export default {
     name: "Setting",
@@ -141,7 +141,7 @@ export default {
                 userName: this.form.userName,
                 motto: this.form.teamMotto
             };
-            updateTeamInfo(team).then(res => {
+            updateTeam(team).then(res => {
                 if (res.code != 200) {
                     this.updateTeamInfoButtonLoading = false;
                     return this.$message.error(res.message);

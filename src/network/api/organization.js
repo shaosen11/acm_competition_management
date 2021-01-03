@@ -8,6 +8,7 @@ export function getOrganizationList(organizationQuery) {
         data: {
             year: organizationQuery.year,
             name: organizationQuery.name,
+            visitFlag: organizationQuery.visitFlag,
             pageNum: organizationQuery.pageNum,
             pageSize: organizationQuery.pageSize,
         }
@@ -92,6 +93,23 @@ export function organizationUserCooperationBatchAgree(ids) {
         method: 'post',
         data: {
             ids
+        }
+    })
+}
+
+//更新班级信息
+export function updateOrganization(organization) {
+    return request({
+        url: '/organization/update',
+        method: 'post',
+        data: {
+            id: organization.id,
+            organizationId: organization.organizationId,
+            name: organization.name,
+            year: organization.year,
+            collegeId: organization.collegeId,
+            visitFlag: organization.visitFlag,
+            joinFlag: organization.joinFlag
         }
     })
 }

@@ -3,13 +3,13 @@ const routers = [
         path: '/admin',
         name: 'admin',
         component: () => import('@/views/admin/Index'),
-        meta: {title: '管理中心'},
+        meta: {title: '管理中心', requireAuth: true},
         redirect: 'admin/teacher',
         children: [
             {
                 path: 'student',
                 name: 'student',
-                meta: {title: '学生管理'},
+                meta: {title: '学生管理', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/Student'),
                 }
@@ -17,7 +17,7 @@ const routers = [
             {
                 path: 'teacher',
                 name: 'teacher',
-                meta: {title: '教师管理'},
+                meta: {title: '教师管理', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/Teacher'),
                 }
@@ -25,7 +25,7 @@ const routers = [
             {
                 path: 'organizationList',
                 name: 'organizationList',
-                meta: {title: '班级列表'},
+                meta: {title: '班级列表', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/organization/OrganizationList'),
                 }
@@ -33,7 +33,7 @@ const routers = [
             {
                 path: 'applyList',
                 name: 'applyList',
-                meta: {title: '申请列表'},
+                meta: {title: '申请列表', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/organization/ApplyList'),
                 }
@@ -41,7 +41,7 @@ const routers = [
             {
                 path: 'team',
                 name: 'team',
-                meta: {title: '队伍管理'},
+                meta: {title: '队伍管理', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/Team'),
                 }
@@ -49,7 +49,7 @@ const routers = [
             {
                 path: 'report',
                 name: 'report',
-                meta: {title: '报告管理'},
+                meta: {title: '报告管理', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/Report'),
                 }
@@ -57,7 +57,7 @@ const routers = [
             {
                 path: 'blog',
                 name: 'blog',
-                meta: {title: '论坛管理'},
+                meta: {title: '论坛管理', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/Blog'),
                 }

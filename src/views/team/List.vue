@@ -145,7 +145,6 @@ export default {
         return {
             //队伍查询条件
             teamQuery: {
-                userId: this.$store.state.user.userId,
                 name: null,
                 pageNum: 1,
                 pageSize: 10,
@@ -270,9 +269,6 @@ export default {
         // judgeApplyTeam(team){
         //     return team.type==2&&team.finishFlag==1&&team.notInTeamUserId==this.$store.state.user.userId
         // },
-    },
-    computed:{
-
     }
 }
 </script>

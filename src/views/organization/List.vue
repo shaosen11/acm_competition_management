@@ -17,7 +17,6 @@
                     size="small">
                     重置
                 </el-button>
-
             </div>
             <div style="margin-top: 15px">
                 <el-form :inline="true" :model="organizationQuery" size="small" label-width="140px">
@@ -40,9 +39,6 @@
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>班级列表</span>
-                <el-button style="float: right; padding: 3px 0" type="text"><i
-                    class="el-icon-plus"></i>创建班级
-                </el-button>
             </div>
             <el-table
                 v-loading="listLoading"
@@ -85,17 +81,11 @@
                             @click="toOrganizationInfo(scope.row)"
                             round>查看详情
                         </el-button>
-<!--                        <el-button-->
-<!--                            v-if="judgeApplyOrganization(scope.row)"-->
-<!--                            size="mini"-->
-<!--                            type="primary"-->
-<!--                            :disabled="judgeApplyOrganization(scope.row)"-->
-<!--                            round>正在申请-->
-<!--                        </el-button>-->
                         <el-button
                             size="mini"
                             type="primary"
                             @click="applyJoinOrganization(scope.row.organizationId)"
+                            :disabled="scope.row.joinFlag == 1"
                             round>申请加入
                         </el-button>
                     </template>
@@ -136,6 +126,7 @@ export default {
             organizationQuery: {
                 year: '',
                 name: '',
+                visitFlag: 1,
                 pageNum: 1,
                 pageSize: 10,
                 options: []
@@ -240,10 +231,6 @@ export default {
                 return this.$message.success(res.message);
             })
         },
-        // //判断是否加入的班级
-        // judgeApplyOrganization(organization){
-        //     return organization.finishFlag==1&&this.$store.state.user.userId!=''
-        // },
     }
 }
 </script>

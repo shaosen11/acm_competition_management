@@ -46,7 +46,7 @@ export function getTeamByName(name) {
 }
 
 //修改队伍信息
-export function updateTeamInfo(team) {
+export function updateTeam(team) {
     return request({
         url: '/team/update',
         method: 'post',

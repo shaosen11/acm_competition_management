@@ -32,7 +32,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="输入搜索：">
-                        <el-input style="width: 203px" v-model="organizationQuery.name" placeholder="班级名称/关键字"></el-input>
+                        <el-input style="width: 203px" v-model="organizationQuery.name"
+                                  placeholder="班级名称/关键字"></el-input>
                     </el-form-item>
                 </el-form>
             </div>
@@ -76,20 +77,22 @@
                     width="200"
                     align="center">
                     <template slot-scope="scope">
-<!--                        <p>显示：-->
-<!--                            <el-switch-->
-<!--                                :active-value="1"-->
-<!--                                :inactive-value="0"-->
-<!--                                v-model="scope.row.publishStatus">-->
-<!--                            </el-switch>-->
-<!--                        </p>-->
-<!--                        <p>加入：-->
-<!--                            <el-switch-->
-<!--                                :active-value="1"-->
-<!--                                :inactive-value="0"-->
-<!--                                v-model="scope.row.newStatus">-->
-<!--                            </el-switch>-->
-<!--                        </p>-->
+                        <p>显示：
+                            <el-switch
+                                @change="handleVisitStatusChange(scope.row)"
+                                :active-value="1"
+                                :inactive-value="0"
+                                v-model="scope.row.visitFlag">
+                            </el-switch>
+                        </p>
+                        <p>加入：
+                            <el-switch
+                                @change="handleJoinStatusChange(scope.row)"
+                                :active-value="1"
+                                :inactive-value="0"
+                                v-model="scope.row.joinFlag">
+                            </el-switch>
+                        </p>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -130,7 +133,7 @@
 </template>
 
 <script>
-import {getOrganizationList, getOrganizationYearList, applyJoinOrganization} from '@/network/api/organization';
+import {getOrganizationList, getOrganizationYearList, updateOrganization} from '@/network/api/organization';
 
 const defaultOrganizationQuery = {
     year: '',
@@ -142,7 +145,7 @@ const defaultOrganizationQuery = {
 export default {
     name: "List",
     data() {
-        return{
+        return {
             //队伍查询条件
             organizationQuery: {
                 year: '',
@@ -151,7 +154,7 @@ export default {
                 pageSize: 10,
                 options: []
             },
-            OrganizationUserCooperationQuery:{
+            OrganizationUserCooperationQuery: {
                 pageNum: 1,
                 pageSize: 10,
             },
@@ -198,7 +201,7 @@ export default {
             })
         },
         //获取年级信息
-        getYearList(){
+        getYearList() {
             getOrganizationYearList().then(res => {
                 if (res.code !== 200) {
                     this.$message.error(res.message);
@@ -221,7 +224,8 @@ export default {
         },
         //跳转班级信息
         toOrganizationInfo(organization) {
-            this.$router.push({name: 'organizationInfo',
+            this.$router.push({
+                name: 'organizationInfo',
                 query: {
                     year: organization.year,
                     name: organization.organizationName
@@ -237,26 +241,35 @@ export default {
         handleResetSearch() {
             this.organizationQuery = Object.assign({}, defaultOrganizationQuery);
         },
-        //申请加入班级
-        applyJoinOrganization(organizationId){
-            if (this.$store.state.user.userId==''){
-                this.$message.error("请先登录");
-                return false;
-            }
-            const organizationUserCooperation = {
-                organizationId: organizationId,
-                userId: this.$store.state.user.userId,
-            }
-            applyJoinOrganization(organizationUserCooperation).then(res =>{
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
-                }
-                return this.$message.success(res.message);
-            })
-        },
         //多选
         handleSelectionChange(val) {
             this.multipleSelection = val;
+        },
+        //处理是否显示
+        handleVisitStatusChange(row) {
+            const organization ={
+                id: row.id,
+                visitFlag: row.visitFlag,
+            }
+            updateOrganization(organization).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
+        },
+        //处理是否加入
+        handleJoinStatusChange(row) {
+            const organization ={
+                id: row.id,
+                joinFlag: row.joinFlag,
+            }
+            updateOrganization(organization).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
         },
     }
 }

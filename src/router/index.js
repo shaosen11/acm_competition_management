@@ -2,10 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
+// 引入vuex
+import store from '@/store';
+import { Message } from 'element-ui'
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push (location) {
+VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 }
 
@@ -31,7 +34,7 @@ const routes = [
             name: 'home',
             component: () => import('@/views/home/Home'),
             meta: {title: '首页'}
-            },
+        },
             ...blogRouters,
             ...competitionRouters,
             ...messageRouters,
@@ -59,6 +62,13 @@ const routes = [
         name: 'register',
         component: () => import('@/views/Register'),
         meta: {title: '注册'}
+    },
+    {
+        path: '/404',
+        component: () => import('@/views/404'), hidden: true
+    },
+    {
+        path: '*', redirect: '/404', hidden: true
     }
 ]
 
@@ -70,6 +80,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     NProgress.start()
+    if (to.meta.requireAuth && store.state.user.identityFlag != 1) {
+        Message({
+            message: "请用管理员账号登录",
+            type: 'error',
+        })
+        document.title = "首页"
+        next('/home')
+    }
     document.title = to.meta.title
     next()
 })
