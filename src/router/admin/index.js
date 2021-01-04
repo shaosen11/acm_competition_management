@@ -27,7 +27,7 @@ const routers = [
                 name: 'organizationList',
                 meta: {title: '班级列表', requireAuth: true},
                 components: {
-                    admin: () => import('@/views/admin/organization/OrganizationList'),
+                    admin: () => import('@/views/admin/organization/List'),
                 }
             },
             {
@@ -43,7 +43,7 @@ const routers = [
                 name: 'createOrganization',
                 meta: {title: '创建班级', requireAuth: true},
                 components: {
-                    admin: () => import('@/views/admin/organization/CreateOrganization'),
+                    admin: () => import('@/views/admin/organization/Create'),
                 }
             },
             {
@@ -52,6 +52,22 @@ const routers = [
                 meta: {title: '队伍管理', requireAuth: true},
                 components: {
                     admin: () => import('@/views/admin/Team'),
+                }
+            },
+            {
+                path: 'competitionList',
+                name: 'competitionList',
+                meta: {title: '比赛列表', requireAuth: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/List'),
+                }
+            },
+            {
+                path: 'createCompetition',
+                name: 'createCompetition',
+                meta: {title: '创建比赛', requireAuth: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/Create'),
                 }
             },
             {
