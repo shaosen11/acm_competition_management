@@ -27,6 +27,7 @@
                             <div class="block">
                                 <el-date-picker
                                     v-model="form.time"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     type="datetimerange"
                                     range-separator="至"
                                     start-placeholder="开始日期"
@@ -45,6 +46,7 @@
                                 <el-date-picker
                                     v-model="form.registrationTime"
                                     type="datetime"
+                                    value-format="yyyy-MM-dd HH:mm:ss"
                                     :picker-options="pickerOptions"
                                     placeholder="选择日期时间">
                                 </el-date-picker>
@@ -130,6 +132,7 @@ export default {
         create() {
             this.form.startTime = this.form.time[0]
             this.form.endTime = this.form.time[1]
+            console.log(this.form)
             createCompetition(this  .form).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);

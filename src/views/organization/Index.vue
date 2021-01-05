@@ -12,7 +12,7 @@
                      v-loading="isLoading"
                      element-loading-text="努力加载中...">
                 <el-row :gutter="10" type="flex" justify="center">
-                    <el-col :span="20">
+                    <el-col :span="18">
                         <el-form-item label="年级">
                             <span>{{ this.organization.year }}</span>
                         </el-form-item>
