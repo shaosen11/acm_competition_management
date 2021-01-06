@@ -125,7 +125,7 @@ export default {
     data() {
         return {
             pageNum: 1,
-            pageSize: 10,
+            pageSize: 5,
             // 是否正在加载
             isLoading: false,
             //班级信息

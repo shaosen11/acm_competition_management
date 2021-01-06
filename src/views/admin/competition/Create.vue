@@ -19,7 +19,8 @@
                         </el-form-item>
                         <el-form-item label="比赛描述">
                             <el-input
-                                v-model="form.describe"
+                                type="textarea"
+                                v-model="form.description"
                                 placeholder="比赛描述"
                                 autocomplete="off"></el-input>
                         </el-form-item>

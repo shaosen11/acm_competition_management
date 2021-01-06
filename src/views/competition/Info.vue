@@ -1,6 +1,8 @@
 <template>
     <div>
         <el-card shadow="never">
+            <el-page-header @back="toCompetition" content="比赛详情">
+            </el-page-header>
             <el-row :gutter="10" type="flex" justify="center" style="margin: 50px">
                 <el-col :span="24">
                     <el-steps :active="1" finish-status="success" align-center>
@@ -12,25 +14,53 @@
                 </el-col>
             </el-row>
 
+            <el-row :gutter="10" type="flex" justify="center" style="margin: 50px">
+                <el-col :span="12">
+                    <el-form ref="form"
+                             :model="form"
+                             size="mini"
+                             label-width="120px"
+                             v-loading="isLoading"
+                             element-loading-text="努力加载中...">
+                        <el-form-item label="比赛名称">
+                            <el-input v-model="form.name" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="比赛地点">
+                            <el-input v-model="form.position" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="比赛地点">
+                            <el-date-picker
+                                :disabled="true"
+                                v-model="form.time"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="datetimerange"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="报名截止时间">
+                            <el-date-picker
+                                :disabled="true"
+                                v-model="form.registrationTime"
+                                type="datetime"
+                                placeholder="选择日期时间"
+                                default-time="12:00:00">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="比赛类型">
+                            <el-input v-model="form.typeId" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="报名方式">
+                            <el-checkbox v-model="form.singleFlag" :true-label=1 :false-label=0 disabled border>个人报名
+                            </el-checkbox>
+                            <el-checkbox v-model="form.teamFlag" :true-label=1 :false-label=0 disabled border>团队报名
+                            </el-checkbox>
+                        </el-form-item>
+                    </el-form>
+                </el-col>
+            </el-row>
 
-            <el-form ref="form"
-                     :model="form"
-                     label-width="120px"
-                     v-loading="isLoading"
-                     element-loading-text="努力加载中...">
-                <el-form-item label="比赛名称">
-                    <span>{{ form.name }}</span>
-                </el-form-item>
-                <el-form-item label="比赛地点">
-                    <span>{{ form.position }}</span>
-                </el-form-item>
-                <el-form-item label="比赛时间">
-                    <span>{{ form.startTime }} - {{ form.endTime }}</span>
-                </el-form-item>
-                <el-form-item label="报名截止时间">
-                    <span>{{ form.registrationTime }}</span>
-                </el-form-item>
-            </el-form>
 
             <el-row :gutter="10" type="flex" justify="center">
                 <el-col :span="24">
@@ -45,6 +75,32 @@
                 </el-col>
             </el-row>
         </el-card>
+
+        <el-row :gutter="10" type="flex" justify="center" style="margin: 50px">
+            <el-col :span="20">
+                <el-timeline>
+                    <el-timeline-item timestamp="2018/4/12" placement="top">
+                        <el-card>
+                            <h4>报名比赛</h4>
+                            <p>王小虎 提交于 2018/4/12 20:46</p>
+                        </el-card>
+                    </el-timeline-item>
+                    <el-timeline-item timestamp="2018/4/3" placement="top">
+                        <el-card>
+                            <h4>更新 Github 模板</h4>
+                            <p>王小虎 提交于 2018/4/3 20:46</p>
+                        </el-card>
+                    </el-timeline-item>
+                    <el-timeline-item timestamp="2018/4/2" placement="top">
+                        <el-card>
+                            <h4>更新 Github 模板</h4>
+                            <p>王小虎 提交于 2018/4/2 20:46</p>
+                        </el-card>
+                    </el-timeline-item>
+                </el-timeline>
+            </el-col>
+        </el-row>
+
         <el-dialog
             title="报名"
             :visible.sync="applyDialogVisible"
@@ -105,6 +161,7 @@ export default {
                 competitionId: '',
                 name: '',
                 description: '',
+                time: ['', ''],
                 startTime: '',
                 endTime: '',
                 registrationTime: '',
@@ -138,6 +195,8 @@ export default {
                     return this.$message.error(res.message);
                 }
                 this.form = res.data
+                console.log(this.form)
+                this.form.time = [this.form.startTime, this.form.endTime]
             })
         },
         //报名比赛
@@ -161,7 +220,10 @@ export default {
                 }
                 this.$message.success(res.message);
             })
-        }
+        },
+        toCompetition() {
+            this.$router.push('/competition')
+        },
     }
 }
 </script>

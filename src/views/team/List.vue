@@ -147,7 +147,7 @@ export default {
             teamQuery: {
                 name: null,
                 pageNum: 1,
-                pageSize: 10,
+                pageSize: 5,
                 options: [{
                     value: '1',
                     label: '1'

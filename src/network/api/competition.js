@@ -81,7 +81,7 @@ export function applyJoinCompetition(competitionUserRelation) {
             teamId: competitionUserRelation.teamId,
             teamFlag: competitionUserRelation.teamFlag,
             userId: competitionUserRelation.userId,
-            singleFalg: competitionUserRelation.singleFalg
+            singleFlag: competitionUserRelation.singleFlag
         }
     })
 }
