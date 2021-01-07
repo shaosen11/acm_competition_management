@@ -63,7 +63,7 @@
                                 <span>{{ props.row.description }}</span>
                             </el-form-item>
                             <el-form-item label="比赛类型">
-                                <span>{{ props.row.typeId }}</span>
+                                <span>{{ props.row.typeName }}</span>
                             </el-form-item>
                             <el-form-item label="报名截止时间">
                                 <span>{{ props.row.registrationTime }}</span>
@@ -114,11 +114,6 @@
                     <template slot-scope="scope">
                         <el-button
                             size="mini"
-                            type="primary"
-                            round>报名
-                        </el-button>
-                        <el-button
-                            size="mini"
                             @click="toCompetitionInfo(scope.row)"
                             round>详情
                         </el-button>
@@ -164,7 +159,8 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
-            value: true
+            value: true,
+            applyCompetitionId: ''
         }
     },
     created() {
@@ -205,13 +201,13 @@ export default {
         },
         //处理页面大小变化
         handleSizeChange(val) {
-            this.organizationQuery.pageNum = 1;
-            this.organizationQuery.pageSize = val;
+            this.competitionQuery.pageNum = 1;
+            this.competitionQuery.pageSize = val;
             this.getList();
         },
         //处理当前页面数量变化
         handleCurrentChange(val) {
-            this.organizationQuery.pageNum = val;
+            this.competitionQuery.pageNum = val;
             this.getList();
         },
     }

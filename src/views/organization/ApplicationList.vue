@@ -180,7 +180,7 @@ export default {
         },
         //跳转团队信息
         toTeamInfo(teamName) {
-            this.$router.push({name: 'team', query: {teamName: teamName}})
+            this.$router.push({name: 'teamInfo', query: {teamName: teamName}})
         },
         //跳转用户信息
         toUserInfo(userId) {

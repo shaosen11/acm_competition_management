@@ -8,6 +8,7 @@ export function createCompetition(competition) {
         method: 'post',
         data: {
             name: competition.name,
+            typeId: competition.typeId,
             description: competition.description,
             startTime: competition.startTime,
             endTime: competition.endTime,
@@ -83,5 +84,26 @@ export function applyJoinCompetition(competitionUserRelation) {
             userId: competitionUserRelation.userId,
             singleFlag: competitionUserRelation.singleFlag
         }
+    })
+}
+
+//获取报名列表
+export function listCompetitionUserRelation(competitionUserRelationQueryParam) {
+    return request({
+        url: '/competitionUserRelation/list',
+        method: 'post',
+        data: {
+            competitionId: competitionUserRelationQueryParam.competitionId,
+            pageNum: competitionUserRelationQueryParam.pageNum,
+            pageSize: competitionUserRelationQueryParam.pageSize,
+        }
+    })
+}
+
+//获取比赛类型
+export function listCompetitionType() {
+    return request({
+        url: '/competitionType/list',
+        method: 'get',
     })
 }

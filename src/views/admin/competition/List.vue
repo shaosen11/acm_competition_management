@@ -54,7 +54,7 @@
                 style="width: 100%">
                 <!--                <el-table-column type="selection" width="60" align="center"></el-table-column>-->
                 <el-table-column
-                    prop="name"
+                    prop="competitionName"
                     label="名称"
                     width="150"
                     align="center">

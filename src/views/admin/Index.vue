@@ -5,9 +5,11 @@
                 <el-menu
                     class="el-menu-vertical-demo">
                     <el-menu-item index="1" @click="toTeacher">
+                        <i class="el-icon-user-solid"></i>
                         <span slot="title">老师管理</span>
                     </el-menu-item>
                     <el-menu-item index="2" @click="toStudent">
+                        <i class="el-icon-user"></i>
                         <span slot="title">学生管理</span>
                     </el-menu-item>
                     <el-submenu index="3">
@@ -27,12 +29,13 @@
 
                     <el-submenu index="5">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-trophy"></i>
                             <span>比赛管理</span>
                         </template>
                         <el-menu-item-group>
                             <el-menu-item index="5-1" @click="toCompetitionList">比赛列表</el-menu-item>
                             <el-menu-item index="5-2" @click="toCreateCompetition">创建比赛</el-menu-item>
+                            <el-menu-item index="5-3" @click="toCompetitionType">比赛类型</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
 
@@ -82,6 +85,9 @@ export default {
         },
         toCreateCompetition(){
             this.$router.push("/admin/createCompetition")
+        },
+        toCompetitionType() {
+            this.$router.push("/admin/competitionType")
         },
         toReport() {
             this.$router.push("/admin/report")
