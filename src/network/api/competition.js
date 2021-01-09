@@ -19,6 +19,9 @@ export function createCompetition(competition) {
             showFlag: competition.showFlag,
             userId: competition.userId,
             userName: competition.userName,
+            online: competition.online,
+            maxTeamNumber: competition.maxTeamNumber,
+            maxUserNumber: competition.maxUserNumber
         }
     })
 }
@@ -29,6 +32,8 @@ export function getCompetitionList(competition) {
         url: '/competition/list',
         method: 'post',
         data: {
+            typeId: competition.typeId,
+            name: competition.name,
             pageNum: competition.pageNum,
             pageSize: competition.pageSize,
         }
@@ -44,6 +49,7 @@ export function updateCompetition(competition) {
         data: {
             id: competition.id,
             name: competition.name,
+            typeId: competition.typeId,
             description: competition.description,
             startTime: competition.startTime,
             endTime: competition.endTime,
@@ -55,6 +61,9 @@ export function updateCompetition(competition) {
             showFlag: competition.showFlag,
             userId: competition.userId,
             userName: competition.userName,
+            online: competition.online,
+            maxTeamNumber: competition.maxTeamNumber,
+            maxUserNumber: competition.maxUserNumber
         }
     })
 }

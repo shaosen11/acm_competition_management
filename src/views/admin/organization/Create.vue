@@ -138,14 +138,12 @@ export default {
                     this.buttonLoading = false;
                     return false;
                 }
-                this.buttonLoading = false;
                 const res = await createOrganization(this.form);
                 if (res.code != 200) {
                     this.$message.error(res.message);
                     this.buttonLoading = false;
                     return false
                 }
-                this.$message.success(res.message);
                 this.buttonLoading = false;
                 await this.$router.push("/admin/organizationList")
             })

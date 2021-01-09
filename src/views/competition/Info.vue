@@ -50,7 +50,7 @@
                             </el-date-picker>
                         </el-form-item>
                         <el-form-item label="比赛类型">
-                            <el-input v-model="form.teamName" :disabled="true"></el-input>
+                            <el-input v-model="form.typeName" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="报名方式">
                             <el-checkbox v-model="form.singleFlag" :true-label=1 :false-label=0 disabled border>个人报名
@@ -66,7 +66,7 @@
                 <el-col :span="24">
                     <div style="text-align: center">
                         <el-button
-                            v-if="this.form.registrationFlag!=1"
+                            :disabled="this.form.registrationFlag==1"
                             type="primary"
                             @click="applyDialogVisible = true"
                             round>报名
@@ -103,7 +103,7 @@
                             </el-card>
                         </el-timeline-item>
                         <p v-if="loading">加载中...</p>
-                        <p v-if="noMore">没有更多了</p>
+                        <p v-if="noCompetitoinUserRelatition&&noMore">没有更多了</p>
                     </el-timeline>
                 </div>
             </el-col>
@@ -115,7 +115,7 @@
             width="50%">
             <el-form :model="form" label-width="120px">
                 <el-form-item label="比赛名称">
-                    <span>{{ form.name }}</span>
+                    <span>{{ form.competitionName }}</span>
                 </el-form-item>
                 <el-form-item label="比赛地点">
                     <span>{{ form.position }}</span>
@@ -213,6 +213,9 @@ export default {
         this.isLoading = false
     },
     computed: {
+        noCompetitoinUserRelatition() {
+            return this.total != 0;
+        },
         noMore() {
             return this.competitionUserRelationQueryParam.pageSize >= this.total
         },
@@ -234,6 +237,7 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
+                console.log(res.data)
                 this.form = res.data
                 this.form.time = [this.form.startTime, this.form.endTime]
             })

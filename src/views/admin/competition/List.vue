@@ -20,20 +20,20 @@
 
             </div>
             <div style="margin-top: 15px">
-                <el-form :inline="true" :model="organizationQuery" size="small" label-width="100px">
-                    <el-form-item label="选择年级：">
-                        <el-select v-model="organizationQuery.year" placeholder="请选择">
+                <el-form :inline="true" :model="competitionQuery" size="small" label-width="100px">
+                    <el-form-item label="输入搜索：">
+                        <el-input style="width: 203px" v-model="competitionQuery.name"
+                                  placeholder="比赛名称/关键字"></el-input>
+                    </el-form-item>
+                    <el-form-item label="比赛类型：">
+                        <el-select v-model="competitionQuery.typeId" placeholder="请选择">
                             <el-option
-                                v-for="item in this.options"
+                                v-for="item in this.competitionTypeList"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
                             </el-option>
                         </el-select>
-                    </el-form-item>
-                    <el-form-item label="输入搜索：">
-                        <el-input style="width: 203px" v-model="organizationQuery.name"
-                                  placeholder="班级名称/关键字"></el-input>
                     </el-form-item>
                 </el-form>
             </div>
@@ -52,7 +52,6 @@
                 stripe
                 border
                 style="width: 100%">
-                <!--                <el-table-column type="selection" width="60" align="center"></el-table-column>-->
                 <el-table-column
                     prop="competitionName"
                     label="名称"
@@ -61,13 +60,18 @@
                 </el-table-column>
                 <el-table-column
                     prop="startTime"
-                    label="开始时间"
+                    label="比赛时间"
                     width="100"
                     align="center">
+                    <template slot-scope="scope">
+                        <p>{{ scope.row.startTime }}</p>
+                        <p>-</p>
+                        <p>{{ scope.row.endTime }}</p>
+                    </template>
                 </el-table-column>
                 <el-table-column
-                    prop="endTime"
-                    label="结束时间"
+                    prop="typeName"
+                    label="比赛类型"
                     width="100"
                     align="center">
                 </el-table-column>
@@ -85,7 +89,7 @@
                 </el-table-column>
                 <el-table-column
                     label="操作"
-                    width="200"
+                    width="150"
                     align="center">
                     <template slot-scope="scope">
                         <p>团队报名：
@@ -112,19 +116,50 @@
                                 v-model="scope.row.registrationFlag">
                             </el-switch>
                         </p>
+                        <p>网络比赛：
+                            <el-switch
+                                @change="handleOnlineStatusChange(scope.row)"
+                                :active-value="1"
+                                :inactive-value="0"
+                                v-model="scope.row.online">
+                            </el-switch>
+                        </p>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    label="报名情况"
+                    width="150"
+                    align="center">
+                    <template slot-scope="scope">
+                        <p>团队报名数量：
+                            {{scope.row.teamNumber}}
+                        </p>
+                        <p>个人报名数量：
+                            {{scope.row.userNumber}}
+                        </p>
                     </template>
                 </el-table-column>
                 <el-table-column
                     prop="operation"
-                    label="详情"
+                    label="操作"
                     width="150"
                     align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            @click="toCompetitionInfo(scope.row)"
-                            round>查看详情
-                        </el-button>
+                        <p>
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                @click="toCompetitionUpdate(scope.row.competitionId)"
+                                round>修改信息
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                size="mini"
+                                @click="toCompetitionInfo(scope.row)"
+                                round>查看详情
+                            </el-button>
+                        </p>
                     </template>
                 </el-table-column>
             </el-table>
@@ -133,9 +168,9 @@
                     background
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
-                    :current-page="organizationQuery.pageNum"
+                    :current-page="competitionQuery.pageNum"
                     :page-sizes="[5,10,15]"
-                    :page-size="organizationQuery.pageSize"
+                    :page-size="competitionQuery.pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total"
                     :hide-on-single-page="isHide">
@@ -146,10 +181,10 @@
 </template>
 
 <script>
-import {getCompetitionList, updateCompetition} from '@/network/api/competition'
+import {getCompetitionList, listCompetitionType, updateCompetition} from '@/network/api/competition'
 
-const defaultOrganizationQuery = {
-    year: '',
+const defaultCompetitionQuery = {
+    typeId: '',
     name: '',
     pageNum: 1,
     pageSize: 5,
@@ -159,18 +194,15 @@ export default {
     name: "List",
     data() {
         return {
-            //队伍查询条件
-            organizationQuery: {
-                year: '',
+            //比赛查询条件
+            competitionQuery: {
+                typeId: '',
                 name: '',
                 pageNum: 1,
                 pageSize: 5,
             },
-            competitionQuery:{
-                pageNum: 1,
-                pageSize: 5,
-            },
-            options: [],
+            //比赛类型
+            competitionTypeList: [],
             //表单信息
             tableData: [],
             //表单总数
@@ -190,6 +222,7 @@ export default {
         //初始化方法
         init() {
             this.getList();
+            this.getCompetitionTypeList();
         },
         //获取表单信息
         getList() {
@@ -199,7 +232,6 @@ export default {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }
-                console.log(res.data.list)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.totalPage = res.data.totalPage;
@@ -211,23 +243,43 @@ export default {
                 this.listLoading = false;
             })
         },
+        //获取比赛类型
+        getCompetitionTypeList(){
+            listCompetitionType().then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                for (let i = 0; i < res.data.length; i++) {
+                    this.competitionTypeList.push({value: res.data[i].id, label: res.data[i].name})
+                }
+            })
+        },
         //处理页面大小变化
         handleSizeChange(val) {
-            this.organizationQuery.pageNum = 1;
-            this.organizationQuery.pageSize = val;
+            this.competitionQuery.pageNum = 1;
+            this.competitionQuery.pageSize = val;
             this.getList();
         },
         //处理当前页面数量变化
         handleCurrentChange(val) {
-            this.organizationQuery.pageNum = val;
+            this.competitionQuery.pageNum = val;
             this.getList();
         },
         //跳转比赛信息
-        toCompetitionInfo(competition){
+        toCompetitionInfo(competition) {
             this.$router.push({
                 name: 'competitionInfo',
                 query: {
                     competitionId: competition.competitionId
+                }
+            })
+        },
+        //跳转比赛信息
+        toCompetitionUpdate(competitionId) {
+            this.$router.push({
+                name: 'competitionUpdate',
+                query: {
+                    competitionId: competitionId
                 }
             })
         },
@@ -236,20 +288,20 @@ export default {
         },
         //点击搜索按钮
         handleSearchList() {
-            this.organizationQuery.pageNum = 1;
+            this.competitionQuery.pageNum = 1;
             this.getList();
         },
         //点击重置按钮
         handleResetSearch() {
-            this.organizationQuery = Object.assign({}, defaultOrganizationQuery);
+            this.competitionQuery = Object.assign({}, defaultCompetitionQuery);
         },
         //处理是否团队报名
-        handleTeamFlagStatusChange(row){
+        handleTeamFlagStatusChange(row) {
             const competition = {
                 id: row.id,
                 teamFlag: row.teamFlag
             }
-            updateCompetition(competition).then(res =>{
+            updateCompetition(competition).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
@@ -257,12 +309,12 @@ export default {
             })
         },
         //处理是否个人报名
-        handlePersonFlagStatusChange(row){
+        handlePersonFlagStatusChange(row) {
             const competition = {
                 id: row.id,
                 singleFlag: row.singleFlag
             }
-            updateCompetition(competition).then(res =>{
+            updateCompetition(competition).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
@@ -275,7 +327,20 @@ export default {
                 id: row.id,
                 registrationFlag: row.registrationFlag
             }
-            updateCompetition(competition).then(res =>{
+            updateCompetition(competition).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
+        },
+        //处理是否网络比赛
+        handleOnlineStatusChange(row) {
+            const competition = {
+                id: row.id,
+                online: row.online
+            }
+            updateCompetition(competition).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }

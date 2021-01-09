@@ -1,26 +1,25 @@
 <template>
     <div>
-        <el-card class="box-card">
+        <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>创建比赛</span>
+                <span>比赛设置</span>
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">
-                    <el-form
-                        ref="createCompetitionForm"
-                        v-loading="isLoading"
-                        :model="form"
-                        :rules="rules"
-                        label-width="120px">
-                        <el-form-item label="比赛名称" prop="name">
+                    <el-form ref="updateCompetitionForm"
+                             v-loading="isLoading"
+                             :model="form"
+                             :rules="rules"
+                             label-width="120px">
+                        <el-form-item label="比赛名称" prop="competitionName">
                             <el-input
-                                v-model="form.name"
+                                v-model="form.competitionName"
                                 placeholder="比赛名称"
                                 autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="比赛类型" prop="typeId">
                             <el-select
-                                v-model="form.typeId"
+                                v-model="form.typeName"
                                 placeholder="请选择">
                                 <el-option
                                     v-for="item in this.competitionTypeList"
@@ -31,26 +30,28 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="比赛时间" prop="time">
-                            <div class="block">
-                                <el-date-picker
-                                    v-model="form.time"
-                                    value-format="yyyy-MM-dd HH:mm:ss"
-                                    type="datetimerange"
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
-                                </el-date-picker>
-                            </div>
+                            <el-date-picker
+                                v-model="form.time"
+                                value-format="yyyy-MM-dd HH:mm:ss"
+                                type="datetimerange"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期">
+                            </el-date-picker>
                         </el-form-item>
                         <el-form-item label="比赛地点" prop="position">
-                            <el-input
-                                v-model="form.position"
-                                placeholder="比赛地点"
-                                autocomplete="off"></el-input>
+                            <el-input v-model="form.position"></el-input>
+                        </el-form-item>
+                        <el-form-item label="截止报名">
+                            <el-switch
+                                :active-value="1"
+                                :inactive-value="0"
+                                v-model="form.registrationFlag"/>
                         </el-form-item>
                         <el-form-item label="报名截止时间" prop="registrationTime">
                             <div class="block">
                                 <el-date-picker
+                                    :disabled="form.registrationFlag==1"
                                     v-model="form.registrationTime"
                                     type="datetime"
                                     value-format="yyyy-MM-dd HH:mm:ss"
@@ -63,27 +64,19 @@
                             <el-input
                                 type="textarea"
                                 v-model="form.description"
-                                placeholder="比赛描述"
-                                autocomplete="off"></el-input>
+                                placeholder="比赛描述"></el-input>
                         </el-form-item>
-                        <el-form-item label="团队报名">
+                        <el-form-item label="网络比赛">
                             <el-switch
                                 :active-value="1"
                                 :inactive-value="0"
-                                v-model="form.teamFlag"/>
+                                v-model="form.online"/>
                         </el-form-item>
-                        <el-form-item label="最大团队报名数">
-                            <el-slider
-                                :disabled="form.teamFlag==0"
-                                v-model="form.maxTeamNumber"
-                                :max="1000"
-                                show-input></el-slider>
-                        </el-form-item>
-                        <el-form-item label="个人报名">
-                            <el-switch
-                                :active-value="1"
-                                :inactive-value="0"
-                                v-model="form.singleFlag"/>
+                        <el-form-item label="报名方式">
+                            <el-checkbox v-model="form.singleFlag" :true-label=1 :false-label=0 border>个人报名
+                            </el-checkbox>
+                            <el-checkbox v-model="form.teamFlag" :true-label=1 :false-label=0 border>团队报名
+                            </el-checkbox>
                         </el-form-item>
                         <el-form-item label="最大个人报名数">
                             <el-slider
@@ -92,18 +85,19 @@
                                 :max="1000"
                                 show-input></el-slider>
                         </el-form-item>
-                        <el-form-item label="创建后可显示">
-                            <el-switch
-                                :active-value="1"
-                                :inactive-value="0"
-                                v-model="form.showFlag"/>
+                        <el-form-item label="最大团队报名数">
+                            <el-slider
+                                :disabled="form.teamFlag==0"
+                                v-model="form.maxTeamNumber"
+                                :max="1000"
+                                show-input></el-slider>
                         </el-form-item>
                         <el-form-item>
                             <el-button
                                 type="primary"
-                                @click="create"
+                                @click="updateCompetitionInfo"
                                 :loading="this.buttonLoading"
-                                round>创建
+                                round>修改
                             </el-button>
                         </el-form-item>
                     </el-form>
@@ -114,34 +108,43 @@
 </template>
 
 <script>
-import {createCompetition, listCompetitionType} from "@/network/api/competition"
+import {
+    createCompetition,
+    getCompetitionByCompetitionId, listCompetitionType, updateCompetition
+} from '@/network/api/competition'
 
 export default {
-    name: "Create",
+    name: "Update",
     data() {
         return {
+            //修改用户信息按钮加载
+            updateUserInfoButtonLoading: false,
+            //比赛类型列表
+            competitionTypeList: [],
+            //表单正在加载
+            isLoading: false,
+            //修改按钮正在加载
+            buttonLoading: false,
+            //比赛信息
             form: {
+                id: '',
+                competitionId: '',
                 name: '',
+                competitionName: '',
                 description: '',
-                time: '',
+                time: ['', ''],
                 startTime: '',
                 endTime: '',
                 registrationTime: '',
-                position: '',
-                typeId: '',
-                teamFlag: 1,
-                singleFlag: 1,
                 registrationFlag: '',
-                showFlag: 0,
-                userId: this.$store.state.user.userId,
-                userName: this.$store.state.user.name,
-                maxTeamNumber: 100,
-                maxUserNumber: 100
+                position: '',
+                teamFlag: '',
+                teamName: '',
+                personFlag: '',
+                showFlag: '',
+                userId: '',
+                userName: '',
             },
-            isLoading: false,
-            buttonLoading: false,
-            //比赛类型列表
-            competitionTypeList: [],
             //截止时间快捷键
             pickerOptions: {
                 shortcuts: [
@@ -164,7 +167,7 @@ export default {
                 ]
             },
             rules: {
-                name: [
+                competitionName: [
                     {required: true, message: '请输入比赛名称', trigger: 'blur'},
                 ],
                 position: [
@@ -183,11 +186,26 @@ export default {
         }
     },
     created() {
+        this.isLoading = true;
         this.init()
+        this.isLoading = false;
     },
     methods: {
         init() {
+            this.getCompetitionByCompetitionId(this.$route.query.competitionId)
             this.getCompetitionTypeList()
+        },
+        getCompetitionByCompetitionId(competitionId) {
+            const competition = {
+                competitionId
+            }
+            getCompetitionByCompetitionId(competition).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.form = res.data
+                this.form.time = [this.form.startTime, this.form.endTime]
+            })
         },
         //获取比赛类型
         getCompetitionTypeList() {
@@ -200,10 +218,10 @@ export default {
                 }
             })
         },
-        //创建比赛
-        create() {
+        //修改比赛信息
+        updateCompetitionInfo() {
             this.buttonLoading = true;
-            this.$refs.createCompetitionForm.validate(async (valid) => {
+            this.$refs.updateCompetitionForm.validate(async (valid) => {
                 if (!valid) {
                     this.buttonLoading = false;
                     return false;
@@ -214,13 +232,23 @@ export default {
                     this.buttonLoading = false;
                     return this.$message.error("报名截止时间晚于比赛开始时间");
                 }
-                const res = await createCompetition(this.form)
+                this.form.name = this.form.competitionName
+                const res = await updateCompetition(this.form)
                 if (res.code !== 200) {
                     this.buttonLoading = false;
                     return this.$message.error(res.message);
                 }
                 this.buttonLoading = false;
-                await this.$router.push("/admin/competitionList")
+                await this.toCompetitionInfo()
+            })
+        },
+        //跳转比赛信息
+        toCompetitionInfo() {
+            this.$router.push({
+                name: 'competitionInfo',
+                query: {
+                    competitionId : this.$route.query.competitionId
+                }
             })
         },
     }
@@ -228,8 +256,7 @@ export default {
 </script>
 
 <style scoped>
-.box-card {
+.table-container {
     width: 1000px;
-    margin: auto;
 }
 </style>

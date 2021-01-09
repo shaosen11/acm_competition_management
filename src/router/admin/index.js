@@ -79,6 +79,14 @@ const routers = [
                 }
             },
             {
+                path: 'competitionUpdate',
+                name: 'competitionUpdate',
+                meta: {title: '比赛修改', requireAuth: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/Update'),
+                }
+            },
+            {
                 path: 'report',
                 name: 'report',
                 meta: {title: '报告管理', requireAuth: true},

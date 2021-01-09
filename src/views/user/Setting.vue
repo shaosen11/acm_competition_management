@@ -6,7 +6,6 @@
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">
-                    <!--个人信息-->
                     <el-form :model="form"
                              label-width="80px">
                         <el-form-item label="学号">
@@ -33,7 +32,6 @@
                             </el-button>
                         </el-form-item>
                     </el-form>
-
                 </el-col>
             </el-row>
         </el-card>
