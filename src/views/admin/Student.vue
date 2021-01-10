@@ -57,7 +57,7 @@
                 <el-table-column
                     prop="userId"
                     label="学号"
-                    width="100"
+                    width="150"
                     align="center">
                 </el-table-column>
                 <el-table-column

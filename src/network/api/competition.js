@@ -34,6 +34,7 @@ export function getCompetitionList(competition) {
         data: {
             typeId: competition.typeId,
             name: competition.name,
+            showFlag: competition.showFlag,
             pageNum: competition.pageNum,
             pageSize: competition.pageSize,
         }

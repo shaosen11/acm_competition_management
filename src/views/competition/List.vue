@@ -196,6 +196,7 @@ export default {
             competitionQuery: {
                 typeId: '',
                 name: '',
+                showFlag: 1,
                 pageNum: 1,
                 pageSize: 5,
             },

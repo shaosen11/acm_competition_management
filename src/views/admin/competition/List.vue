@@ -35,12 +35,22 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="是否展示：">
+                        <el-select v-model="competitionQuery.showFlag" placeholder="请选择">
+                            <el-option
+                                    v-for="item in this.showFlagList"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
                 </el-form>
             </div>
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>比赛</span>
+                <span>比赛列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetition">
                     <i class="el-icon-plus"></i>创建比赛
                 </el-button>
@@ -116,6 +126,14 @@
                                 v-model="scope.row.registrationFlag">
                             </el-switch>
                         </p>
+                        <p>是否展示：
+                            <el-switch
+                                    @change="handleShowFlagStatusChange(scope.row)"
+                                    :active-value="1"
+                                    :inactive-value="0"
+                                    v-model="scope.row.showFlag">
+                            </el-switch>
+                        </p>
                         <p>网络比赛：
                             <el-switch
                                 @change="handleOnlineStatusChange(scope.row)"
@@ -160,6 +178,13 @@
                                 round>查看详情
                             </el-button>
                         </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    round>删除比赛
+                            </el-button>
+                        </p>
                     </template>
                 </el-table-column>
             </el-table>
@@ -186,6 +211,7 @@ import {getCompetitionList, listCompetitionType, updateCompetition} from '@/netw
 const defaultCompetitionQuery = {
     typeId: '',
     name: '',
+    showFlag: '',
     pageNum: 1,
     pageSize: 5,
 };
@@ -198,11 +224,23 @@ export default {
             competitionQuery: {
                 typeId: '',
                 name: '',
+                showFlag: '',
                 pageNum: 1,
                 pageSize: 5,
             },
             //比赛类型
             competitionTypeList: [],
+            //是否展示
+            showFlagList: [
+                {
+                    value: 1,
+                    label: '展示',
+                },
+                {
+                    value: 0,
+                    label: '不展示',
+                }
+            ],
             //表单信息
             tableData: [],
             //表单总数
@@ -326,6 +364,19 @@ export default {
             const competition = {
                 id: row.id,
                 registrationFlag: row.registrationFlag
+            }
+            updateCompetition(competition).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
+        },
+        //处理是否展示
+        handleShowFlagStatusChange(row) {
+            const competition = {
+                id: row.id,
+                showFlag: row.showFlag
             }
             updateCompetition(competition).then(res => {
                 if (res.code !== 200) {
