@@ -65,7 +65,7 @@
                 <el-table-column
                     prop="competitionName"
                     label="名称"
-                    width="150"
+                    width="100"
                     align="center">
                 </el-table-column>
                 <el-table-column
@@ -93,7 +93,7 @@
                 </el-table-column>
                 <el-table-column
                     prop="registrationTime"
-                    label="报名结束时间"
+                    label="截止报名时间"
                     width="100"
                     align="center">
                 </el-table-column>
@@ -158,6 +158,17 @@
                     </template>
                 </el-table-column>
                 <el-table-column
+                        prop="operation"
+                        label="比赛状态"
+                        width="100"
+                        align="center">
+                    <template slot-scope="scope">
+                        <p>
+                            {{computeCompetitionStatus(scope.row)}}
+                        </p>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="operation"
                     label="操作"
                     width="150"
@@ -176,6 +187,14 @@
                                 size="mini"
                                 @click="toCompetitionInfo(scope.row)"
                                 round>查看详情
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    type="info"
+                                    @click="cancelCompetition(scope.row)"
+                                    round>取消比赛
                             </el-button>
                         </p>
                         <p>
@@ -321,6 +340,7 @@ export default {
                 }
             })
         },
+        //去创建比赛页面
         toCreateCompetition() {
             this.$router.push("/admin/createCompetition")
         },
@@ -398,6 +418,44 @@ export default {
                 this.getList()
             })
         },
+        //取消比赛
+        cancelCompetition(row){
+            const competition = {
+                id: row.id,
+                cancelFlag: row.cancelFlag
+            }
+            updateCompetition(competition).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
+            })
+        },
+        //展示比赛状态
+        computeCompetitionStatus(row){
+            let date = new Date();
+            let startTime = new Date(Date.parse(row.startTime));
+            let endTime = new Date(Date.parse(row.endTime));
+            let registrationTime = new Date(Date.parse(row.registrationTime));
+            if (row.cancelFlag === 0){
+                return "比赛取消"
+            }
+            if (row.registrationFlag === 1) {
+                return "主动截止报名";
+            }
+            if (date < registrationTime) {
+                return "正在报名比赛"
+            }
+            if (date >= registrationTime && date <= startTime) {
+                return "比赛报名截止"
+            }
+            if (date >= startTime && date <= endTime) {
+                return "比赛开始"
+            }
+            if (date > endTime) {
+                return "比赛截止"
+            }
+        }
     }
 }
 </script>
