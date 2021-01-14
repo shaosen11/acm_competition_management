@@ -75,6 +75,7 @@ const routes = [
 
 const router = new VueRouter({
     routes,
+    base: process.env.NODE_ENV === 'prod' ? '/acm/' : '/',
     mode: 'history',
 })
 

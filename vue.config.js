@@ -2,7 +2,7 @@ const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports={
     //基本路径
-    publicPath: "./",
+    publicPath: process.env.NODE_ENV === 'prod' ? '/acm/' : '/',
     // 构建时的输出目录
     outputDir: "dist",
     // 放置静态资源的目录
@@ -11,6 +11,7 @@ module.exports={
     indexPath: "index.html",
     //文件名哈希
     filenameHashing: true,
+    //关闭大断点
     productionSourceMap: false,
     configureWebpack: {
         plugins: [
@@ -19,15 +20,14 @@ module.exports={
                 threshold: 10240,//文件大小大于这个值时启用压缩
                 deleteOriginalAssets: false//压缩后保留原文件
             })
-        ]
-    },
-    pwa: {
-        iconPaths: {
-            favicon32: 'favicon.ico',
-            favicon16: 'favicon.ico',
-            appleTouchIcon: 'favicon.ico',
-            maskIcon: 'favicon.ico',
-            msTileImage: 'favicon.ico'
+        ],
+        externals: {
+            'vue': 'Vue',
+            'vuex': 'Vuex',
+            'vue-router': 'VueRouter',
+            'axios': 'axios',
+            'element-ui': 'ELEMENT',
+            'nprogress': 'NProgress',
         }
     }
 }

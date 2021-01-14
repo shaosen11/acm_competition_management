@@ -1,4 +1,4 @@
-import {getUserInfo, getUserAllInfoByUserId} from '@/network/api/user'
+import {getUserAllInfoByUserId} from '@/network/api/user'
 import {getToken, setToken, removeToken} from '@/utils/auth'
 
 const user = {

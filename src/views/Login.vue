@@ -84,6 +84,7 @@
                         this.isLoading = false;
                         return false;
                     }
+                    this.$message.success("登录成功");
                     const data = res.data;
                     if (!data) {
                         this.isLoading = false;
