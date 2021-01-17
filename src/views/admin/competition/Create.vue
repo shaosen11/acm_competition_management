@@ -2,7 +2,8 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>创建比赛</span>
+                <el-page-header @back="toCompetitionList" content="创建比赛">
+                </el-page-header>
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">
@@ -222,6 +223,10 @@ export default {
                 this.buttonLoading = false;
                 await this.$router.push("/admin/competitionList")
             })
+        },
+        //去比赛列表
+        toCompetitionList() {
+            this.$router.push("/admin/competitionList")
         },
     }
 }

@@ -134,6 +134,7 @@
 <script>
 import {getOrganizationList, getOrganizationYearList, updateOrganization} from '@/network/api/organization';
 
+
 const defaultOrganizationQuery = {
     year: '',
     name: '',
@@ -174,7 +175,7 @@ export default {
             this.getList();
             this.getYearList();
         },
-        //获取表单信息
+        //获取班級信息
         getList() {
             this.listLoading = true;
             getOrganizationList(this.organizationQuery).then(res => {
@@ -204,6 +205,7 @@ export default {
                 }
             })
         },
+
         //处理页面大小变化
         handleSizeChange(val) {
             this.organizationQuery.pageNum = 1;

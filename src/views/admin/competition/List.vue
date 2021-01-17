@@ -221,6 +221,21 @@
                 </el-pagination>
             </div>
         </el-card>
+        <!--取消比赛弹出框-->
+<!--        <el-dialog-->
+<!--                title="提示"-->
+<!--                :visible.sync="deleteTeamDialogVisible"-->
+<!--                width="30%"-->
+<!--                :before-close="deleteTeamHandleClose">-->
+<!--            <span>确认删除队伍吗，所有队员都将会离开对队伍？</span>-->
+<!--            <span slot="footer" class="dialog-footer">-->
+<!--                <el-button @click="deleteTeamDialogVisible = false">取 消</el-button>-->
+<!--                <el-button-->
+<!--                        type="primary"-->
+<!--                        @click="deleteTeam"-->
+<!--                        :loading="deleteTeamDialogButtonLoading">确 定</el-button>-->
+<!--            </span>-->
+<!--        </el-dialog>-->
     </div>
 </template>
 
@@ -422,7 +437,7 @@ export default {
         cancelCompetition(row){
             const competition = {
                 id: row.id,
-                cancelFlag: row.cancelFlag
+                cancelFlag: 0
             }
             updateCompetition(competition).then(res => {
                 if (res.code !== 200) {
@@ -430,6 +445,10 @@ export default {
                 }
                 this.getList()
             })
+        },
+        //删除比赛
+        deleteCompetition(row) {
+
         },
         //展示比赛状态
         computeCompetitionStatus(row){

@@ -118,3 +118,56 @@ export function listCompetitionType() {
         method: 'get',
     })
 }
+
+//获取比赛类型分页信息
+export function listCompetitionTypePage(competitionTypeQueryParam) {
+    return request({
+        url: '/competitionType/listByPage',
+        method: 'post',
+        data: {
+            pageNum: competitionTypeQueryParam.pageNum,
+            pageSize: competitionTypeQueryParam.pageSize,
+        }
+    })
+}
+
+//修改比赛类型
+export function updateCompetitionType(competitionType) {
+    return request({
+        url: '/competitionType/update',
+        method: 'post',
+        data: {
+            id: competitionType.id,
+            name: competitionType.name,
+            description: competitionType.description,
+            view: competitionType.view,
+            showFlag: competitionType.showFlag,
+        }
+    })
+}
+
+//创建比赛类型
+export function createCompetitionType(competitionType) {
+    return request({
+        url: '/competitionType/create',
+        method: 'post',
+        data: {
+            name: competitionType.name,
+            description: competitionType.description,
+            showFlag: competitionType.showFlag,
+            userId: competitionType.userId,
+            userName: competitionType.userName,
+        }
+    })
+}
+
+//根据比赛类型名称获取比赛类型
+export function getByCompetitionTypeName(name) {
+    return request({
+        url: '/competitionType/getByName',
+        method: 'post',
+        data: {
+            name
+        }
+    })
+}
