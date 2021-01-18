@@ -11,7 +11,7 @@
             <el-menu-item index="2-1" @click="toCompetition">
                 比赛列表
             </el-menu-item>
-            <el-menu-item index="2-2" @click="toCompetition">
+            <el-menu-item index="2-2" @click="toCompetitionType">
                 比赛类型
             </el-menu-item>
         </el-submenu>
@@ -108,6 +108,9 @@
             },
             toCompetition() {
                 this.$router.push('/competition')
+            },
+            toCompetitionType(){
+                this.$router.push('/competitionType')
             },
             toReport() {
                 this.$router.push('/report')

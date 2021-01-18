@@ -155,6 +155,14 @@
                         <p>个人报名数量：
                             {{scope.row.userNumber}}
                         </p>
+                        <p>
+                            <el-button
+                                size="mini"
+                                type="primary"
+                                @click="exportCompetitionUserRelation(scope.row.competitionId)"
+                                round>导出报名数据
+                            </el-button>
+                        </p>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -260,7 +268,8 @@
         getCompetitionList,
         listCompetitionType,
         updateCompetition,
-        deleteCompetition
+        deleteCompetition,
+        exportCompetitionUserRelation
     } from '@/network/api/competition'
 
     const defaultCompetitionQuery = {
@@ -551,6 +560,26 @@
                 if (date > endTime) {
                     return "比赛截止"
                 }
+            },
+            //导出报名数据
+            exportCompetitionUserRelation(competitionId){
+                exportCompetitionUserRelation(competitionId).then(res => {
+                    const content = res
+                    const blob = new Blob([content])
+                    const fileName = '报名信息.xls'
+                    if ('download' in document.createElement('a')) { // 非IE下载
+                        const elink = document.createElement('a')
+                        elink.download = fileName
+                        elink.style.display = 'none'
+                        elink.href = URL.createObjectURL(blob)
+                        document.body.appendChild(elink)
+                        elink.click()
+                        URL.revokeObjectURL(elink.href) // 释放URL 对象
+                        document.body.removeChild(elink)
+                    } else { // IE10+下载
+                        navigator.msSaveBlob(blob, fileName)
+                    }
+                })
             }
         }
     }

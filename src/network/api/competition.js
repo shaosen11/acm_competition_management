@@ -182,3 +182,15 @@ export function getByCompetitionTypeName(name) {
         }
     })
 }
+
+//导出报名数据
+export function exportCompetitionUserRelation(competitionId) {
+    return request({
+        url: '/competitionUserRelation/export',
+        method: 'post',
+        data: {
+            competitionId
+        },
+        responseType: 'blob'
+    })
+}
