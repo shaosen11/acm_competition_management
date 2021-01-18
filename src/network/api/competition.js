@@ -65,11 +65,23 @@ export function updateCompetition(competition) {
             userName: competition.userName,
             online: competition.online,
             maxTeamNumber: competition.maxTeamNumber,
-            maxUserNumber: competition.maxUserNumber
+            maxUserNumber: competition.maxUserNumber,
+            deleteFlag: competition.deleteFlag,
         }
     })
 }
 
+//修改比赛信息
+export function deleteCompetition(competition) {
+    return request({
+        url: '/competition/delete',
+        method: 'post',
+        data: {
+            id: competition.id,
+            deleteFlag: competition.deleteFlag,
+        }
+    })
+}
 
 //获取比赛信息
 export function getCompetitionByCompetitionId(competition) {

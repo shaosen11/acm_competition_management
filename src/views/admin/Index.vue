@@ -24,6 +24,7 @@
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="4" @click="toTeam">
+                        <i class="el-icon-more-outline"></i>
                         <span slot="title">队伍管理</span>
                     </el-menu-item>
 
