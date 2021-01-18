@@ -45,6 +45,17 @@ export function getTeamByName(name) {
     })
 }
 
+//通过队伍名称获取队伍信息
+export function getTeamByEnglishName(englishName) {
+    return request({
+        url: '/team/getTeamByEnglishName',
+        method: 'post',
+        data: {
+            englishName
+        }
+    })
+}
+
 //修改队伍信息
 export function updateTeam(team) {
     return request({
@@ -81,6 +92,7 @@ export function createTeam(team) {
         method: 'post',
         data: {
             name: team.name,
+            englishName: team.englishName,
             userId: team.userId,
             userName: team.userName,
             motto: team.motto

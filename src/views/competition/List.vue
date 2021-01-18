@@ -133,6 +133,9 @@
                         prop="typeName"
                         width="100"
                         align="center">
+                    <template slot-scope="scope">
+                        <el-tag type="primary" effect="dark">{{ scope.row.typeName }}</el-tag>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         label="比赛时间"
@@ -165,7 +168,8 @@
                     <template slot-scope="scope">
                         <el-tag
                                 :type="scope.row.online === 0 ? 'primary' : 'success'"
-                                disable-transitions>
+                                disable-transitions
+                                effect="dark">
                             <span v-if="scope.row.online === 0">
                                 现场比赛
                             </span>

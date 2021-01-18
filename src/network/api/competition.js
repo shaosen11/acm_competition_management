@@ -145,7 +145,6 @@ export function updateCompetitionType(competitionType) {
         }
     })
 }
-
 //创建比赛类型
 export function createCompetitionType(competitionType) {
     return request({

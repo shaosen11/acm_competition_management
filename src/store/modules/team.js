@@ -17,6 +17,11 @@ const team = {
         deleteTeamInfo({commit}){
             commit('SET_MY_TEAM_FLAG', false);
             commit('SET_TEAM_NAME', '');
+        },
+
+        setTeamInfo({commit}, name){
+            commit('SET_MY_TEAM_FLAG', true)
+            commit('SET_TEAM_NAME', name)
         }
     }
 }

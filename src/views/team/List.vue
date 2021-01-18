@@ -118,26 +118,14 @@
                 </el-pagination>
             </div>
         </el-card>
-
-        <!--增加页面-->
-        <create ref="create"
-                :dialogCreateFormVisible="dialogCreateFormVisible"
-                :create-button-loading="createButtonLoading"
-                @dialogCreateFormVisibleFasle="dialogCreateFormVisibleFasle"
-                @createTeam="createTeam"/>
     </div>
 </template>
 
 <script>
-import {getTeamList, createTeam, applyJoinTeam} from '@/network/api/team';
-import Create from "./Create";
-
+import {getTeamList, applyJoinTeam} from '@/network/api/team';
 
 export default {
     name: "List",
-    components: {
-        Create
-    },
     created() {
         this.init();
     },
@@ -170,8 +158,6 @@ export default {
             isHide: true,
             //是否展示修改表单
             dialogCreateFormVisible: false,
-            //是否正在创建
-            createButtonLoading: false,
             //是否正在加入
             joinButtonLoading: false
         }
@@ -228,25 +214,8 @@ export default {
             this.teamQuery.name = '';
             this.teamQuery.userCount = '';
         },
-        //隐藏修改表单
-        dialogCreateFormVisibleFasle() {
-            this.dialogCreateFormVisible = false;
-        },
-        //显示修改表单
         toCreateTeam() {
-            this.dialogCreateFormVisible = true;
-        },
-        //完成队伍信息填写，跳转页面
-        createTeam(team) {
-            this.createButtonLoading = true;
-            createTeam(team).then(res => {
-                if (res.code !== 200) {
-                    this.createButtonLoading = false;
-                    return this.$message.error(res.message);
-                }
-                this.createButtonLoading = false;
-                this.$router.push({name: 'team', query: {teamName: team.name}})
-            })
+            this.$router.push("/teamCreate")
         },
         //申请加入队伍
         applyJoinTeam(teamId) {
@@ -265,10 +234,6 @@ export default {
                 return this.$message.success(res.message);
             })
         },
-        // //判断是否加入的队伍
-        // judgeApplyTeam(team){
-        //     return team.type==2&&team.finishFlag==1&&team.notInTeamUserId==this.$store.state.user.userId
-        // },
     }
 }
 </script>

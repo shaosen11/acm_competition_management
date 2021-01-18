@@ -19,7 +19,12 @@
                     @click="toMyTeam"
                     v-if="this.$store.state.team.myTeamFlag">我的队伍
             </el-menu-item>
-            <el-menu-item index="5-2" @click="toTeam">队伍列表</el-menu-item>
+            <el-menu-item
+                    index="5-1"
+                    @click="toCreateTeam"
+                    v-else>创建队伍
+            </el-menu-item>
+            <el-menu-item index="5-2" @click="toTeamList">队伍列表</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
             <template slot="title">班级</template>
@@ -104,8 +109,11 @@
             toMyTeam() {
                 this.$router.push({name: 'teamInfo', query: {teamName: this.$store.state.team.teamName}})
             },
-            toTeam() {
+            toTeamList() {
                 this.$router.push('/teamList')
+            },
+            toCreateTeam() {
+                this.$router.push("/teamCreate")
             },
             toMyOrganization() {
                 this.$router.push({
@@ -128,7 +136,7 @@
             toUserSetting() {
                 this.$router.push('/user/setting')
             },
-            toAdmin(){
+            toAdmin() {
                 this.$router.push('/admin')
             },
             toLogin() {
@@ -142,8 +150,6 @@
                 this.isLogin = store.getters.isLogin;
                 this.icon = store.getters.icon;
             },
-            isAdmin(){
-            }
         }
     };
 </script>

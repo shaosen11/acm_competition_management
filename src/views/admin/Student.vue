@@ -168,7 +168,7 @@ export default {
                 organizationName: '',
                 identityFlag: 2,
                 pageNum: 1,
-                pageSize: 10,
+                pageSize: 5,
                 options: []
             },
             //表单信息

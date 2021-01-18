@@ -4,10 +4,13 @@
             <el-aside width="200px">
                 <el-menu
                     class="el-menu-vertical-demo">
-                    <el-menu-item index="1" @click="toSetting">
+                    <el-menu-item index="1" @click="toUserInfo">
+                        <span slot="title">个人中心</span>
+                    </el-menu-item>
+                    <el-menu-item index="2" @click="toSetting">
                         <span slot="title">个人设置</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="toPassword">
+                    <el-menu-item index="3" @click="toPassword">
                         <span slot="title">安全设置</span>
                     </el-menu-item>
                 </el-menu>
@@ -28,6 +31,9 @@
 export default {
     name: "userInfo",
     methods: {
+        toUserInfo() {
+            this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
+        },
         //跳转个人设置
         toSetting() {
             this.$router.push('/user/setting');

@@ -3,7 +3,7 @@
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>比赛类型列表</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="toCompetitionTypeList">
+                <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetitionType">
                     <i class="el-icon-plus"></i>创建比赛类型
                 </el-button>
             </div>
@@ -144,8 +144,8 @@
                     this.getList()
                 })
             },
-            //创建比赛
-            toCompetitionTypeList(){
+            //创建比赛类型
+            toCreateCompetitionType(){
                 this.$router.push("/admin/createCompetitionType")
             }
         }
