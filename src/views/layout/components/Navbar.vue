@@ -3,9 +3,6 @@
         <el-menu-item index="1" @click="toHome">
             首页
         </el-menu-item>
-        <el-menu-item index="2" @click="toCompetition">
-            比赛
-        </el-menu-item>
         <el-submenu index="2">
             <template slot="title">比赛</template>
             <el-menu-item index="2-1" @click="toCompetition">
