@@ -10,6 +10,12 @@ const routers = [
         name: 'competitionInfo',
         component: () => import('@/views/competition/Info'),
         meta: {title: '比赛信息'}
+    },
+    {
+        path: '/competitionType',
+        name: 'competitionType',
+        component: () => import('@/views/competition/CompetitionType'),
+        meta: {title: '比赛信息'}
     }
 ];
 
