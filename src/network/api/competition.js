@@ -124,10 +124,13 @@ export function listCompetitionUserRelation(competitionUserRelationQueryParam) {
 }
 
 //获取比赛类型
-export function listCompetitionType() {
+export function listCompetitionType(competitionType) {
     return request({
         url: '/competitionType/list',
-        method: 'get',
+        method: 'post',
+        data: {
+            showFlag: competitionType.showFlag,
+        }
     })
 }
 
@@ -216,6 +219,7 @@ export function updateCompetitionProblemType(competitionProblemType) {
         url: '/competitionProblemType/update',
         method: 'post',
         data: {
+            id: competitionProblemType.id,
             name: competitionProblemType.name,
             description: competitionProblemType.description,
             parentId: competitionProblemType.parentId,
@@ -240,10 +244,14 @@ export function listCompetitionProblemTypeByPage(competitionProblemTypeQueryPara
     })
 }
 //获取题型列表
-export function listParentCompetitionProblemType() {
+export function listCompetitionProblemType(competitionProblemType) {
     return request({
-        url: '/competitionProblemType/listParent',
-        method: 'get',
+        url: '/competitionProblemType/list',
+        method: 'post',
+        data: {
+            parentId: competitionProblemType.parentId,
+            showFlag: competitionProblemType.showFlag
+        }
     })
 }
 

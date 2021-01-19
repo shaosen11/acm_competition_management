@@ -37,7 +37,10 @@ export default {
             this.isLoading = false
         },
         listCompetitionType() {
-            listCompetitionType().then(res => {
+            const competitionType = {
+                showFlag: 1
+            };
+            listCompetitionType(competitionType).then(res => {
                 if (res.code !== 200) {
                     this.listLoading = false;
                     return this.$message.error(res.message);

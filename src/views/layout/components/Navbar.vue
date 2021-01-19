@@ -11,7 +11,7 @@
             <el-menu-item index="2-2" @click="toCompetitionType">
                 比赛类型
             </el-menu-item>
-            <el-menu-item index="2-2" @click="toCompetitionProblemType">
+            <el-menu-item index="2-3" @click="toCompetitionProblemType">
                 比赛题型
             </el-menu-item>
         </el-submenu>

@@ -24,7 +24,6 @@
         data() {
             return {
                 list: [],
-                isLoading: false
             }
         },
         created() {
@@ -32,9 +31,13 @@
         },
         methods: {
             init() {
-                this.isLoading = true
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                    spinner: 'el-icon-loading',
+                });
                 this.listChildrenCompetitionProblemType(this.$route.query.name)
-                this.isLoading = false
+                loading.close();
             },
             listChildrenCompetitionProblemType(name) {
                 listChildrenCompetitionProblemType(name).then(res => {

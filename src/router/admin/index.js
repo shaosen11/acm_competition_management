@@ -83,7 +83,7 @@ const routers = [
                 name: 'competitionType',
                 meta: {title: '比赛类型', requireAuth: true},
                 components: {
-                    admin: () => import('@/views/admin/competition/Type'),
+                    admin: () => import('@/views/admin/competition/CompetitionType'),
                 }
             },
             {

@@ -63,7 +63,7 @@
     import {
         createCompetitionProblemType,
         getByCompetitionProblemTypeName,
-        listParentCompetitionProblemType
+        listCompetitionProblemType
     } from '@/network/api/competition';
 
     export default {
@@ -113,7 +113,10 @@
             },
             //获取比赛类型
             getCompetitionProblemTypeList() {
-                listParentCompetitionProblemType().then(res => {
+                const competitionProblemType = {
+                    parentId: 0,
+                }
+                listCompetitionProblemType(competitionProblemType).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }

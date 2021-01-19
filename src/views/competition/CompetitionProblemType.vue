@@ -3,7 +3,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>比赛</el-breadcrumb-item>
-            <el-breadcrumb-item>比赛类型</el-breadcrumb-item>
+            <el-breadcrumb-item>比赛题型</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="20" style="margin: 50px 0px">
             <el-col :span="8" v-for="item in this.list" :key="item">
@@ -19,13 +19,12 @@
 </template>
 
 <script>
-    import {listParentCompetitionProblemType} from '@/network/api/competition'
+    import {listCompetitionProblemType} from '@/network/api/competition'
 
     export default {
         data() {
             return {
                 list: [],
-                isLoading: false
             }
         },
         created() {
@@ -33,12 +32,20 @@
         },
         methods: {
             init() {
-                this.isLoading = true
-                this.listAllCompetitionProblemType()
-                this.isLoading = false
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                    spinner: 'el-icon-loading',
+                });
+                this.listParentCompetitionProblemType()
+                loading.close();
             },
-            listAllCompetitionProblemType(){
-                listParentCompetitionProblemType().then(res => {
+            listParentCompetitionProblemType(){
+                const competitionProblemType = {
+                    parentId: 0,
+                    showFlag: 1
+                }
+                listCompetitionProblemType(competitionProblemType).then(res => {
                     if (res.code !== 200) {
                         this.listLoading = false;
                         return this.$message.error(res.message);

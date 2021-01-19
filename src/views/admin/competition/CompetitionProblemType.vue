@@ -127,9 +127,9 @@
 
 <script>
     import {
-        updateCompetitionType,
+        updateCompetitionProblemType,
         listCompetitionProblemTypeByPage,
-        listParentCompetitionProblemType
+        listCompetitionProblemType
     } from '@/network/api/competition';
 
     const defaultCompetitionProblemTypeQuery = {
@@ -195,7 +195,10 @@
             },
             //获取比赛类型
             getCompetitionProblemTypeList() {
-                listParentCompetitionProblemType().then(res => {
+                const competitionProblemType = {
+                    parentId: 0,
+                }
+                listCompetitionProblemType(competitionProblemType).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
@@ -217,11 +220,11 @@
             },
             //处理是否展示
             handleShowFlagStatusChange(row) {
-                const competitionType = {
+                const competitionProblemType = {
                     id: row.id,
                     showFlag: row.showFlag
                 }
-                updateCompetitionType(competitionType).then(res => {
+                updateCompetitionProblemType(competitionProblemType).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
