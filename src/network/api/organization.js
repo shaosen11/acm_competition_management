@@ -47,9 +47,23 @@ export function getOrganizationByYearAndName(organization) {
 }
 
 //获取班级学生信息
-export function getUserListByYearAndName(OrganizationUserQueryParam) {
+export function listOrganizationUserByPage(OrganizationUserQueryParam) {
     return request({
-        url: '/organization/getUserListByYearAndName',
+        url: '/organizationUserRelation/listByPage',
+        method: 'post',
+        data: {
+            year: OrganizationUserQueryParam.year,
+            name: OrganizationUserQueryParam.name,
+            pageNum: OrganizationUserQueryParam.pageNum,
+            pageSize: OrganizationUserQueryParam.pageSize,
+        }
+    })
+}
+
+//获取班级学生信息
+export function listOrganizationUser(OrganizationUserQueryParam) {
+    return request({
+        url: '/organizationUserRelation/list',
         method: 'post',
         data: {
             year: OrganizationUserQueryParam.year,
