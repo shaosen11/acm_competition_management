@@ -29,6 +29,7 @@
                     v-if="this.$store.state.team.myTeamFlag">我的队伍
             </el-menu-item>
             <el-menu-item
+                    v-if="this.isLogin"
                     index="5-1"
                     @click="toCreateTeam"
                     v-else>创建队伍
@@ -89,7 +90,6 @@
 
 <script>
     import store from '@/store'
-    import {getTeamInfoByUserId} from "@/network/api/team";
 
     export default {
         name: "Navbar",

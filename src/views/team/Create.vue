@@ -85,7 +85,17 @@
                 }
             }
         },
+        created() {
+            this.isLogin()
+        },
         methods: {
+            //判断是否登录
+            isLogin() {
+                if(!this.$store.state.user.isLogin){
+                    this.$message.error("请先登录");
+                    this.$router.push("/");
+                }
+            },
             //完成队伍信息填写，跳转页面
             createTeam() {
                 this.isLoading = true;
