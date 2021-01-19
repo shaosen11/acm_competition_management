@@ -24,7 +24,6 @@ export default {
     data() {
         return {
             list: [],
-            isLoading: false
         }
     },
     created() {
@@ -32,9 +31,13 @@ export default {
     },
     methods: {
         init() {
-            this.isLoading = true
+            const loading = this.$loading({
+                lock: true,
+                text: '正在加载',
+                spinner: 'el-icon-loading',
+            });
             this.listCompetitionType()
-            this.isLoading = false
+            loading.close();
         },
         listCompetitionType() {
             const competitionType = {

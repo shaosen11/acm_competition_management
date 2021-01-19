@@ -163,6 +163,17 @@
                 isHide: true,
                 //比赛题型
                 competitionProblemTypeList: [],
+                //是否展示
+                showFlagList: [
+                    {
+                        value: 1,
+                        label: '展示',
+                    },
+                    {
+                        value: 0,
+                        label: '不展示',
+                    }
+                ],
             }
 
         },
