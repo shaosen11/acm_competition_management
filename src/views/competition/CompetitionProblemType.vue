@@ -11,6 +11,10 @@
                     <div @click="toCompetitionProblemTypeList(item.name)">
                         <h2>{{ item.name }}</h2>
                         {{ item.description }}
+                        <p>
+                            <i class="el-icon-s-data"></i>
+                            {{ item.degree}}
+                        </p>
                     </div>
                 </el-card>
             </el-col>

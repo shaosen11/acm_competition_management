@@ -81,8 +81,14 @@
                         align="center">
                 </el-table-column>
                 <el-table-column
+                        prop="degree"
+                        label="热度"
+                        width="150"
+                        align="center">
+                </el-table-column>
+                <el-table-column
                         label="操作"
-                        width="200"
+                        width="150"
                         align="center">
                     <template slot-scope="scope">
                         <p>显示：
