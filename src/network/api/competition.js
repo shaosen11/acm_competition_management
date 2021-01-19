@@ -194,3 +194,78 @@ export function exportCompetitionUserRelation(competitionId) {
         responseType: 'blob'
     })
 }
+
+//新建题型
+export function createCompetitionProblemType(competitionProblemType) {
+    return request({
+        url: '/competitionProblemType/create',
+        method: 'post',
+        data: {
+            name: competitionProblemType.name,
+            description: competitionProblemType.description,
+            parentId: competitionProblemType.parentId,
+            showFlag: competitionProblemType.showFlag,
+            userId: competitionProblemType.userId,
+            userName: competitionProblemType.userName
+        },
+    })
+}
+//修改题型
+export function updateCompetitionProblemType(competitionProblemType) {
+    return request({
+        url: '/competitionProblemType/update',
+        method: 'post',
+        data: {
+            name: competitionProblemType.name,
+            description: competitionProblemType.description,
+            parentId: competitionProblemType.parentId,
+            showFlag: competitionProblemType.showFlag,
+            userId: competitionProblemType.userId,
+            userName: competitionProblemType.userName
+        },
+    })
+}
+//获取题型分页
+export function listCompetitionProblemTypeByPage(competitionProblemTypeQueryParam) {
+    return request({
+        url: '/competitionProblemType/listByPage',
+        method: 'post',
+        data: {
+            name: competitionProblemTypeQueryParam.name,
+            parentId: competitionProblemTypeQueryParam.parentId,
+            showFlag: competitionProblemTypeQueryParam.showFlag,
+            pageNum: competitionProblemTypeQueryParam.pageNum,
+            pageSize: competitionProblemTypeQueryParam.pageSize,
+        },
+    })
+}
+//获取题型列表
+export function listParentCompetitionProblemType() {
+    return request({
+        url: '/competitionProblemType/listParent',
+        method: 'get',
+    })
+}
+
+//根据比赛类型名称获取比赛类型
+export function getByCompetitionProblemTypeName(name) {
+    return request({
+        url: '/competitionProblemType/getByName',
+        method: 'post',
+        data: {
+            name
+        }
+    })
+}
+
+
+//获取所有题型
+export function listChildrenCompetitionProblemType(name) {
+    return request({
+        url: '/competitionProblemType/listByParentName',
+        method: 'post',
+        data: {
+            name
+        }
+    })
+}

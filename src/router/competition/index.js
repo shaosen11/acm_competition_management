@@ -15,7 +15,19 @@ const routers = [
         path: '/competitionType',
         name: 'competitionType',
         component: () => import('@/views/competition/CompetitionType'),
-        meta: {title: '比赛信息'}
+        meta: {title: '比赛类型'}
+    },
+    {
+        path: '/competitionProblemType',
+        name: 'competitionProblemType',
+        component: () => import('@/views/competition/CompetitionProblemType'),
+        meta: {title: '比赛题型'}
+    },
+    {
+        path: '/competitionProblemTypeList',
+        name: 'competitionProblemTypeList',
+        component: () => import('@/views/competition/CompetitionProblemTypeList'),
+        meta: {title: '比赛题型'}
     }
 ];
 

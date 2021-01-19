@@ -37,7 +37,9 @@
                             <el-menu-item index="5-1" @click="toCompetitionList">比赛列表</el-menu-item>
                             <el-menu-item index="5-2" @click="toCreateCompetition">创建比赛</el-menu-item>
                             <el-menu-item index="5-3" @click="toCompetitionType">比赛类型列表</el-menu-item>
-                            <el-menu-item index="5-3" @click="toCreateCompetitionType">创建比赛类型</el-menu-item>
+                            <el-menu-item index="5-4" @click="toCreateCompetitionType">创建比赛类型</el-menu-item>
+                            <el-menu-item index="5-5" @click="toCompetitionPronblemType">比赛题型列表</el-menu-item>
+                            <el-menu-item index="5-6" @click="toCreateCompetitionProblemType">创建比赛题型</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="6" @click="toReport">
@@ -92,9 +94,14 @@ export default {
         toCompetitionType() {
             this.$router.push("/admin/competitionType")
         },
-        //创建比赛类型
         toCreateCompetitionType() {
             this.$router.push("/admin/createCompetitionType")
+        },
+        toCompetitionPronblemType() {
+            this.$router.push("/admin/competitionProblemType")
+        },
+        toCreateCompetitionProblemType() {
+            this.$router.push("/admin/createCompetitionProblemType")
         },
         toReport() {
             this.$router.push("/admin/report")

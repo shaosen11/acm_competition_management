@@ -71,6 +71,14 @@ const routers = [
                 }
             },
             {
+                path: 'competitionUpdate',
+                name: 'competitionUpdate',
+                meta: {title: '比赛修改', requireAuth: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/Update'),
+                }
+            },
+            {
                 path: 'competitionType',
                 name: 'competitionType',
                 meta: {title: '比赛类型', requireAuth: true},
@@ -87,11 +95,19 @@ const routers = [
                 }
             },
             {
-                path: 'competitionUpdate',
-                name: 'competitionUpdate',
-                meta: {title: '比赛修改', requireAuth: true},
+                path: 'competitionProblemType',
+                name: 'competitionProblemType',
+                meta: {title: '比赛题型', requireAuth: true},
                 components: {
-                    admin: () => import('@/views/admin/competition/Update'),
+                    admin: () => import('@/views/admin/competition/CompetitionProblemType'),
+                }
+            },
+            {
+                path: 'createCompetitionProblemType',
+                name: 'createCompetitionProblemType',
+                meta: {title: '创建比赛题型', requireAuth: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/CreateCompetitionProblemType'),
                 }
             },
             {
