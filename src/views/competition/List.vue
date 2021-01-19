@@ -277,7 +277,6 @@
                         this.listLoading = false;
                         return this.$message.error(res.message);
                     }
-                    console.log(res.data.list)
                     this.tableData = res.data.list;
                     this.total = res.data.total;
                     this.totalPage = res.data.totalPage;
@@ -291,7 +290,10 @@
             },
             //获取比赛类型
             getCompetitionTypeList() {
-                listCompetitionType().then(res => {
+                const competitionType = {
+                    showFlag: 1
+                }
+                listCompetitionType(competitionType).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
