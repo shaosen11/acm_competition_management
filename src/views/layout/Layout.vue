@@ -23,6 +23,7 @@
 <style scoped>
     .app-wrapper {
         position: relative;
+        min-width: 1500px;
         height: 100%;
         width: 100%;
     }
