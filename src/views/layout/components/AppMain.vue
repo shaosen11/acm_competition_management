@@ -1,7 +1,7 @@
 <template>
     <div class="app-container">
         <section class="app-main">
-            <transition name="fade" mode="out-in">
+            <transition name="el-fade-in-linear" mode="out-in">
                 <router-view :key="$route.fullPath"></router-view>
             </transition>
         </section>
