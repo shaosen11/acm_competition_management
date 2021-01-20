@@ -6,7 +6,7 @@
             <el-breadcrumb-item :to="{ path: '/competitionProblemType'}">比赛类型</el-breadcrumb-item>
             <el-breadcrumb-item>{{this.$route.query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-row :gutter="20" style="margin: 50px 0px">
+        <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6" v-for="item in this.list" :key="item">
                 <el-card shadow="hover">
                     <el-tooltip :content="item.name" placement="top">

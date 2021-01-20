@@ -1,10 +1,14 @@
 <template>
     <div>
-        <el-card shadow="never">
-            <el-page-header @back="toCompetition" content="比赛详情">
-            </el-page-header>
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>比赛</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/competition' }">比赛列表</el-breadcrumb-item>
+            <el-breadcrumb-item>{{this.form.competitionName}}</el-breadcrumb-item>
+        </el-breadcrumb>
 
-            <el-row :gutter="10" type="flex" justify="center" style="margin: 50px">
+        <el-card shadow="never" style="margin-top: 30px">
+            <el-row :gutter="10" type="flex" justify="center" style="margin: 50px 0px">
                 <el-col :span="24">
                     <el-steps :active="this.activeStep" finish-status="success" align-center>
                         <el-step title="正在报名"></el-step>

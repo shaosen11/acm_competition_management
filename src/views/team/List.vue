@@ -1,6 +1,11 @@
 <template>
     <div>
-        <el-card shadow="never">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>队伍</el-breadcrumb-item>
+            <el-breadcrumb-item>队伍列表</el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-card shadow="never" style="margin-top: 30px">
             <div>
                 <i class="iconfont el-icon-third-search"></i>
                 <span>筛选搜索</span>

@@ -3,7 +3,7 @@ const routers = [
         path: '/competition',
         name: 'Competition',
         component: () => import('@/views/competition/List'),
-        meta: {title: '比赛'}
+        meta: {title: '比赛列表'}
     },
     {
         path: '/competitionInfo',
