@@ -12,7 +12,7 @@
                         <h2>{{ item.name }}</h2>
                         {{ item.description }}
                         <p>
-                            <i class="el-icon-s-data"></i>
+                            <i class="iconfont el-icon-third-fire"></i>
                             {{ item.degree}}
                         </p>
                     </div>

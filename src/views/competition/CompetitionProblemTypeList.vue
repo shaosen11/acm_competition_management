@@ -7,12 +7,14 @@
             <el-breadcrumb-item>{{this.$route.query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="20" style="margin: 50px 0px">
-            <el-col :span="8" v-for="item in this.list" :key="item">
+            <el-col :span="6" v-for="item in this.list" :key="item">
                 <el-card shadow="hover">
-                    <h2>{{ item.name }}</h2>
-                    {{ item.description }}
+                    <el-tooltip :content="item.name" placement="top">
+                        <h3>{{ item.name|ellipsisName }}</h3>
+                    </el-tooltip>
+                    {{ item.description|ellipsis }}
                     <p>
-                        <i class="el-icon-s-data"></i>
+                        <i class="iconfont el-icon-third-fire"></i>
                         {{ item.degree}}
                     </p>
                 </el-card>
@@ -51,6 +53,22 @@
                     }
                     this.list = res.data
                 })
+            }
+        },
+        filters: {
+            ellipsis(value) {
+                if (!value) return ''
+                if (value.length > 10) {
+                    return value.slice(0, 10) + '...'
+                }
+                return value
+            },
+            ellipsisName(value) {
+                if (!value) return ''
+                if (value.length > 8) {
+                    return value.slice(0, 8) + '...'
+                }
+                return value
             }
         }
     }
