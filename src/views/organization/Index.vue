@@ -20,12 +20,12 @@
                         <el-col :span="16">
                             <h3 @click="toUserInfo(item.userId)" style="margin: 0px">
                                 {{ item.userName }}
-                                <i class="el-icon-male" v-if="item.gender==1" style="color: #409EFF"></i>
-                                <i class="el-icon-female" v-if="item.gender==0" style="color: #409EFF"></i>
+                                <i class="iconfont el-icon-third-man" v-if="item.gender==1" style="color: #409EFF"></i>
+                                <i class="iconfont el-icon-third-woman" v-if="item.gender==0" style="color: #409EFF"></i>
                             </h3>
                             <p>{{ item.userId }}</p>
-                            <el-link :underline="false" type="primary" @click="toTeamInfo(item.teamName)">{{
-                                item.teamName }}
+                            <el-link :underline="false" type="primary" @click="toTeamInfo(item.teamName)">
+                                {{ item.teamName }}
                             </el-link>
                         </el-col>
                         <el-col :span="8">

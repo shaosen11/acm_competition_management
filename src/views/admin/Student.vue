@@ -2,7 +2,7 @@
     <div>
         <el-card shadow="never">
             <div>
-                <i class="el-icon-search"></i>
+                <i class="iconfont el-icon-third-search"></i>
                 <span>筛选搜索</span>
                 <el-button
                     style="float: right"
@@ -105,13 +105,13 @@
                             el-button
                             type="text"
                             v-if="scope.row.gender==1">
-                            <i class="el-icon-male"></i>
+                            <i class="iconfont el-icon-third-man"></i>
                         </el-button>
                         <el-button
                             el-button
                             type="text"
                             v-if="scope.row.gender==0">
-                            <i class="el-icon-female"></i>
+                            <i class="iconfont el-icon-third-woman"></i>
                         </el-button>
                     </template>
                 </el-table-column>
@@ -274,6 +274,6 @@ export default {
 
 <style scoped>
 .table-container, .pagination-container {
-    margin: 30px auto;
+    margin: 15px auto;
 }
 </style>

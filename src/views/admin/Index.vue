@@ -5,16 +5,16 @@
                 <el-menu
                     class="el-menu-vertical-demo">
                     <el-menu-item index="1" @click="toTeacher">
-                        <i class="el-icon-user-solid"></i>
+                        <i class="iconfont el-icon-third-laoshi"></i>
                         <span slot="title">老师管理</span>
                     </el-menu-item>
                     <el-menu-item index="2" @click="toStudent">
-                        <i class="el-icon-user"></i>
+                        <i class="iconfont el-icon-third-student"></i>
                         <span slot="title">学生管理</span>
                     </el-menu-item>
                     <el-submenu index="3">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="iconfont el-icon-third-organization"></i>
                             <span>班级管理</span>
                         </template>
                         <el-menu-item-group>
@@ -24,13 +24,13 @@
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="4" @click="toTeam">
-                        <i class="el-icon-more-outline"></i>
+                        <i class="iconfont el-icon-third-team"></i>
                         <span slot="title">队伍管理</span>
                     </el-menu-item>
 
                     <el-submenu index="5">
                         <template slot="title">
-                            <i class="el-icon-trophy"></i>
+                            <i class="iconfont el-icon-third-trophy"></i>
                             <span>比赛管理</span>
                         </template>
                         <el-menu-item-group>
@@ -43,11 +43,11 @@
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="6" @click="toReport">
-                        <i class="el-icon-more-outline"></i>
+                        <i class="iconfont el-icon-third-file-text"></i>
                         <span slot="title">报告管理</span>
                     </el-menu-item>
                     <el-menu-item index="7" @click="toBlog">
-                        <i class="el-icon-more-outline"></i>
+                        <i class="iconfont el-icon-third-blog"></i>
                         <span slot="title">论坛管理</span>
                     </el-menu-item>
                 </el-menu>

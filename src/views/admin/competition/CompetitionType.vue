@@ -153,7 +153,4 @@
 </script>
 
 <style scoped>
-    .table-container, .pagination-container {
-        margin: 30px auto;
-    }
 </style>

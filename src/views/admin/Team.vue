@@ -2,7 +2,7 @@
     <div>
         <el-card shadow="never">
             <div>
-                <i class="el-icon-search"></i>
+                <i class="iconfont el-icon-third-search"></i>
                 <span>筛选搜索</span>
                 <el-button
                     style="float: right"
@@ -190,6 +190,6 @@ export default {
 
 <style scoped>
 .table-container, .pagination-container {
-    margin: 30px auto;
+    margin: 15px auto;
 }
 </style>

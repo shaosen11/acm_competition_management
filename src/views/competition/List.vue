@@ -2,7 +2,7 @@
     <div>
         <el-card shadow="never">
             <div>
-                <i class="el-icon-search"></i>
+                <i class="iconfont el-icon-third-search"></i>
                 <span>筛选搜索</span>
                 <el-button
                         style="float: right"
@@ -124,7 +124,7 @@
                         width="200"
                         align="center">
                     <template slot-scope="scope">
-                        <i class="el-icon-trophy"></i>
+                        <i class="iconfont el-icon-third-trophy"></i>
                         <span style="margin-left: 10px">{{ scope.row.competitionName }}</span>
                     </template>
                 </el-table-column>
@@ -143,7 +143,7 @@
                         width="350"
                         align="center">
                     <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
+                        <i class="iconfont el-icon-third-time-circle"></i>
                         <span style="margin-left: 10px">{{ scope.row.startTime }} - {{ scope.row.endTime }}</span>
                     </template>
                 </el-table-column>
@@ -153,7 +153,7 @@
                         width="100"
                         align="center">
                     <template slot-scope="scope">
-                        <i class="el-icon-location-information"></i>
+                        <i class="iconfont el-icon-third-location"></i>
                         <span style="margin-left: 10px">{{ scope.row.position }}</span>
                     </template>
                 </el-table-column>
