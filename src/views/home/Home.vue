@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <h2>home</h2>
 <!--        <ve-wordcloud :data="chartData"></ve-wordcloud>-->
     </div>

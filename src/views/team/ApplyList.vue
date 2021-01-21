@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>申请列表</span>

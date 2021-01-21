@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>比赛</el-breadcrumb-item>
@@ -395,4 +395,5 @@
     .table-container, .pagination-container {
         margin: 30px auto;
     }
+
 </style>

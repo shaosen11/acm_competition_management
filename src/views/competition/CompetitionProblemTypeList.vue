@@ -1,11 +1,13 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>比赛</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/competitionProblemType'}">比赛类型</el-breadcrumb-item>
             <el-breadcrumb-item>{{this.$route.query.name}}</el-breadcrumb-item>
         </el-breadcrumb>
+        <h2>{{this.$route.query.name}}</h2>
+        <el-divider></el-divider>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6" v-for="item in this.list" :key="item">
                 <el-card shadow="hover">

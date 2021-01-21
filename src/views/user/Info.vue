@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-row :gutter="10" type="flex" justify="center">
             <!--个人信息-->
             <el-col :span="16">
@@ -112,7 +112,7 @@
             getUserInfo(userId) {
                 getUserInfo(userId).then(res => {
                     if (res.code != 200) {
-                        return this.$message.error(res.message);
+                        this.$message.error(res.message);
                         return false;
                     }
                     this.form.userId = res.data.userId;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-container>
             <el-aside width="200px">
                 <el-menu

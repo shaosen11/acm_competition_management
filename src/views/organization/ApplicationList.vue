@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <!--学生列表-->
         <el-card class="table-container">
             <div slot="header" class="clearfix">

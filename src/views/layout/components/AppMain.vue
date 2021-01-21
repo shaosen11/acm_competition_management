@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="main-container">
         <section class="app-main">
             <transition name="el-fade-in-linear" mode="out-in">
                 <router-view :key="$route.fullPath"></router-view>
@@ -17,8 +17,8 @@
 </script>
 
 <style scoped>
-    .app-container {
-        width: 80%;
-        margin: 30px auto;
+    .main-container {
+        width: 100%;
+        margin: 0px auto;
     }
 </style>

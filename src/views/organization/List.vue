@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>班级</el-breadcrumb-item>
@@ -171,7 +171,6 @@ export default {
                 }
                 this.tableData = res.data.list;
                 this.total = res.data.total;
-                this.totalPage = res.data.totalPage;
                 this.organizationQuery.pageNum = res.data.pageNum;
                 this.organizationQuery.pageSize = res.data.pageSize;
                 if (this.total > this.organizationQuery.pageSize) {

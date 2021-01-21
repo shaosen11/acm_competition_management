@@ -71,7 +71,7 @@ const user = {
             })
         },
 
-        LoginOut({commit, state}) {
+        LoginOut({commit}) {
             commit('SET_TOKEN', '');
             commit('SET_IS_LOGIN', false);
             commit('SET_USER_ID', '');

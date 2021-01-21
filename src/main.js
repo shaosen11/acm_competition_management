@@ -6,6 +6,12 @@ import store from './store'
 import ElementUI from 'element-ui';
 Vue.use(ElementUI);
 
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
+Vue.component("mavon-editor", mavonEditor);
+
+import "./assets/css/main.css"
+
 // import VCharts from 'v-charts'
 // Vue.use(VCharts)
 Vue.config.productionTip = false

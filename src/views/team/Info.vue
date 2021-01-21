@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="app-container">
         <el-row :gutter="10" type="flex" justify="center">
             <!--个人信息-->
             <el-col :span="16">

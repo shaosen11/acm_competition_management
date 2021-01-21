@@ -358,7 +358,8 @@
             },
             //获取比赛类型
             getCompetitionTypeList() {
-                listCompetitionType().then(res => {
+                const competitionType = {};
+                listCompetitionType(competitionType).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }

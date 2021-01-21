@@ -23,10 +23,18 @@
             <i class="iconfont el-icon-third-file-text"></i>
             解题报告
         </el-menu-item>
-        <el-menu-item index="4" @click="toBlog">
-            <i class="iconfont el-icon-third-blog"></i>
-            论坛
-        </el-menu-item>
+        <el-submenu index="4">
+            <template slot="title">
+                <i class="iconfont el-icon-third-blog"></i>
+                博客
+            </template>
+            <el-menu-item index="4-1" @click="toMyBlogList">
+                我的博客
+            </el-menu-item>
+            <el-menu-item index="4-2" @click="toCreateBlog">
+                创建博客
+            </el-menu-item>
+        </el-submenu>
         <el-submenu index="5">
             <template slot="title">
                 <i class="iconfont el-icon-third-team"></i>
@@ -130,8 +138,11 @@
             toReport() {
                 this.$router.push('/report')
             },
-            toBlog() {
-                this.$router.push('/blog')
+            toMyBlogList() {
+                this.$router.push('/blogList')
+            },
+            toCreateBlog() {
+                this.$router.push('/blogCreate')
             },
             toMyTeam() {
                 this.$router.push({name: 'teamInfo', query: {teamName: this.$store.state.team.teamName}})
