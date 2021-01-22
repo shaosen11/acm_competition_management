@@ -18,7 +18,18 @@
                     <span>{{ this.user.userId }}</span>
                 </el-col>
             </el-row>
-            <el-row :gutter="20" type="flex" justify="center" style="margin-top: 15px">
+            <el-row :gutter="20" type="flex" justify="center" style="margin-top: 20px">
+                <el-col :span="12" style="text-align:center;">
+                    <i class="iconfont el-icon-third-file-text"></i>
+                    {{ this.userExt.report }}
+                </el-col>
+                <el-col :span="12" style="text-align:center;">
+                    <i class="iconfont el-icon-third-blog"></i>
+                    {{ this.userExt.blog }}
+                </el-col>
+            </el-row>
+            <el-divider></el-divider>
+            <el-row :gutter="20" type="flex" justify="center">
                 <el-col :span="6">
                     <i class="iconfont el-icon-third-follow"/>
                     {{ this.userExt.follow }}

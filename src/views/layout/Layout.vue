@@ -1,8 +1,8 @@
 <template>
     <div class="app-wrapper">
         <div class="main-container">
-            <navbar></navbar>
-            <app-main></app-main>
+            <navbar class="nav"></navbar>
+            <app-main class="app-main"></app-main>
         </div>
     </div>
 </template>
@@ -26,5 +26,19 @@
         min-width: 1500px;
         height: 100%;
         width: 100%;
+        top:0;
+        left:0;
+    }
+
+    .nav{
+        width:100%;
+        position:fixed;
+        top:0;
+        left:0;
+        z-index: 1;
+    }
+
+    .app-main{
+        margin-top: 80px;
     }
 </style>

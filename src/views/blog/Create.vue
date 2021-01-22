@@ -23,11 +23,11 @@
 </template>
 
 <script>
-    import {createBlog} from '@/network/api/report'
+    import {createBlog} from '@/network/api/blog'
 
     export default {
-        name: "blog",
-        data: function() {
+        name: "Create",
+        data() {
             return {
                 name: "",
                 text: "",

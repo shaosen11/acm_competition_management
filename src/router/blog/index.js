@@ -17,6 +17,12 @@ const routers = [
         component: () => import('@/views/blog/Info'),
         meta: {title: '博客'}
     },
+    {
+        path: 'blogUpdate',
+        name: 'blogUpdate',
+        component: () => import('@/views/blog/Update'),
+        meta: {title: '修改博客'}
+    },
 ];
 
 export default routers;

@@ -39,7 +39,7 @@
                             </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
-                                <el-dropdown-item>编辑</el-dropdown-item>
+                                <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
                                 <el-dropdown-item divided>删除</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import {listBlogPage} from '@/network/api/report'
+import {listBlogPage} from '@/network/api/blog'
 import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
 import UserInfo from "@/views/blog/components/UserInfo";
 
@@ -134,12 +134,6 @@ export default {
             this.blogQuery.pageNum = val;
             this.getList();
         },
-        toBlog(blogId){
-            this.$router.push({
-                name: 'blogInfo',
-                query: {blogId}
-            })
-        },
         //获取用户信息
         getUserInfo(userId) {
             getUserInfo(userId).then(res => {
@@ -158,6 +152,18 @@ export default {
                     return false;
                 }
                 this.userExt = res.data
+            })
+        },
+        toBlog(blogId){
+            this.$router.push({
+                name: 'blogInfo',
+                query: {blogId}
+            })
+        },
+        toUpdateBlog(blogId){
+            this.$router.push({
+                name: 'blogUpdate',
+                query: {blogId}
             })
         },
     }
