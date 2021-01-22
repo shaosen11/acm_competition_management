@@ -21,6 +21,7 @@ export function listBlogPage(BlogQueryParam) {
         url: '/blog/listByPage',
         method: 'post',
         data: {
+            userId: BlogQueryParam.userId,
             name: BlogQueryParam.name,
             pageNum: BlogQueryParam.pageNum,
             pageSize: BlogQueryParam.pageSize,

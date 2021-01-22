@@ -73,6 +73,7 @@ export default {
         return{
             //队伍查询条件
             blogQuery: {
+                userId: this.$store.state.user.userId,
                 pageNum: 1,
                 pageSize: 5,
             },
@@ -102,13 +103,11 @@ export default {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }
-                console.log(res.data)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.blogQuery.pageNum = res.data.pageNum;
                 this.blogQuery.pageSize = res.data.pageSize;
                 if (this.total > this.blogQuery.pageSize) {
-                    console.log("false")
                     this.isHide = false;
                 }
                 this.listLoading = false;

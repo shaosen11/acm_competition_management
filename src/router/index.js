@@ -81,6 +81,14 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     NProgress.start()
+    if (to.meta.requireLogin && !store.state.user.isLogin){
+        Message({
+            message: "请先登录",
+            type: 'info',
+        })
+        document.title = "登录"
+        next('/login')
+    }
     if (to.meta.requireAuth && store.state.user.identityFlag != 1) {
         Message({
             message: "请用管理员账号登录",

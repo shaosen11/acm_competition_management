@@ -3,7 +3,7 @@ const routers = [
         path: '/teamInfo',
         name: 'teamInfo',
         component: () => import('@/views/team/Info'),
-        meta: {title: '我的队伍'},
+        meta: {title: '我的队伍', requireLogin: true}
     },
     {
         path: '/teamList',
@@ -15,7 +15,7 @@ const routers = [
         path: '/teamCreate',
         name: 'teamCreate',
         component: () => import('@/views/team/Create'),
-        meta: {title: '创建队伍'}
+        meta: {title: '创建队伍', requireLogin: true}
     },
     {
         path: '/team',
@@ -27,7 +27,7 @@ const routers = [
             {
                 path: 'setting',
                 name: 'setting',
-                meta: {title: '队伍设置'},
+                meta: {title: '队伍设置', requireLogin: true},
                 components: {
                     team: () => import('@/views/team/Setting')
                 }
@@ -35,7 +35,7 @@ const routers = [
             {
                 path: 'applyList',
                 name: 'applyList',
-                meta: {title: '队伍设置'},
+                meta: {title: '队伍设置', requireLogin: true},
                 components: {
                     team: () => import('@/views/team/ApplyList')
                 }

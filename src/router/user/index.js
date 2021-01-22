@@ -9,13 +9,13 @@ const routers = [
         path: 'user',
         name: 'user',
         component: () => import('@/views/user/Index'),
-        meta: {title: '个人中心'},
+        meta: {title: '个人中心', requireLogin: true},
         redirect: 'user/setting',
         children: [
             {
                 path: 'setting',
                 name: 'setting',
-                meta: {title: '个人设置'},
+                meta: {title: '个人设置', requireLogin: true},
                 components: {
                     user: () => import('@/views/user/Setting')
                 }
@@ -23,7 +23,7 @@ const routers = [
             {
                 path: 'password',
                 name: 'password',
-                meta: {title: '安全设置'},
+                meta: {title: '安全设置', requireLogin: true},
                 components: {
                     user: () => import('@/views/user/Password')
                 }

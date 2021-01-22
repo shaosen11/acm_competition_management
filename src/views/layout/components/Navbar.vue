@@ -28,10 +28,10 @@
                 <i class="iconfont el-icon-third-blog"></i>
                 博客
             </template>
-            <el-menu-item index="4-1" @click="toMyBlogList">
+            <el-menu-item v-if="this.isLogin" index="4-1" @click="toMyBlogList">
                 我的博客
             </el-menu-item>
-            <el-menu-item index="4-2" @click="toCreateBlog">
+            <el-menu-item v-if="this.isLogin" index="4-2" @click="toCreateBlog">
                 创建博客
             </el-menu-item>
         </el-submenu>
@@ -43,10 +43,10 @@
             <el-menu-item
                     index="5-1"
                     @click="toMyTeam"
-                    v-if="this.$store.state.team.myTeamFlag">我的队伍
+                    v-if="this.teamFlag">我的队伍
             </el-menu-item>
             <el-menu-item
-                    v-if="!this.$store.state.user.isLogin"
+                    v-if="!this.teamFlag"
                     index="5-2"
                     @click="toCreateTeam"
                     v-else>创建队伍
@@ -61,7 +61,7 @@
             <el-menu-item
                     index="6-1"
                     @click="toMyOrganization"
-                    v-if="this.$store.state.organization.myOrganizationFlag">我的班级
+                    v-if="this.myOrganizationFlag">我的班级
             </el-menu-item>
             <el-menu-item index="6-2" @click="toOrganization">班级列表</el-menu-item>
         </el-submenu>
@@ -75,11 +75,11 @@
                     prefix-icon="iconfont el-icon-third-search">
             </el-input>
         </el-menu-item>
-        <div v-if="this.$store.state.user.isLogin">
+        <div v-if="this.isLogin">
             <el-menu-item index="9" style="float: right;">
                 <el-dropdown trigger="click">
               <span class="el-dropdown-link">
-                <el-avatar :src="this.$store.state.user.icon" icon="iconfont el-icon-third-user"></el-avatar>
+                <el-avatar :src="this.icon" icon="iconfont el-icon-third-user"></el-avatar>
               </span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item icon="iconfont el-icon-third-user" @click.native="toUserInfo">
@@ -89,7 +89,7 @@
                             个人设置
                         </el-dropdown-item>
                         <el-dropdown-item
-                                v-if="this.$store.state.user.identityFlag==1"
+                                v-if="this.identityFlag==1"
                                 icon="iconfont el-icon-third-control"
                                 @click.native="toAdmin">
                             后台管理
@@ -116,11 +116,16 @@
         name: "Navbar",
         data() {
             return {
-                icon: '',
+                userId: store.getters.userId,
+                isLogin: store.getters.isLogin,
+                teamFlag: store.getters.myTeamFlag,
+                teamName: store.getters.teamName,
+                year: store.getters.year,
+                organizationName: store.getters.organizationName,
+                myOrganizationFlag: store.getters.myOrganizationFlag,
+                icon: store.getters.icon,
+                identityFlag: store.getters.identityFlag,
             }
-        },
-        created() {
-            this.init();
         },
         methods: {
             toHome() {
@@ -145,7 +150,7 @@
                 this.$router.push('/blogCreate')
             },
             toMyTeam() {
-                this.$router.push({name: 'teamInfo', query: {teamName: this.$store.state.team.teamName}})
+                this.$router.push({name: 'teamInfo', query: {teamName: this.teamName}})
             },
             toTeamList() {
                 this.$router.push('/teamList')
@@ -157,8 +162,8 @@
                 this.$router.push({
                     name: 'organizationInfo',
                     query: {
-                        year: this.$store.state.organization.year,
-                        name: this.$store.state.organization.organizationName
+                        year: this.year,
+                        name: this.organizationName
                     }
                 })
             },
@@ -169,7 +174,7 @@
                 this.$router.push('/message')
             },
             toUserInfo() {
-                this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
+                this.$router.push({name: 'userInfo', query: {userId: this.userId}})
             },
             toUserSetting() {
                 this.$router.push('/user/setting')
@@ -183,9 +188,6 @@
             toLoginOut() {
                 this.$store.dispatch('LoginOut');
                 this.$router.push('/loginOut')
-            },
-            init() {
-                this.icon = store.getters.icon;
             },
         }
     };
