@@ -28,3 +28,15 @@ export function listBlogPage(BlogQueryParam) {
         }
     })
 }
+
+
+//获取博客分页信息
+export function getBlogByBlogId(blogId) {
+    return request({
+        url: '/blog/getById',
+        method: 'post',
+        data: {
+            blogId
+        }
+    })
+}

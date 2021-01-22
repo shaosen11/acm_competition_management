@@ -10,7 +10,13 @@ const routers = [
         name: 'blogList',
         component: () => import('@/views/blog/List'),
         meta: {title: '博客列表', requireLogin: true}
-    }
+    },
+    {
+        path: 'blogInfo',
+        name: 'blogInfo',
+        component: () => import('@/views/blog/Info'),
+        meta: {title: '博客'}
+    },
 ];
 
 export default routers;

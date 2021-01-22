@@ -113,3 +113,14 @@ export function ListUser(userQuery){
         }
     })
 }
+
+//获取用户扩展信息
+export function getUserExtByUserId(userId){
+    return request({
+        url: '/userExt/getByUserId',
+        method: 'post',
+        data: {
+            userId,
+        }
+    })
+}

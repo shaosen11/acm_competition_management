@@ -7,9 +7,9 @@
         </el-breadcrumb>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6">
-                <el-card>
-                    我的信息
-                </el-card>
+                <div>
+                    <UserInfo :user-id="this.userId" :user="this.user" :user-ext="this.userExt"></UserInfo>
+                </div>
                 <el-card style="margin-top: 10px">
                     热门博客
                 </el-card>
@@ -18,7 +18,7 @@
                 <el-card>
                     <h2>博客列表</h2>
                     <div v-for="item in this.tableData" :key="item" class="text item">
-                        <h3>{{ item.name }}</h3>
+                        <h3 @click="toBlog(item.blogId)">{{ item.name }}</h3>
                         {{ item.time }}
                         <el-divider direction="vertical"></el-divider>
                         <span style="margin-left: 10px">
@@ -38,7 +38,7 @@
                                 操作<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>预览</el-dropdown-item>
+                                <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
                                 <el-dropdown-item>编辑</el-dropdown-item>
                                 <el-dropdown-item divided>删除</el-dropdown-item>
                             </el-dropdown-menu>
@@ -66,9 +66,14 @@
 
 <script>
 import {listBlogPage} from '@/network/api/report'
+import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
+import UserInfo from "@/views/blog/components/UserInfo";
 
 export default {
     name: "List",
+    components: {
+        UserInfo
+    },
     data() {
         return{
             //队伍查询条件
@@ -85,6 +90,9 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
+            userId: '',
+            user: {},
+            userExt: {}
         }
     },
     created() {
@@ -94,6 +102,8 @@ export default {
         //初始化方法
         init() {
             this.getList();
+            this.getUserInfo(this.$store.state.user.userId);
+            this.getUserExtByUserId(this.$store.state.user.userId);
         },
         //获取表单信息
         getList() {
@@ -123,6 +133,32 @@ export default {
         handleCurrentChange(val) {
             this.blogQuery.pageNum = val;
             this.getList();
+        },
+        toBlog(blogId){
+            this.$router.push({
+                name: 'blogInfo',
+                query: {blogId}
+            })
+        },
+        //获取用户信息
+        getUserInfo(userId) {
+            getUserInfo(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.user = res.data
+            })
+        },
+        //获取用户扩展信息
+        getUserExtByUserId(userId) {
+            getUserExtByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.userExt = res.data
+            })
         },
     }
 }

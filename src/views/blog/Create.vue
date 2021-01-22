@@ -79,7 +79,7 @@
                         this.$message.error(res.message);
                         return false;
                     }
-                    this.$message.success(res.message);
+                    this.$router.push('/blogList')
                 })
             }
         }
