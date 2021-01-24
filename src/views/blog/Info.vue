@@ -32,27 +32,6 @@
                 </el-col>
                 <el-col :offset="6" :span="18" style="margin-top: 15px">
                     <el-card class="box-card">
-                        <el-row :gutter="20">
-                            <el-col :span="2" style="text-align:center;">
-                                <el-avatar :size="40"
-                                           :src="this.user.icon"/>
-                            </el-col>
-                            <el-col :span="22" >
-                                <el-input
-                                          v-model="input"
-                                          type="textarea"
-                                          :rows="3"
-                                          @focus="focusComment"
-                                          placeholder="写下你的评论">
-                                </el-input>
-                            </el-col>
-                        </el-row>
-                        <div class="btn-control" v-if="this.showItemId">
-                            <span class="cancel" @click="cancel">取消</span>
-                            <el-button class="btn" type="primary" round @click="commitComment">确定</el-button>
-                        </div>
-                        <el-divider></el-divider>
-                        <h3>全部评论</h3>
                         <comment :comments="commentData"></comment>
                     </el-card>
                 </el-col>
@@ -144,29 +123,11 @@ export default {
                 this.userExt = res.data
             })
         },
-
-        focusComment() {
-            this.showItemId = true
-        },
-
-        /**
-         * 点击取消按钮
-         */
-        cancel() {
-            this.showItemId = false
-        },
-
-        /**
-         * 提交评论
-         */
-        commitComment() {
-            console.log(this.inputComment);
-        },
     }
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .blog-content >>> img{
     width:100%;
 }
@@ -184,23 +145,5 @@ export default {
     width: 100%;
     background: #fff;
     box-shadow:0px 0px 1px #909399;
-}
-.btn-control {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-top: 10px;
-    .cancel {
-        font-size: 16px;
-        color: #606266;
-        margin-right: 20px;
-        cursor: pointer;
-        &:hover {
-            color: #333;
-        }
-    }
-    .confirm {
-        font-size: 16px;
-    }
 }
 </style>

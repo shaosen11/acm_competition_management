@@ -21,30 +21,30 @@
             <el-row :gutter="20" type="flex" justify="center" style="margin-top: 20px">
                 <el-col :span="12" style="text-align:center;">
                     <i class="iconfont el-icon-third-file-text"></i>
-                    {{ this.userExt.report }}
+                    {{ this.userExt.reportCounter }}
                 </el-col>
                 <el-col :span="12" style="text-align:center;">
                     <i class="iconfont el-icon-third-blog"></i>
-                    {{ this.userExt.blog }}
+                    {{ this.userExt.blogCounter }}
                 </el-col>
             </el-row>
             <el-divider></el-divider>
             <el-row :gutter="20" type="flex" justify="center">
                 <el-col :span="6">
                     <i class="iconfont el-icon-third-follow"/>
-                    {{ this.userExt.follow }}
+                    {{ this.userExt.followCounter }}
                 </el-col>
                 <el-col :span="6">
                     <i class="iconfont el-icon-third-eye"/>
-                    {{ this.userExt.visit }}
+                    {{ this.userExt.visitCounter }}
                 </el-col>
                 <el-col :span="6">
                     <i class="iconfont el-icon-third-like"/>
-                    {{ this.userExt.click }}
+                    {{ this.userExt.clickCounter }}
                 </el-col>
                 <el-col :span="6">
                     <i class="iconfont el-icon-third-heart"/>
-                    {{ this.userExt.store }}
+                    {{ this.userExt.storeCounter }}
                 </el-col>
             </el-row>
         </el-card>

@@ -1,5 +1,28 @@
 <template>
     <div class="container">
+        <el-row :gutter="20">
+            <el-col :span="2" style="text-align:center;">
+                <el-avatar :size="40"
+                           :src="this.$store.state.user.icon"/>
+            </el-col>
+            <el-col :span="22" >
+                <el-input
+                    v-model="input"
+                    type="textarea"
+                    :rows="3"
+                    @focus="focusComment"
+                    placeholder="写下你的评论">
+                </el-input>
+            </el-col>
+        </el-row>
+        <transition name="fade">
+                <div class="btn-control" v-if="this.showCommit">
+                    <span class="cancel" @click="cancelFocusComment">取消</span>
+                    <el-button class="btn" type="primary" round @click="commitComment">确定</el-button>
+                </div>
+        </transition>
+        <el-divider></el-divider>
+        <h3>全部评论</h3>
         <div class="comment" v-for="item in comments">
             <div class="info">
                 <img class="avatar" :src="item.fromAvatar" width="36" height="36"/>
@@ -10,28 +33,29 @@
             </div>
             <div class="content">{{item.content}}</div>
             <div class="control">
-        <span class="like" :class="{active: item.isLike}" @click="likeClick(item)">
-          <i class="iconfont icon-like el-icon-thumb"></i>
-          <span class="like-num">{{item.likeNum > 0 ? item.likeNum + '人赞' : '赞'}}</span>
-        </span>
+                <span class="like" :class="{active: item.isLike}" @click="likeClick(item)">
+                    <i class="iconfont icon-like el-icon-thumb"></i>
+                    <span class="like-num">{{item.likeNum > 0 ? item.likeNum + '人赞' : '赞'}}</span>
+                </span>
                 <span class="comment-reply" @click="showCommentInput(item)">
-          <i class="iconfont icon-comment el-icon-chat-square"></i>
-          <span>回复</span>
-        </span>
+                    <i class="iconfont icon-comment el-icon-chat-square"></i>
+                    <span>回复</span>
+                </span>
             </div>
             <div class="reply">
                 <div class="item" v-for="reply in item.reply">
                     <div class="reply-content">
-                        <span class="from-name">{{reply.fromName}}</span><span>: </span>
+                        <span class="from-name">{{reply.fromName}}</span>
+                        <span>:</span>
                         <span class="to-name">@{{reply.toName}}</span>
                         <span>{{reply.content}}</span>
                     </div>
                     <div class="reply-bottom">
                         <span>{{reply.date}}</span>
                         <span class="reply-text" @click="showCommentInput(item, reply)">
-              <i class="iconfont icon-comment el-icon-chat-square"></i>
-              <span>回复</span>
-            </span>
+                            <i class="iconfont icon-comment el-icon-chat-square"></i>
+                            <span>回复</span>
+                        </span>
                     </div>
                 </div>
                 <div class="write-reply" v-if="item.reply.length > 0" @click="showCommentInput(item)">
@@ -69,7 +93,9 @@ export default {
     data() {
         return {
             inputComment: '',
-            showItemId: ''
+            showItemId: '',
+            showCommit: false,
+            input: ''
         }
     },
     methods: {
@@ -102,6 +128,7 @@ export default {
          */
         commitComment() {
             console.log(this.inputComment);
+            console.log(this.input);
         },
 
         /**
@@ -116,7 +143,16 @@ export default {
                 this.inputComment = ''
             }
             this.showItemId = item.id
+        },
+
+        focusComment() {
+            this.showCommit = true
+        },
+
+        cancelFocusComment() {
+            this.showCommit = false
         }
+
     },
     created() {
         console.log(this.comments)
@@ -126,6 +162,25 @@ export default {
 
 <style scoped lang="scss">
 @import 'src/assets/scss/index';
+
+.btn-control {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-top: 10px;
+    .cancel {
+        font-size: 16px;
+        color: #606266;
+        margin-right: 20px;
+        cursor: pointer;
+        &:hover {
+            color: #333;
+        }
+    }
+    .confirm {
+        font-size: 16px;
+    }
+}
 
 .container {
     padding: 0 10px;
