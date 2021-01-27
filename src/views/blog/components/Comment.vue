@@ -15,7 +15,7 @@
                 </el-input>
             </el-col>
         </el-row>
-        <transition name="fade">
+        <transition name="el-zoom-in-top">
                 <div class="btn-control" v-if="this.showCommit">
                     <span class="cancel" @click="cancelFocusComment">取消</span>
                     <el-button class="btn" type="primary" round @click="commitComment">确定</el-button>
@@ -34,11 +34,11 @@
             <div class="content">{{item.content}}</div>
             <div class="control">
                 <span class="like" :class="{active: item.isLike}" @click="likeClick(item)">
-                    <i class="iconfont icon-like el-icon-thumb"></i>
+                    <i class="iconfont el-icon-third-like"></i>
                     <span class="like-num">{{item.likeNum > 0 ? item.likeNum + '人赞' : '赞'}}</span>
                 </span>
                 <span class="comment-reply" @click="showCommentInput(item)">
-                    <i class="iconfont icon-comment el-icon-chat-square"></i>
+                    <i class="iconfont el-icon-third-comment-copy"></i>
                     <span>回复</span>
                 </span>
             </div>
@@ -53,7 +53,7 @@
                     <div class="reply-bottom">
                         <span>{{reply.date}}</span>
                         <span class="reply-text" @click="showCommentInput(item, reply)">
-                            <i class="iconfont icon-comment el-icon-chat-square"></i>
+                            <i class="iconfont el-icon-third-comment-copy"></i>
                             <span>回复</span>
                         </span>
                     </div>

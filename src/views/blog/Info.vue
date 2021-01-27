@@ -10,11 +10,15 @@
                 </el-col>
                 <el-col :span="18">
                     <el-card>
-                        <h2>{{this.blog.name}}</h2>
+                        <h2>{{ this.blog.name }}</h2>
                         <div style="margin: 15px 0px">
-                            <h3>{{this.blog.userName}}</h3>
+                            <h3><i class="iconfont el-icon-third-user"
+                                   style="font-size: 20px; margin-right: 5px"></i>{{ this.blog.userName }}</h3>
                         </div>
-                        <span>{{ this.blog.time }}</span>
+                        <span>
+                            <i class="iconfont el-icon-third-time-circle"></i>
+                            {{ this.blog.time }}
+                        </span>
                         <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ this.blog.visitCounter }}
@@ -46,9 +50,14 @@
                             placeholder="请输入内容"
                             suffix-icon="el-icon-edit"
                             style="width: 300px;"/>
-                        <el-link :underline="false" style="margin-left: 15px">
-                            <i class="iconfont el-icon-third-like" style="font-size: 20px"/>
-                            {{ this.blog.clickCounter }}
+                        <el-link
+                            :underline="false"
+                            style="margin-left: 20px"
+                            @click="click">
+                            <div :class="{ 'active' : clickFlag }">
+                                <i class="iconfont el-icon-third-like" style="font-size: 20px"/>
+                                {{ this.blog.clickCounter }}
+                            </div>
                         </el-link>
                         <el-link :underline="false" style="margin-left: 15px">
                             <i class="iconfont el-icon-third-heart" style="font-size: 20px"/>
@@ -63,7 +72,7 @@
 </template>
 
 <script>
-import {getBlogByBlogId} from '@/network/api/blog'
+import {getBlogByBlogId, click, getByBlogIdAndUserId} from '@/network/api/blog'
 import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
 import UserInfo from "@/views/blog/components/UserInfo";
 import Comment from "@/views/blog/components/Comment";
@@ -75,20 +84,22 @@ export default {
         UserInfo,
         Comment
     },
-    data(){
-        return{
+    data() {
+        return {
             userId: '',
             blog: {},
             user: {},
             userExt: {},
             input: '',
             commentData: [],
-            showItemId: false
+            showItemId: false,
+            clickFlag: false
         }
     },
     created() {
-        this.getBlogByBlogId(this.$route.query.blogId)
+        this.getBlogByBlogId(this.$route.query.blogId);
         this.commentData = CommentData.comment.data;
+        this.getByBlogIdAndUserId()
     },
     methods: {
         //获取博客信息
@@ -123,16 +134,42 @@ export default {
                 this.userExt = res.data
             })
         },
+        //点赞
+        click() {
+            const blogUserClick = {
+                blogId: this.$route.query.blogId,
+                userId: this.$store.state.user.userId
+            }
+            click(blogUserClick).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+            })
+        },
+        //查询用户是否点赞
+        getByBlogIdAndUserId() {
+            const blogUserClick = {
+                blogId: this.$route.query.blogId,
+                userId: this.$store.state.user.userId
+            }
+            getByBlogIdAndUserId(blogUserClick).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                }
+                this.clickFlag = res.data
+            })
+        },
     }
 }
 </script>
 
 <style scoped>
-.blog-content >>> img{
-    width:100%;
+.blog-content >>> img {
+    width: 100%;
 }
 
-.blog-container{
+.blog-container {
     width: 80%;
     margin: 0px auto;
     margin-bottom: 80px;
@@ -144,6 +181,10 @@ export default {
     left: 0px;
     width: 100%;
     background: #fff;
-    box-shadow:0px 0px 1px #909399;
+    box-shadow: 0px 0px 1px #909399;
+}
+
+.active{
+    color: #409EFF;
 }
 </style>

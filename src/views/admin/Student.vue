@@ -79,7 +79,7 @@
                     align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toOrganizationInfo(scope.row)">
-                            {{ scope.row.year + scope.row.organizationName }}
+                            {{ scope.row.year }}{{ scope.row.organizationName }}
                         </el-link>
                     </template>
                 </el-table-column>

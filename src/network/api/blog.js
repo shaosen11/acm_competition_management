@@ -52,3 +52,27 @@ export function getBlogByBlogId(blogId) {
         }
     })
 }
+
+//点赞/取消博客
+export function click(blogUserClick) {
+    return request({
+        url: '/blogUserClick/click',
+        method: 'post',
+        data: {
+            blogId: blogUserClick.blogId,
+            userId: blogUserClick.userId
+        }
+    })
+}
+
+//查询点赞
+export function getByBlogIdAndUserId(blogUserClick) {
+    return request({
+        url: '/blogUserClick/getByBlogIdAndUserId',
+        method: 'post',
+        data: {
+            blogId: blogUserClick.blogId,
+            userId: blogUserClick.userId
+        }
+    })
+}
