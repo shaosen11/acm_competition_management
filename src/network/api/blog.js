@@ -41,17 +41,29 @@ export function listBlogPage(BlogQueryParam) {
     })
 }
 
-
-//获取博客分页信息
-export function getBlogByBlogId(blogId) {
+//获取博客数据
+export function getStatisticsById(blogId) {
     return request({
-        url: '/blog/getById',
+        url: '/blog/getStatisticsById',
         method: 'post',
         data: {
             blogId
         }
     })
 }
+
+//获取博客内容
+export function getContentById(blogUserClick) {
+    return request({
+        url: '/blog/getContentById',
+        method: 'post',
+        data: {
+            blogId: blogUserClick.blogId,
+            userId: blogUserClick.userId
+        }
+    })
+}
+
 
 //点赞/取消博客
 export function click(blogUserClick) {
@@ -66,13 +78,25 @@ export function click(blogUserClick) {
 }
 
 //查询点赞
-export function getByBlogIdAndUserId(blogUserClick) {
+export function getClickByBlogIdAndUserId(blogUserClick) {
     return request({
         url: '/blogUserClick/getByBlogIdAndUserId',
         method: 'post',
         data: {
             blogId: blogUserClick.blogId,
             userId: blogUserClick.userId
+        }
+    })
+}
+
+//插入浏览记录
+export function insertBlogUserView(blogUserView) {
+    return request({
+        url: '/blogUserView/insert',
+        method: 'post',
+        data: {
+            blogId: blogUserView.blogId,
+            userId: blogUserView.userId
         }
     })
 }

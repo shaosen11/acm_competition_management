@@ -72,7 +72,13 @@
 </template>
 
 <script>
-import {getBlogByBlogId, click, getByBlogIdAndUserId} from '@/network/api/blog'
+import {
+    getStatisticsById,
+    click,
+    getClickByBlogIdAndUserId,
+    getContentById,
+    insertBlogUserView
+} from '@/network/api/blog'
 import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
 import UserInfo from "@/views/blog/components/UserInfo";
 import Comment from "@/views/blog/components/Comment";
@@ -97,14 +103,19 @@ export default {
         }
     },
     created() {
-        this.getBlogByBlogId(this.$route.query.blogId);
-        this.commentData = CommentData.comment.data;
-        this.getByBlogIdAndUserId()
+        this.init()
     },
     methods: {
-        //获取博客信息
-        getBlogByBlogId(blogId) {
-            getBlogByBlogId(blogId).then(res => {
+        init() {
+            this.getStatisticsById(this.$route.query.blogId);
+            this.getContentById();
+            this.getClickByBlogIdAndUserId();
+            this.insertBlogUserView();
+            this.commentData = CommentData.comment.data;
+        },
+        //获取博客数据
+        getStatisticsById(blogId) {
+            getStatisticsById(blogId).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
@@ -112,6 +123,31 @@ export default {
                 this.userId = res.data.userId;
                 this.getUserInfo(res.data.userId);
                 this.getUserExtByUserId(res.data.userId);
+            })
+        },
+        //获取博客内容
+        getContentById() {
+            const blogUserClick = {
+                blogId: this.$route.query.blogId,
+                userId: this.$store.state.user.userId
+            }
+            getContentById(blogUserClick).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.blog.content = res.data.content
+            })
+        },
+        //插入浏览记录
+        insertBlogUserView() {
+            const blogUserView = {
+                blogId: this.$route.query.blogId,
+                userId: this.$store.state.user.userId
+            }
+            insertBlogUserView(blogUserView).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
             })
         },
         //获取用户信息
@@ -143,17 +179,18 @@ export default {
             click(blogUserClick).then(res => {
                 if (res.code != 200) {
                     this.$message.error(res.message);
-                    return false;
                 }
+                this.getClickByBlogIdAndUserId()
+                this.getStatisticsById(this.$route.query.blogId);
             })
         },
         //查询用户是否点赞
-        getByBlogIdAndUserId() {
+        getClickByBlogIdAndUserId() {
             const blogUserClick = {
                 blogId: this.$route.query.blogId,
                 userId: this.$store.state.user.userId
             }
-            getByBlogIdAndUserId(blogUserClick).then(res => {
+            getClickByBlogIdAndUserId(blogUserClick).then(res => {
                 if (res.code != 200) {
                     this.$message.error(res.message);
                 }
@@ -184,7 +221,7 @@ export default {
     box-shadow: 0px 0px 1px #909399;
 }
 
-.active{
+.active {
     color: #409EFF;
 }
 </style>
