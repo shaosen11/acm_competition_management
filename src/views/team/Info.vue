@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import TeamInfo from "@/views/team/components/TeamInfo";
+import TeamInfo from "@/component/TeamInfo";
 import {getTeamAllInfoByTeamName} from "@/network/api/team";
 
 export default {
@@ -88,6 +88,7 @@ export default {
                 if (res.code != 200) {
                     return this.$message.error(res.message);
                 }
+                console.log(res.data)
                 this.team = res.data.team;
                 this.users = res.data.users;
                 //判断是否队长

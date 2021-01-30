@@ -67,7 +67,7 @@
 <script>
 import {listBlogPage} from '@/network/api/blog'
 import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
-import UserInfo from "@/views/blog/components/UserInfo";
+import UserInfo from "@/views/blog/components/UserStatisticsInfo";
 
 export default {
     name: "List",

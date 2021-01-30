@@ -3,11 +3,14 @@
         <div class="blog-container">
             <el-row :gutter="20">
                 <el-col :span="6">
-                    <UserInfo :user-id="this.userId" :user="this.user" :user-ext="this.userExt"></UserInfo>
+                    <!--用户信息-->
+                    <user-statistics-info :user-id="this.userId" :user="this.user" :user-ext="this.userExt"></user-statistics-info>
+                    <!--热门博客-->
                     <el-card style="margin-top: 10px">
                         热门博客
                     </el-card>
                 </el-col>
+                <!--博客内容-->
                 <el-col :span="18">
                     <el-card>
                         <h2>{{ this.blog.name }}</h2>
@@ -34,6 +37,7 @@
                         <div class="blog-content" v-html="this.blog.content"/>
                     </el-card>
                 </el-col>
+                <!--评论内容-->
                 <el-col :offset="6" :span="18" style="margin-top: 15px">
                     <el-card class="box-card">
                         <comment :comments="commentData"></comment>
@@ -41,6 +45,7 @@
                 </el-col>
             </el-row>
         </div>
+        <!--底部-->
         <div class="blog-footer">
             <div style="width: 80%; margin: 0px auto">
                 <el-row :gutter="20" style="margin: 10px auto">
@@ -80,14 +85,14 @@ import {
     insertBlogUserView
 } from '@/network/api/blog'
 import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
-import UserInfo from "@/views/blog/components/UserInfo";
+import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
 import Comment from "@/views/blog/components/Comment";
 import * as CommentData from '@/data/mockdata'
 
 export default {
     name: "Info",
     components: {
-        UserInfo,
+        UserStatisticsInfo,
         Comment
     },
     data() {

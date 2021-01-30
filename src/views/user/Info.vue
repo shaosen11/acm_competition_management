@@ -48,13 +48,19 @@
                         </el-row>
 
                         <!--队伍信息-->
-                        <el-row type="flex" justify="center">
+                        <el-row :gutter="20" type="flex" justify="center">
                             <el-col :span="20">
-                                <el-divider>队伍信息</el-divider>
+                                <el-divider><i class="iconfont el-icon-third-team" style="margin:0px 10px"></i>
+                                    <el-link
+                                        type="primary"
+                                        :underline="false"
+                                        @click="toTeamInfo(teamName)">{{ teamName }}
+                                    </el-link>
+                                </el-divider>
                             </el-col>
                         </el-row>
                         <el-row type="flex" justify="center">
-                            <team-info :user-id="this.$route.query.userId"/>
+                            <team-info ref="teamInfo" :users="this.users"/>
                         </el-row>
                     </el-form>
                 </el-card>
@@ -64,18 +70,16 @@
             <el-col :span="8">
                 <report-list :user-id="this.$route.query.userId"/>
             </el-col>
-
         </el-row>
     </div>
-
-
 </template>
 
 <script>
-import TeamInfo from "./components/TeamInfo";
+import TeamInfo from "@/component/TeamInfo";
 import ReportList from "./components/ReportList";
 import {getUserInfo} from '@/network/api/user';
 import {getOrganizationByUserId} from '@/network/api/organization'
+import {getTeamAllInfoByUserId} from "@/network/api/team";
 
 export default {
     name: "Info",
@@ -93,7 +97,9 @@ export default {
                 userIcon: '',
                 organizationYear: '',
                 organizationName: '',
-            }
+            },
+            teamName: '',
+            users: ''
         }
     },
     created() {
@@ -106,6 +112,7 @@ export default {
             this.isLoading = true;
             this.getUserInfo(userId);
             this.getOrganization(userId);
+            this.getTeamAllInfoByUserId(userId);
             this.isLoading = false;
         },
         //获取用户信息
@@ -131,10 +138,25 @@ export default {
                 this.form.organizationName = res.data.name;
             })
         },
+        getTeamAllInfoByUserId(userId) {
+            getTeamAllInfoByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                if (res.data.team != null) {
+                    const team = res.data.team;
+                    this.teamName = team.name;
+                    this.users = res.data.users;
+                }
+            })
+        },
         //个人设置中心
         toUserSetting() {
             this.$router.push('/user/setting')
         },
+        toTeamInfo(teamName) {
+            this.$router.push({name: 'teamInfo', query: {teamName: teamName}})
+        }
     }
 }
 </script>

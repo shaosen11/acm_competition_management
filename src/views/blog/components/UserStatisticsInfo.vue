@@ -2,7 +2,7 @@
     <div>
         <el-card>
             <el-row :gutter="20" type="flex" justify="center">
-                <el-col :span="8">
+                <el-col :span="8" style="text-align: center">
                     <el-avatar :size="60"
                                :src="this.user.icon"/>
                 </el-col>
@@ -11,7 +11,8 @@
                         <el-button
                             type="text"
                             class="button"
-                            @click="toUserInfo()">
+                            @click="toUserInfo()"
+                            style="font-size: 16px">
                             {{ this.user.name }}
                         </el-button>
                     </div>
@@ -52,8 +53,9 @@
 </template>
 
 <script>
+
 export default {
-    name: "UserInfo",
+    name: "UserStatisticsInfo",
     props: {
         userId: '',
         user: {},
@@ -61,7 +63,7 @@ export default {
     },
     methods: {
         toUserInfo() {
-            this.$router.push({name: 'userInfo', query: {userId:this.userId}});
+            this.$router.push({name: 'userInfo', query: {userId: this.userId}});
         },
     }
 }

@@ -11,29 +11,18 @@
         <p>{{ this.organization.organizationName }}</p>
         <el-divider></el-divider>
 
+
         <!--学生列表-->
-        <el-row :gutter="20" style="margin: 30px">
-            <el-col :span="6" v-for="item in this.list" :key="item">
-                <el-card shadow="hover" style="height: 165px">
-                    <el-row :gutter="10">
-                        <el-col :span="16">
-                            <h3 @click="toUserInfo(item.userId)" style="margin: 0px">
-                                {{ item.userName }}
-                                <i class="iconfont el-icon-third-man" v-if="item.gender==1" style="color: #409EFF"></i>
-                                <i class="iconfont el-icon-third-woman" v-if="item.gender==0" style="color: #409EFF"></i>
-                            </h3>
-                            <p>{{ item.userId }}</p>
-                            <el-link :underline="false" type="primary" @click="toTeamInfo(item.teamName)">
-                                {{ item.teamName }}
-                            </el-link>
-                        </el-col>
-                        <el-col :span="8">
-                            <el-avatar
-                                    :size="50"
-                                    :src="item.icon"
-                                    icon="el-icon-user-solid"/>
-                        </el-col>
-                    </el-row>
+        <el-row :gutter="20" style="margin-top: 30px">
+            <el-col :span="6" v-for="user in this.list" :key="user">
+                <el-card shadow="hover">
+                    <div class="info">
+                        <UserInfo :user="user"/>
+                        <el-divider direction="vertical"></el-divider>
+                        <el-link :underline="false" type="primary" @click="toTeamInfo(user.teamName)">
+                            {{ user.teamName|ellipsis }}
+                        </el-link>
+                    </div>
                 </el-card>
             </el-col>
         </el-row>
@@ -41,83 +30,113 @@
 </template>
 
 <script>
-    import {getOrganizationByYearAndName, listOrganizationUser} from '@/network/api/organization';
+import UserInfo from "@/component/UserInfo";
+import {getOrganizationByYearAndName, listOrganizationUser} from '@/network/api/organization';
 
-    export default {
-        name: "index",
-        data() {
-            return {
-                organization: {},
-                list: [],
+export default {
+    name: "index",
+    components: {
+        UserInfo
+    },
+    data() {
+        return {
+            organization: {},
+            list: [],
+        }
+    },
+    created() {
+        //初始化
+        this.init()
+    },
+    methods: {
+        init() {
+            const loading = this.$loading({
+                lock: true,
+                text: '正在加载',
+                spinner: 'el-icon-loading',
+            });
+            this.getOrganizationByYearAndName();
+            this.getList();
+            loading.close();
+        },
+        //获取班级信息
+        getOrganizationByYearAndName() {
+            const organization = {
+                year: this.$route.query.year,
+                name: this.$route.query.name
             }
+            getOrganizationByYearAndName(organization).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.organization = res.data
+            })
         },
-        created() {
-            //初始化
-            this.init()
+        getList() {
+            const OrganizationUserQueryParam = {
+                organizationId: this.organization.organizationId,
+                year: this.$route.query.year,
+                name: this.$route.query.name,
+                pageNum: this.pageNum,
+                pageSize: this.pageSize,
+            }
+            listOrganizationUser(OrganizationUserQueryParam).then(res => {
+                if (res.code !== 200) {
+                    this.listLoading = false
+                    return this.$message.error(res.message);
+                }
+                this.list = res.data
+            })
         },
-        methods: {
-            init() {
-                const loading = this.$loading({
-                    lock: true,
-                    text: '正在加载',
-                    spinner: 'el-icon-loading',
-                });
-                this.getOrganizationByYearAndName();
-                this.getList();
-                loading.close();
-            },
-            //获取班级信息
-            getOrganizationByYearAndName() {
-                const organization = {
+        //跳转团队信息
+        toTeamInfo(teamName) {
+            this.$router.push({name: 'teamInfo', query: {teamName: teamName}})
+        },
+        //跳转申请列表
+        toApplicationList() {
+            this.$router.push({
+                name: 'ApplicationList', query: {
                     year: this.$route.query.year,
                     name: this.$route.query.name
                 }
-                getOrganizationByYearAndName(organization).then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.organization = res.data
-                })
-            },
-            getList() {
-                const OrganizationUserQueryParam = {
-                    organizationId: this.organization.organizationId,
-                    year: this.$route.query.year,
-                    name: this.$route.query.name,
-                    pageNum: this.pageNum,
-                    pageSize: this.pageSize,
-                }
-                listOrganizationUser(OrganizationUserQueryParam).then(res => {
-                    if (res.code !== 200) {
-                        this.listLoading = false
-                        return this.$message.error(res.message);
-                    }
-                    this.list = res.data
-                })
-            },
-            //跳转团队信息
-            toTeamInfo(teamName) {
-                this.$router.push({name: 'teamInfo', query: {teamName: teamName}})
-            },
-            //跳转用户信息
-            toUserInfo(userId) {
-                this.$router.push({name: 'userInfo', query: {userId: userId}});
-            },
-            //跳转申请列表
-            toApplicationList() {
-                this.$router.push({
-                    name: 'ApplicationList', query: {
-                        year: this.$route.query.year,
-                        name: this.$route.query.name
-                    }
-                });
-            },
-        }
+            });
+        },
+    },
+    filters: {
+        ellipsis(value) {
+            if (!value) return ''
+            if (value.length > 8) {
+                return value.slice(0, 8) + '...'
+            }
+            return value
+        },
     }
+}
 </script>
 
-<style scoped>
-    .el-col {
-        margin-bottom: 20px;
+<style scoped lang="scss">
+.el-col {
+    margin-bottom: 20px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+
+    .right {
+        display: flex;
+        flex-direction: column;
+        margin-left: 15px;
+
+        .name {
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .userId {
+            font-size: 12px;
+        }
     }
+}
 </style>
