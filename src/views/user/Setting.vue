@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-card class="table-container">
+        <el-card class="index-container">
             <div slot="header" class="clearfix">
                 <span>个人设置</span>
             </div>
@@ -101,7 +101,4 @@
 </script>
 
 <style scoped>
-.table-container {
-    width: 1000px;
-}
 </style>

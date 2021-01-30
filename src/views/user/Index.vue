@@ -47,21 +47,5 @@ export default {
 </script>
 
 <style scoped>
-.el-aside {
-    margin: 10px;
-    text-align: center;
-    line-height: 200px;
-}
 
-.el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: center;
-    line-height: 160px;
-}
-
-body > .el-container {
-    margin-bottom: 40px;
-    width: 100%;
-}
 </style>

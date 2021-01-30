@@ -183,6 +183,7 @@ export default {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }
+                console.log(res.data.list)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.totalPage = res.data.totalPage;

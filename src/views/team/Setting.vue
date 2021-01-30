@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-card class="table-container">
+        <el-card class="index-container">
             <div slot="header" class="clearfix">
                 <div slot="header" class="clearfix">
                     <span>队伍设置</span>
@@ -207,7 +207,4 @@ export default {
 </script>
 
 <style scoped>
-.table-container {
-    width: 1000px;
-}
 </style>

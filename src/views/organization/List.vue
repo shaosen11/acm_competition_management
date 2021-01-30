@@ -42,7 +42,7 @@
                 </el-form>
             </div>
         </el-card>
-        <el-card class="table-container">
+        <el-card style="margin: 30px auto">
             <div slot="header" class="clearfix">
                 <span>班级列表</span>
             </div>
@@ -91,7 +91,7 @@
                             size="mini"
                             type="primary"
                             @click="applyJoinOrganization(scope.row.organizationId)"
-                            :disabled="scope.row.joinFlag == 1"
+                            :disabled="scope.row.joinFlag == 0"
                             round>申请加入
                         </el-button>
                     </template>
@@ -169,6 +169,7 @@ export default {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }
+                console.log(res.data.list)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.organizationQuery.pageNum = res.data.pageNum;
@@ -241,7 +242,4 @@ export default {
 </script>
 
 <style scoped>
-.table-container, .pagination-container {
-    margin: 30px auto;
-}
 </style>

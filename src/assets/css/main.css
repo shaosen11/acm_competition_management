@@ -2,3 +2,13 @@
     width: 80%;
     margin: 0px auto;
 }
+
+.index-container {
+    width: 1000px;
+}
+
+.el-aside {
+    margin: 0px 10px;
+    text-align: center;
+    line-height: 200px;
+}

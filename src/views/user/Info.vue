@@ -7,10 +7,10 @@
                     <div slot="header" class="clearfix">
                         <span>个人信息</span>
                         <el-button
-                                v-if="this.$route.query.userId==this.$store.state.user.userId"
-                                style="float: right; padding: 3px 0"
-                                type="text"
-                                @click="toUserSetting">
+                            v-if="this.$route.query.userId==this.$store.state.user.userId"
+                            style="float: right; padding: 3px 0"
+                            type="text"
+                            @click="toUserSetting">
                             设置
                         </el-button>
                     </div>
@@ -72,71 +72,71 @@
 </template>
 
 <script>
-    import TeamInfo from "./components/TeamInfo";
-    import ReportList from "./components/ReportList";
-    import {getUserInfo} from '@/network/api/user';
-    import {getOrganizationByUserId} from '@/network/api/organization'
+import TeamInfo from "./components/TeamInfo";
+import ReportList from "./components/ReportList";
+import {getUserInfo} from '@/network/api/user';
+import {getOrganizationByUserId} from '@/network/api/organization'
 
-    export default {
-        name: "Info",
-        components: {
-            TeamInfo,
-            ReportList
-        },
-        data() {
-            return {
-                // 是否正在加载
-                isLoading: '',
-                form: {
-                    userId: '',
-                    userName: '',
-                    userIcon: '',
-                    organizationYear: '',
-                    organizationName: '',
-                }
+export default {
+    name: "Info",
+    components: {
+        TeamInfo,
+        ReportList
+    },
+    data() {
+        return {
+            // 是否正在加载
+            isLoading: '',
+            form: {
+                userId: '',
+                userName: '',
+                userIcon: '',
+                organizationYear: '',
+                organizationName: '',
             }
-        },
-        created() {
-            //初始化
-            this.init(this.$route.query.userId)
-        },
-        methods: {
-            //初始化方法
-            init(userId) {
-                this.isLoading = true;
-                this.getUserInfo(userId);
-                this.getOrganization(userId);
-                this.isLoading = false;
-            },
-            //获取用户信息
-            getUserInfo(userId) {
-                getUserInfo(userId).then(res => {
-                    if (res.code != 200) {
-                        this.$message.error(res.message);
-                        return false;
-                    }
-                    this.form.userId = res.data.userId;
-                    this.form.userName = res.data.name;
-                    this.form.userIcon = res.data.icon;
-                })
-            },
-            //获取班级信息
-            getOrganization(userId) {
-                getOrganizationByUserId(userId).then(res => {
-                    if (res.code != 200) {
-                        this.$message.error(res.message);
-                        return false;
-                    }
-                    this.form.organizationYear = res.data.year;
-                    this.form.organizationName = res.data.name;
-                })
-            },
-            //个人设置中心
-            toUserSetting() {
-                this.$router.push('/user/setting')
-            },
         }
+    },
+    created() {
+        //初始化
+        this.init(this.$route.query.userId)
+    },
+    methods: {
+        //初始化方法
+        init(userId) {
+            this.isLoading = true;
+            this.getUserInfo(userId);
+            this.getOrganization(userId);
+            this.isLoading = false;
+        },
+        //获取用户信息
+        getUserInfo(userId) {
+            getUserInfo(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.form.userId = res.data.userId;
+                this.form.userName = res.data.name;
+                this.form.userIcon = res.data.icon;
+            })
+        },
+        //获取班级信息
+        getOrganization(userId) {
+            getOrganizationByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.form.organizationYear = res.data.year;
+                this.form.organizationName = res.data.name;
+            })
+        },
+        //个人设置中心
+        toUserSetting() {
+            this.$router.push('/user/setting')
+        },
     }
+}
 </script>
 
 <style scoped>

@@ -19,7 +19,7 @@
                             <el-button
                                 type="text"
                                 class="button"
-                                @click="toUserInfo(user.userId)">{{ user.name }}
+                                @click="toUserInfo(user.userId)">{{ user.userName }}
                             </el-button>
                         </div>
                         <span>{{ user.userId }}</span>
@@ -57,7 +57,6 @@ export default {
         getTeamAllInfoByUserId(userId) {
             getTeamAllInfoByUserId(userId).then(res => {
                 if (res.code != 200) {
-                    this.dialogUpdateFormVisible = false;
                     return this.$message.error(res.message);
                 }
                 if (res.data.team != null) {

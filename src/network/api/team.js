@@ -103,7 +103,7 @@ export function createTeam(team) {
 //退出队伍
 export function outTeam(teamUserRelation) {
     return request({
-        url: '/team/out',
+        url: '/teamUserRelation/delete',
         method: 'post',
         data:{
             teamId: teamUserRelation.teamId,

@@ -171,16 +171,20 @@ export default {
         },
         //同意加入
         agreeJoin(row){
+            this.listLoading = true;
             let ids = row.id;
             organizationUserCooperationBatchAgree(ids).then(res => {
                 if (res.code !== 200) {
+                    this.listLoading = false;
                     return this.$message.error(res.message);
                 }
                 this.getList()
+                this.listLoading = true;
             })
         },
         //批量同意
         handleBatchOperate() {
+            this.listLoading = true;
             let ids = '';
             for (let i = 0; i < this.multipleSelection.length; i++) {
                 if (i != 0) {
@@ -190,9 +194,11 @@ export default {
             }
             organizationUserCooperationBatchAgree(ids).then(res => {
                 if (res.code !== 200) {
+                    this.listLoading = false;
                     return this.$message.error(res.message);
                 }
                 this.getList()
+                this.listLoading = false;
             })
         },
 

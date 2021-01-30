@@ -12,9 +12,9 @@
         <el-divider></el-divider>
 
         <!--学生列表-->
-        <el-row :gutter="20" style="margin: 30px 0px">
+        <el-row :gutter="20" style="margin: 30px">
             <el-col :span="6" v-for="item in this.list" :key="item">
-                <el-card shadow="hover">
+                <el-card shadow="hover" style="height: 165px">
                     <el-row :gutter="10">
                         <el-col :span="16">
                             <h3 @click="toUserInfo(item.userId)" style="margin: 0px">

@@ -23,23 +23,25 @@
 </template>
 
 <script>
-import {getBlogByBlogId} from '@/network/api/blog'
-import {updateBlog} from '@/network/api/blog'
+import {updateBlog, getContentById} from '@/network/api/blog'
 
 export default {
     name: "Update",
     data() {
         return {
-            blog: {},
+            blog: {
+                name: '',
+                content: ''
+            },
         };
     },
     created() {
-        this.getBlogByBlogId(this.$route.query.blogId)
+        this.getContentById(this.$route.query.blogId)
     },
     methods: {
         //获取博客信息
-        getBlogByBlogId(blogId) {
-            getBlogByBlogId(blogId).then(res => {
+        getContentById(blogId) {
+            getContentById(blogId).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }

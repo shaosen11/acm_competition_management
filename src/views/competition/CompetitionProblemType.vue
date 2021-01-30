@@ -7,7 +7,7 @@
         </el-breadcrumb>
         <el-row :gutter="20" style="margin: 50px 0px">
             <el-col :span="8" v-for="item in this.list" :key="item">
-                <el-card shadow="hover">
+                <el-card shadow="hover" style="height: 185px;">
                     <div @click="toCompetitionProblemTypeList(item.name)">
                         <h2>{{ item.name }}</h2>
                         {{ item.description }}

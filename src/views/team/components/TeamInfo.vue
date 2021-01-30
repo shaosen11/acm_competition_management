@@ -10,7 +10,7 @@
                     <el-col :span="16">
                         <div>
                             <div class="bottom clearfix">
-                                <el-button type="text" class="button" @click="toUserInfo(item.userId)">{{item.name}}
+                                <el-button type="text" class="button" @click="toUserInfo(item.userId)">{{item.userName}}
                                 </el-button>
                             </div>
                             <span>{{item.userId}}</span>
