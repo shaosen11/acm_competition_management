@@ -93,12 +93,12 @@
                     width="300"
                     align="center">
                     <template slot-scope="scope">
-<!--                        <el-button-->
-<!--                            v-if="judgeApplyTeam(scope.row)"-->
-<!--                            size="mini"-->
-<!--                            :disabled="judgeApplyTeam(scope.row)"-->
-<!--                            round>正在申请-->
-<!--                        </el-button>-->
+                        <!--                        <el-button-->
+                        <!--                            v-if="judgeApplyTeam(scope.row)"-->
+                        <!--                            size="mini"-->
+                        <!--                            :disabled="judgeApplyTeam(scope.row)"-->
+                        <!--                            round>正在申请-->
+                        <!--                        </el-button>-->
                         <el-button
                             size="mini"
                             type="primary"
@@ -224,7 +224,7 @@ export default {
         },
         //申请加入队伍
         applyJoinTeam(teamId) {
-            if (this.$store.state.user.userId==''){
+            if (this.$store.state.user.userId == '') {
                 this.$message.error("请先登录");
                 return false;
             }

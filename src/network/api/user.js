@@ -124,3 +124,66 @@ export function getUserExtByUserId(userId){
         }
     })
 }
+
+//获取用户收藏夹
+export function getUserStoreFolder(userStore){
+    return request({
+        url: '/userStore/listFolder',
+        method: 'post',
+        data: {
+            userId: userStore.userId,
+            folderFlag: userStore.folderFlag,
+            showFlag: userStore.showFlag,
+        }
+    })
+}
+
+
+//获取用户收藏夹
+export function createUserStore(userStore){
+    return request({
+        url: '/userStore/insert',
+        method: 'post',
+        data: {
+            userId: userStore.userId,
+            name: userStore.name,
+            reportId: userStore.reportId,
+            reportFlag: userStore.reportFlag,
+            blogId: userStore.blogId,
+            blogFlag: userStore.blogFlag,
+            folderFlag: userStore.folderFlag,
+            parentId: userStore.parentId,
+            description: userStore.description,
+            showFlag: userStore.showFlag,
+        }
+    })
+}
+
+//查询是否收藏博客
+export function getUserStoreByBlogIdAndUserId(userStore) {
+    return request({
+        url: '/userStore/getByBlogIdAndUserId',
+        method: 'post',
+        data: {
+            blogId: userStore.blogId,
+            userId: userStore.userId
+        }
+    })
+}
+
+
+//查询是否收藏博客
+export function deleteUserStore(userStore) {
+    return request({
+        url: '/userStore/delete',
+        method: 'post',
+        data: {
+            id: userStore.id,
+            reportId: userStore.reportId,
+            reportFlag: userStore.reportFlag,
+            blogId: userStore.blogId,
+            blogFlag: userStore.blogFlag,
+            folderFlag: userStore.folderFlag,
+        }
+    })
+}

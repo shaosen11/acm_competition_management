@@ -37,12 +37,11 @@ export default {
 
         .name {
             font-size: 16px;
-            margin-bottom: 5px;
             font-weight: 500;
         }
 
         .userId {
-            font-size: 12px;
+            font-size: 14px;
         }
     }
 }

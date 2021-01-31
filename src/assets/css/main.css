@@ -10,5 +10,12 @@
 .el-aside {
     margin: 0px 10px;
     text-align: center;
-    line-height: 200px;
+}
+
+.divider{
+    display: block;
+    height: 1px;
+    width: 100%;
+    margin: 10px 0px 20px 0px;
+    background-color: #DCDFE6;
 }

@@ -16,34 +16,41 @@
             </el-col>
             <el-col :span="18">
                 <el-card>
-                    <h2>博客列表</h2>
+                    <p style="font-size: 20px; margin-top: 5px">博客列表</p>
                     <div v-for="item in this.tableData" :key="item" class="text item">
-                        <h3 @click="toBlog(item.blogId)">{{ item.name }}</h3>
-                        {{ item.time }}
-                        <el-divider direction="vertical"></el-divider>
-                        <span style="margin-left: 10px">
+                        <div style="margin: 20px 0px;">
+                            <span class="title"
+                                  @click="toBlog(item.blogId)">
+                                {{ item.name }}
+                            </span>
+                        </div>
+                        <div class="data">
+                            {{ item.time }}
+                            <el-divider direction="vertical"></el-divider>
+                            <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ item.visitCounter }}
-                        </span>
-                        <span style="margin-left: 10px">
-                            <i class="iconfont el-icon-third-like"/>
-                            {{ item.clickCounter }}
-                        </span>
-                        <span style="margin-left: 10px">
-                            <i class="iconfont el-icon-third-heart"/>
-                            {{ item.storeCounter }}
-                        </span>
-                        <el-dropdown trigger="click" style="float: right; margin-left: 15px">
+                            </span>
+                                <span style="margin-left: 10px">
+                                <i class="iconfont el-icon-third-like"/>
+                                {{ item.clickCounter }}
+                            </span>
+                                <span style="margin-left: 10px">
+                                <i class="iconfont el-icon-third-heart"/>
+                                {{ item.storeCounter }}
+                            </span>
+                            <el-dropdown trigger="click" style="float: right; margin-left: 15px">
                             <span class="el-dropdown-link">
                                 操作<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
-                                <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
-                                <el-dropdown-item divided>删除</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                        <el-divider></el-divider>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
+                                    <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
+                                    <el-dropdown-item divided>删除</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </div>
+                        <div class="divider"></div>
                     </div>
                     <div class="pagination-container" style="float: right; margin-bottom: 15px">
                         <el-pagination
@@ -75,7 +82,7 @@ export default {
         UserInfo
     },
     data() {
-        return{
+        return {
             //队伍查询条件
             blogQuery: {
                 userId: this.$store.state.user.userId,
@@ -154,13 +161,13 @@ export default {
                 this.userExt = res.data
             })
         },
-        toBlog(blogId){
+        toBlog(blogId) {
             this.$router.push({
                 name: 'blogInfo',
                 query: {blogId}
             })
         },
-        toUpdateBlog(blogId){
+        toUpdateBlog(blogId) {
             this.$router.push({
                 name: 'blogUpdate',
                 query: {blogId}
@@ -171,5 +178,12 @@ export default {
 </script>
 
 <style scoped>
+.data {
+    color: #909399;
+}
 
+.title:hover {
+    color: #409eff;
+    font-size: 16px;
+}
 </style>

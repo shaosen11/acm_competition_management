@@ -10,7 +10,10 @@
                     <el-menu-item index="2" @click="toSetting">
                         <span slot="title">个人设置</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="toPassword">
+                    <el-menu-item index="3" @click="toStore">
+                        <span slot="title">个人收藏</span>
+                    </el-menu-item>
+                    <el-menu-item index="4" @click="toPassword">
                         <span slot="title">安全设置</span>
                     </el-menu-item>
                 </el-menu>
@@ -41,6 +44,10 @@ export default {
         //跳转安全设置
         toPassword() {
             this.$router.push('/user/password');
+        },
+        //跳转个人收藏
+        toStore() {
+            this.$router.push('/user/store');
         }
     }
 }

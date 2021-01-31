@@ -4,7 +4,8 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <!--用户信息-->
-                    <user-statistics-info :user-id="this.userId" :user="this.user" :user-ext="this.userExt"></user-statistics-info>
+                    <user-statistics-info :user-id="this.userId" :user="this.user"
+                                          :user-ext="this.userExt"></user-statistics-info>
                     <!--热门博客-->
                     <el-card style="margin-top: 10px">
                         热门博客
@@ -59,21 +60,29 @@
                             :underline="false"
                             style="margin-left: 20px"
                             @click="click">
-                            <div :class="{ 'active' : clickFlag }">
+                            <div :class="{ 'click' : clickFlag }">
                                 <i class="iconfont el-icon-third-like" style="font-size: 20px"/>
                                 {{ this.blog.clickCounter }}
                             </div>
                         </el-link>
-                        <el-link :underline="false" style="margin-left: 15px">
-                            <i class="iconfont el-icon-third-heart" style="font-size: 20px"/>
-                            {{ this.blog.storeCounter }}
+                        <el-link
+                            :underline="false"
+                            style="margin-left: 15px"
+                            @click="beforeStore">
+                            <div :class="{ 'store' : storeFlag }">
+                                <i class="iconfont el-icon-third-heart" style="font-size: 20px"/>
+                                {{ this.blog.storeCounter }}
+                            </div>
                         </el-link>
                     </el-col>
                 </el-row>
             </div>
         </div>
+        <store :user-store-folder="this.userStoreFolder"
+               :store-dialog-visible="this.storeDialogVisible"
+               @storeDialogVisibleFalse="storeDialogVisibleFalse"
+               @store="store"/>
     </div>
-
 </template>
 
 <script>
@@ -82,18 +91,21 @@ import {
     click,
     getClickByBlogIdAndUserId,
     getContentById,
-    insertBlogUserView
+    insertBlogUserView,
 } from '@/network/api/blog'
+import {getUserStoreByBlogIdAndUserId, createUserStore, getUserStoreFolder, deleteUserStore} from '@/network/api/user'
 import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
 import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
 import Comment from "@/views/blog/components/Comment";
+import Store from "@/views/blog/components/Store";
 import * as CommentData from '@/data/mockdata'
 
 export default {
     name: "Info",
     components: {
         UserStatisticsInfo,
-        Comment
+        Comment,
+        Store
     },
     data() {
         return {
@@ -104,7 +116,12 @@ export default {
             input: '',
             commentData: [],
             showItemId: false,
-            clickFlag: false
+            clickFlag: false,
+            storeFlag: false,
+            userStore: '',
+            userStoreParentId: '',
+            userStoreFolder: [],
+            storeDialogVisible: false
         }
     },
     created() {
@@ -115,6 +132,7 @@ export default {
             this.getStatisticsById(this.$route.query.blogId);
             this.getContentById();
             this.getClickByBlogIdAndUserId();
+            this.getUserStoreByBlogIdAndUserId();
             this.insertBlogUserView();
             this.commentData = CommentData.comment.data;
         },
@@ -197,11 +215,95 @@ export default {
             }
             getClickByBlogIdAndUserId(blogUserClick).then(res => {
                 if (res.code != 200) {
-                    this.$message.error(res.message);
+                    return this.$message.error(res.message);
                 }
                 this.clickFlag = res.data
             })
         },
+        //判断是否收藏过
+        beforeStore() {
+            if (this.storeFlag == true) {
+                const userStore = {
+                    id: this.userStore.id,
+                    blogId: this.userStore.blogId,
+                    blogFlag: 1,
+                    folderFlag: 1,
+                }
+                deleteUserStore(userStore).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.blog.storeCounter -= 1;
+                    this.getUserStoreByBlogIdAndUserId();
+                    setTimeout(() => {
+                        this.getStatisticsById(this.$route.query.blogId)
+                    }, 10000)
+                })
+            } else {
+                this.storeDialogVisibleTure()
+            }
+        },
+        //打开dialog
+        storeDialogVisibleTure() {
+            this.storeDialogVisible = true;
+            this.getUserStoreFolder();
+        },
+        storeDialogVisibleFalse() {
+            this.storeDialogVisible = false;
+        },
+        //获取收藏夹
+        getUserStoreFolder() {
+            const userStore = {
+                userId: this.$store.state.user.userId,
+                folderFlag: 0,
+            }
+            getUserStoreFolder(userStore).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.userStoreFolder = res.data
+            })
+        },
+        //收藏
+        store(id) {
+            const userStore = {
+                userId: this.$store.state.user.userId,
+                blogId: this.$route.query.blogId,
+                blogFlag: 1,
+                folderFlag: 1,
+                parentId: id,
+                showFlag: 1,
+            }
+            createUserStore(userStore).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                }
+                this.blog.storeCounter += 1;
+                this.getUserStoreByBlogIdAndUserId()
+                this.storeDialogVisibleFalse()
+                setTimeout(() => {
+                    this.getStatisticsById(this.$route.query.blogId)
+                }, 10000)
+            })
+        },
+        //查询用户是否收藏
+        getUserStoreByBlogIdAndUserId() {
+            const userStore = {
+                blogId: this.$route.query.blogId,
+                userId: this.$store.state.user.userId
+            }
+            getUserStoreByBlogIdAndUserId(userStore).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                }
+                if (res.data != null) {
+                    this.userStore = res.data
+                    this.storeFlag = true
+                } else {
+                    this.storeFlag = false
+                }
+            })
+        }
     }
 }
 </script>
@@ -226,7 +328,11 @@ export default {
     box-shadow: 0px 0px 1px #909399;
 }
 
-.active {
+.click {
     color: #409EFF;
+}
+
+.store {
+    color: #F56C6C;
 }
 </style>

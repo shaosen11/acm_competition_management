@@ -28,6 +28,22 @@ const routers = [
                     user: () => import('@/views/user/Password')
                 }
             },
+            {
+                path: 'store',
+                name: 'store',
+                meta: {title: '个人收藏', requireLogin: true},
+                components: {
+                    user: () => import('@/views/user/Store')
+                }
+            },
+            {
+                path: 'createStore',
+                name: 'createStore',
+                meta: {title: '创建收藏夹', requireLogin: true},
+                components: {
+                    user: () => import('@/views/user/components/CreateStore')
+                }
+            },
         ]
     }
 ];
