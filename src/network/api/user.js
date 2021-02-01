@@ -187,3 +187,14 @@ export function deleteUserStore(userStore) {
         }
     })
 }
+
+//查询收藏夹内容
+export function listUserStoreByParentId(parentId) {
+    return request({
+        url: '/userStore/listByParentId',
+        method: 'post',
+        data: {
+            parentId
+        }
+    })
+}

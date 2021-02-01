@@ -6,7 +6,7 @@
         :before-close="storeDialogVisibleFalse">
         <el-form ref="form" label-width="100px">
             <el-form-item label="收藏夹：">
-                <el-select v-model="id" placeholder="请选择">
+                <el-select v-model="id" placeholder="默认为默认收藏夹">
                     <el-option
                         v-for="item in this.userStoreFolder"
                         :key="item.id"
