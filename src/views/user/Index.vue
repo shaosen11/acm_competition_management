@@ -5,15 +5,19 @@
                 <el-menu
                     class="el-menu-vertical-demo">
                     <el-menu-item index="1" @click="toUserInfo">
+                        <i class="iconfont el-icon-third-user"></i>
                         <span slot="title">个人中心</span>
                     </el-menu-item>
                     <el-menu-item index="2" @click="toSetting">
+                        <i class="iconfont el-icon-third-setting"></i>
                         <span slot="title">个人设置</span>
                     </el-menu-item>
                     <el-menu-item index="3" @click="toStore">
+                        <i class="iconfont el-icon-third-heart"></i>
                         <span slot="title">个人收藏</span>
                     </el-menu-item>
                     <el-menu-item index="4" @click="toPassword">
+                        <i class="iconfont el-icon-third-security"></i>
                         <span slot="title">安全设置</span>
                     </el-menu-item>
                 </el-menu>

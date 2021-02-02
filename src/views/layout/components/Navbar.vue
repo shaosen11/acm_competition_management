@@ -88,6 +88,9 @@
                         <el-dropdown-item icon="iconfont el-icon-third-setting" @click.native="toUserSetting">
                             个人设置
                         </el-dropdown-item>
+                        <el-dropdown-item icon="iconfont el-icon-third-heart" @click.native="toUserStore">
+                            个人收藏
+                        </el-dropdown-item>
                         <el-dropdown-item
                                 v-if="this.identityFlag==1"
                                 icon="iconfont el-icon-third-control"
@@ -178,6 +181,9 @@
             },
             toUserSetting() {
                 this.$router.push('/user/setting')
+            },
+            toUserStore() {
+                this.$router.push('/user/store');
             },
             toAdmin() {
                 this.$router.push('/admin')

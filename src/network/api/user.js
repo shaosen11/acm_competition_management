@@ -198,3 +198,17 @@ export function listUserStoreByParentId(parentId) {
         }
     })
 }
+
+//修改收藏夹
+export function updateUserStore(userStore) {
+    return request({
+        url: '/userStore/update',
+        method: 'post',
+        data: {
+            id: userStore.id,
+            name: userStore.name,
+            description: userStore.description,
+            showFlag: userStore.showFlag
+        }
+    })
+}

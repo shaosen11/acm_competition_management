@@ -35,7 +35,7 @@
                             <i class="iconfont el-icon-third-heart"/>
                             {{ this.blog.storeCounter }}
                         </span>
-                        <div class="blog-content" v-html="this.blog.content"/>
+                        <div class="blog-content" v-html="this.blogContent"/>
                     </el-card>
                 </el-col>
                 <!--评论内容-->
@@ -111,6 +111,7 @@ export default {
         return {
             userId: '',
             blog: {},
+            blogContent: '',
             user: {},
             userExt: {},
             input: '',
@@ -158,7 +159,7 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-                this.blog.content = res.data.content
+                this.blogContent = res.data.content
             })
         },
         //插入浏览记录
@@ -237,7 +238,7 @@ export default {
                     this.getUserStoreByBlogIdAndUserId();
                     setTimeout(() => {
                         this.getStatisticsById(this.$route.query.blogId)
-                    }, 10000)
+                    }, 5000)
                 })
             } else {
                 this.storeDialogVisibleTure()
@@ -283,7 +284,7 @@ export default {
                 this.storeDialogVisibleFalse()
                 setTimeout(() => {
                     this.getStatisticsById(this.$route.query.blogId)
-                }, 10000)
+                }, 5000)
             })
         },
         //查询用户是否收藏
