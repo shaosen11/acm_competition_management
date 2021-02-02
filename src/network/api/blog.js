@@ -42,9 +42,9 @@ export function listBlogPage(BlogQueryParam) {
 }
 
 //获取博客数据
-export function getStatisticsById(blogId) {
+export function getStatisticsByBlogId(blogId) {
     return request({
-        url: '/blog/getStatisticsById',
+        url: '/blog/getStatisticsByBlogId',
         method: 'post',
         data: {
             blogId

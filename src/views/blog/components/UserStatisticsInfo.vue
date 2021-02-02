@@ -4,7 +4,7 @@
             <el-row :gutter="20" type="flex" justify="center">
                 <el-col :span="8" style="text-align: center">
                     <el-avatar :size="60"
-                               :src="this.user.icon"/>
+                               :src="this.userExt.icon"/>
                 </el-col>
                 <el-col :span="16">
                     <div class="bottom clearfix">
@@ -13,10 +13,10 @@
                             class="button"
                             @click="toUserInfo()"
                             style="font-size: 16px">
-                            {{ this.user.name }}
+                            {{ this.userExt.userName }}
                         </el-button>
                     </div>
-                    <span>{{ this.user.userId }}</span>
+                    <span>{{ this.userExt.userId }}</span>
                 </el-col>
             </el-row>
             <el-row :gutter="20" type="flex" justify="center" style="margin-top: 20px">
@@ -58,7 +58,6 @@ export default {
     name: "UserStatisticsInfo",
     props: {
         userId: '',
-        user: {},
         userExt: {}
     },
     methods: {

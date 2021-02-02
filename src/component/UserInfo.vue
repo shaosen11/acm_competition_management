@@ -40,6 +40,10 @@ export default {
             font-weight: 500;
         }
 
+        .name:hover{
+            color: #409EFF;
+        }
+
         .userId {
             font-size: 14px;
         }

@@ -8,7 +8,7 @@
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6">
                 <div>
-                    <UserInfo :user-id="this.userId" :user="this.user" :user-ext="this.userExt"></UserInfo>
+                    <UserInfo :user-id="this.userId" :user-ext="this.userExt"></UserInfo>
                 </div>
                 <el-card style="margin-top: 10px">
                     热门博客
@@ -98,7 +98,6 @@ export default {
             //是否分页隐藏
             isHide: true,
             userId: '',
-            user: {},
             userExt: {}
         }
     },
@@ -109,7 +108,6 @@ export default {
         //初始化方法
         init() {
             this.getList();
-            this.getUserInfo(this.$store.state.user.userId);
             this.getUserExtByUserId(this.$store.state.user.userId);
         },
         //获取表单信息

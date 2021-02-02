@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <!--用户信息-->
-                    <user-statistics-info :user-id="this.userId" :user="this.user"
+                    <user-statistics-info :user-id="this.userId"
                                           :user-ext="this.userExt"></user-statistics-info>
                     <!--热门博客-->
                     <el-card style="margin-top: 10px">
@@ -87,14 +87,14 @@
 
 <script>
 import {
-    getStatisticsById,
+    getStatisticsByBlogId,
     click,
     getClickByBlogIdAndUserId,
     getContentById,
     insertBlogUserView,
 } from '@/network/api/blog'
 import {getUserStoreByBlogIdAndUserId, createUserStore, getUserStoreFolder, deleteUserStore} from '@/network/api/user'
-import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
+import {getUserExtByUserId} from "@/network/api/user";
 import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
 import Comment from "@/views/blog/components/Comment";
 import Store from "@/views/blog/components/Store";
@@ -112,7 +112,6 @@ export default {
             userId: '',
             blog: {},
             blogContent: '',
-            user: {},
             userExt: {},
             input: '',
             commentData: [],
@@ -130,7 +129,7 @@ export default {
     },
     methods: {
         init() {
-            this.getStatisticsById(this.$route.query.blogId);
+            this.getStatisticsByBlogId(this.$route.query.blogId);
             this.getContentById();
             this.getClickByBlogIdAndUserId();
             this.getUserStoreByBlogIdAndUserId();
@@ -138,14 +137,13 @@ export default {
             this.commentData = CommentData.comment.data;
         },
         //获取博客数据
-        getStatisticsById(blogId) {
-            getStatisticsById(blogId).then(res => {
+        getStatisticsByBlogId(blogId) {
+            getStatisticsByBlogId(blogId).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
                 this.blog = res.data;
                 this.userId = res.data.userId;
-                this.getUserInfo(res.data.userId);
                 this.getUserExtByUserId(res.data.userId);
             })
         },
@@ -172,16 +170,6 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-            })
-        },
-        //获取用户信息
-        getUserInfo(userId) {
-            getUserInfo(userId).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
-                    return false;
-                }
-                this.user = res.data
             })
         },
         //获取用户扩展信息
