@@ -1,28 +1,29 @@
 import {request} from "@/network/request";
 
 //创建博客
-export function createBlog(Blog) {
+export function createBlog(blog) {
     return request({
         url: '/blog/create',
         method: 'post',
         data: {
-            userId: Blog.userId,
-            name: Blog.name,
-            content: Blog.content,
+            userId: blog.userId,
+            name: blog.name,
+            content: blog.content,
+            markdown: blog.markdown,
         }
     })
 }
 
 //修改博客
-export function updateBlog(Blog) {
+export function updateBlog(blog) {
     return request({
         url: '/blog/update',
         method: 'post',
         data: {
-            blogId: Blog.blogId,
-            userId: Blog.userId,
-            name: Blog.name,
-            content: Blog.content,
+            blogId: blog.blogId,
+            name: blog.name,
+            content: blog.content,
+            markdown: blog.markdown,
         }
     })
 }
@@ -53,13 +54,13 @@ export function getStatisticsByBlogId(blogId) {
 }
 
 //获取博客内容
-export function getContentById(blogUserClick) {
+export function getContentById(blog) {
     return request({
         url: '/blog/getContentById',
         method: 'post',
         data: {
-            blogId: blogUserClick.blogId,
-            userId: blogUserClick.userId
+            blogId: blog.blogId,
+            userId: blog.userId
         }
     })
 }

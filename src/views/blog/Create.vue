@@ -14,7 +14,7 @@
             </el-col>
         </el-row>
         <mavon-editor
-            v-model="text"
+            v-model="markdown"
             ref="md"
             @imgAdd="$imgAdd"
             @change="change"
@@ -30,7 +30,7 @@
         data() {
             return {
                 name: "",
-                text: "",
+                markdown: "",
                 content: "",
                 pageNum: 1,
                 pageSize: 5,
@@ -71,8 +71,7 @@
                     userId: this.$store.state.user.userId,
                     name: this.name,
                     content: this.content,
-                    pageNum: this.pageNum,
-                    pageSize: this.pageSize
+                    markdown: this.markdown,
                 }
                 createBlog(blog).then(res => {
                     if (res.code != 200) {

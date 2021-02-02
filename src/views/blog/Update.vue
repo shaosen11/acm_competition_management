@@ -3,18 +3,18 @@
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>博客</el-breadcrumb-item>
-            <el-breadcrumb-item>创建博客</el-breadcrumb-item>
+            <el-breadcrumb-item>修改博客</el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="20" type="flex" justify="center" style="margin-top: 30px">
             <el-col :span="16">
-                <el-input v-model="this.blog.name" placeholder="请输入标题"></el-input>
+                <el-input v-model="blog.name" placeholder="请输入标题"></el-input>
             </el-col>
             <el-col :span="2">
-                <el-button type="primary" @click="submit">发布</el-button>
+                <el-button type="primary" @click="submit">修改</el-button>
             </el-col>
         </el-row>
         <mavon-editor
-            v-model="this.blog.content"
+            v-model="blog.markdown"
             ref="md"
             @imgAdd="$imgAdd"
             @change="change"
@@ -31,7 +31,8 @@ export default {
         return {
             blog: {
                 name: '',
-                content: ''
+                content: '',
+                markdown: ''
             },
         };
     },
@@ -39,13 +40,23 @@ export default {
         this.getContentById(this.$route.query.blogId)
     },
     methods: {
+        initCheck(userId){
+            if (this.$store.state.user.userId != userId){
+                this.$message.error("请用发布账号登录");
+                this.$router.push('/home')
+            }
+        },
         //获取博客信息
         getContentById(blogId) {
-            getContentById(blogId).then(res => {
+            const blog = {
+                blogId
+            }
+            getContentById(blog).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
                 this.blog = res.data
+                this.initCheck(this.blog.userId)
             })
         },
         // 将图片上传到服务器，返回地址替换到md中
@@ -63,19 +74,25 @@ export default {
             });
         },
         change(value, render) {
-            // render 为 markdown 解析后的结果
             this.blog.content = render;
         },
         submit() {
+            this.blog.blogId = this.$route.query.blogId
+            console.log(this.blog)
             updateBlog(this.blog).then(res => {
                 if (res.code != 200) {
-                    this.$message.error(res.message);
-                    return false;
+                    return this.$message.error(res.message);
                 }
-                this.$router.push('/blogList')
+                this.toBlog(this.blog.blogId)
             })
-        }
-    }
+        },
+        toBlog(blogId) {
+            this.$router.push({
+                name: 'blogInfo',
+                query: {blogId}
+            })
+        },
+    },
 }
 </script>
 

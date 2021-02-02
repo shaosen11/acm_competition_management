@@ -35,7 +35,8 @@
                             <i class="iconfont el-icon-third-heart"/>
                             {{ this.blog.storeCounter }}
                         </span>
-                        <div class="blog-content" v-html="this.blogContent"/>
+                        <el-divider></el-divider>
+                        <div class="blog-content markdown-body" v-dompurify-html="this.blogContent"></div>
                     </el-card>
                 </el-col>
                 <!--评论内容-->
@@ -296,15 +297,21 @@ export default {
                 }
             })
         }
+    },
+    filters:{
+        unescape:function (html) {
+            return html
+                .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+                .replace(/&lt;/g, "<")
+                .replace(/&gt;/g, ">")
+                .replace(/&quot;/g, "\"")
+                .replace(/&#39;/g, "\'");
+        }
     }
 }
 </script>
 
 <style scoped>
-.blog-content >>> img {
-    width: 100%;
-}
-
 .blog-container {
     width: 80%;
     margin: 0px auto;

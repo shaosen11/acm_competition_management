@@ -15,19 +15,20 @@
                 </el-card>
             </el-col>
             <el-col :span="18">
-                <el-card>
-                    <p style="font-size: 20px; margin-top: 5px">博客列表</p>
-                    <div v-for="item in this.tableData" :key="item" class="text item">
-                        <div style="margin: 20px 0px;">
+                <el-tabs type="border-card">
+                    <el-tab-pane label="所有博客">
+<!--                        <p style="font-size: 20px; margin-top: 5px">博客列表</p>-->
+                        <div v-for="item in this.tableData" :key="item" class="text item">
+                            <div style="margin: 20px 0px;">
                             <span class="title"
                                   @click="toBlog(item.blogId)">
                                 {{ item.name }}
                             </span>
-                        </div>
-                        <div class="data">
-                            {{ item.time }}
-                            <el-divider direction="vertical"></el-divider>
-                            <span style="margin-left: 10px">
+                            </div>
+                            <div class="data">
+                                {{ item.time }}
+                                <el-divider direction="vertical"></el-divider>
+                                <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ item.visitCounter }}
                             </span>
@@ -39,33 +40,37 @@
                                 <i class="iconfont el-icon-third-heart"/>
                                 {{ item.storeCounter }}
                             </span>
-                            <el-dropdown trigger="click" style="float: right; margin-left: 15px">
+                                <el-dropdown trigger="click" style="float: right; margin-left: 15px">
                             <span class="el-dropdown-link">
                                 操作<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
-                                <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
-                                    <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
-                                    <el-dropdown-item divided>删除</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </el-dropdown>
+                                    <el-dropdown-menu slot="dropdown">
+                                        <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
+                                        <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
+                                        <el-dropdown-item divided>删除</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </el-dropdown>
+                            </div>
+                            <div class="divider"></div>
                         </div>
-                        <div class="divider"></div>
-                    </div>
-                    <div class="pagination-container" style="float: right; margin-bottom: 15px">
-                        <el-pagination
-                            background
-                            @size-change="handleSizeChange"
-                            @current-change="handleCurrentChange"
-                            :current-page="blogQuery.pageNum"
-                            :page-sizes="[5,10,15]"
-                            :page-size="blogQuery.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="total"
-                            :hide-on-single-page="isHide">
-                        </el-pagination>
-                    </div>
-                </el-card>
+                        <div class="pagination-container" style="float: right; margin-bottom: 15px">
+                            <el-pagination
+                                background
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="blogQuery.pageNum"
+                                :page-sizes="[5,10,15]"
+                                :page-size="blogQuery.pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="total"
+                                :hide-on-single-page="isHide">
+                            </el-pagination>
+                        </div></el-tab-pane>
+                    <el-tab-pane label="草稿箱">草稿箱</el-tab-pane>
+                    <el-tab-pane label="审核中">审核中</el-tab-pane>
+                    <el-tab-pane label="私有">私有</el-tab-pane>
+                    <el-tab-pane label="垃圾箱">垃圾箱 </el-tab-pane>
+                </el-tabs>
             </el-col>
         </el-row>
     </div>

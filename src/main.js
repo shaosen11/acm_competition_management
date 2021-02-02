@@ -10,6 +10,9 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 Vue.component("mavon-editor", mavonEditor);
 
+import VueDOMPurifyHTML from 'vue-dompurify-html'
+Vue.use(VueDOMPurifyHTML)
+
 import "./assets/css/main.css"
 
 // import VCharts from 'v-charts'
