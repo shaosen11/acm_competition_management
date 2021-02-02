@@ -215,7 +215,7 @@ export default {
                 if (res.code != 200) {
                     return this.$message.error(res.message);
                 }
-                this.selectUserStoreFolder(userStore.parentId);
+                this.selectUserStoreFolder(this.userStoreFolderIndex);
             })
         },
         //删除收藏夹

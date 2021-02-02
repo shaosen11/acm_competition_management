@@ -143,7 +143,7 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-                this.blog = res.data
+                this.blog = res.data;
                 this.userId = res.data.userId;
                 this.getUserInfo(res.data.userId);
                 this.getUserExtByUserId(res.data.userId);
@@ -204,8 +204,16 @@ export default {
                 if (res.code != 200) {
                     this.$message.error(res.message);
                 }
+                if (this.clickFlag == true){
+                    this.blog.clickCounter -= 1;
+                    this.userExt.clickCounter -= 1;
+                    this.clickFlag = false;
+                }else {
+                    this.blog.clickCounter += 1;
+                    this.userExt.clickCounter += 1;
+                    this.clickFlag = true;
+                }
                 this.getClickByBlogIdAndUserId()
-                this.getStatisticsById(this.$route.query.blogId);
             })
         },
         //查询用户是否点赞
@@ -236,9 +244,6 @@ export default {
                     }
                     this.blog.storeCounter -= 1;
                     this.getUserStoreByBlogIdAndUserId();
-                    setTimeout(() => {
-                        this.getStatisticsById(this.$route.query.blogId)
-                    }, 5000)
                 })
             } else {
                 this.storeDialogVisibleTure()
@@ -280,11 +285,9 @@ export default {
                     this.$message.error(res.message);
                 }
                 this.blog.storeCounter += 1;
+                this.userExt.storeCounter += 1;
                 this.getUserStoreByBlogIdAndUserId()
                 this.storeDialogVisibleFalse()
-                setTimeout(() => {
-                    this.getStatisticsById(this.$route.query.blogId)
-                }, 5000)
             })
         },
         //查询用户是否收藏
