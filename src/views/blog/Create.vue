@@ -9,8 +9,9 @@
             <el-col :span="16">
                 <el-input v-model="name" placeholder="请输入标题"></el-input>
             </el-col>
-            <el-col :span="2">
-                <el-button type="primary" @click="submit">发布</el-button>
+            <el-col :span="4">
+                <el-button type="info" @click="save">保存草稿</el-button>
+                <el-button type="primary" @click="release">发布</el-button>
             </el-col>
         </el-row>
         <mavon-editor
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-    import {createBlog} from '@/network/api/blog'
+    import {releaseBlog, saveBlog} from '@/network/api/blog'
 
     export default {
         name: "Create",
@@ -32,21 +33,46 @@
                 name: "",
                 markdown: "",
                 content: "",
-                pageNum: 1,
-                pageSize: 5,
-                configs: {}
             };
         },
         created() {
-            this.isLogin()
         },
         methods: {
-            //判断是否登录
-            isLogin() {
-                if(!this.$store.state.user.isLogin){
-                    this.$message.error("请先登录");
-                    this.$router.push("/");
+            change(value, render) {
+                // render 为 markdown 解析后的结果
+                this.content = render;
+            },
+            save(){
+                const blog = {
+                    userId: this.$store.state.user.userId,
+                    name: this.name,
+                    content: this.content,
+                    markdown: this.markdown,
                 }
+                saveBlog(blog).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.$router.push({
+                        name: 'blogUpdate',
+                        query: {blogId: res.data.blogId}
+                    })
+                })
+            },
+            release() {
+                const blog = {
+                    userId: this.$store.state.user.userId,
+                    name: this.name,
+                    content: this.content,
+                    markdown: this.markdown,
+                }
+                releaseBlog(blog).then(res => {
+                    if (res.code != 200) {
+                        this.$message.error(res.message);
+                        return false;
+                    }
+                    this.$router.push('/blogList')
+                })
             },
             // 将图片上传到服务器，返回地址替换到md中
             $imgAdd(pos, $file) {
@@ -62,25 +88,6 @@
                     this.$refs.md.$img2Url(pos, url);
                 });
             },
-            change(value, render) {
-                // render 为 markdown 解析后的结果
-                this.content = render;
-            },
-            submit() {
-                const blog = {
-                    userId: this.$store.state.user.userId,
-                    name: this.name,
-                    content: this.content,
-                    markdown: this.markdown,
-                }
-                createBlog(blog).then(res => {
-                    if (res.code != 200) {
-                        this.$message.error(res.message);
-                        return false;
-                    }
-                    this.$router.push('/blogList')
-                })
-            }
         }
     }
 </script>

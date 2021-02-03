@@ -57,12 +57,11 @@
 export default {
     name: "UserStatisticsInfo",
     props: {
-        userId: '',
         userExt: {}
     },
     methods: {
         toUserInfo() {
-            this.$router.push({name: 'userInfo', query: {userId: this.userId}});
+            this.$router.push({name: 'userInfo', query: {userId: this.userExt.userId}});
         },
     }
 }

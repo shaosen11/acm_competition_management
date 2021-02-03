@@ -7,90 +7,96 @@
         </el-breadcrumb>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6">
-                <div>
-                    <UserInfo :user-id="this.userId" :user-ext="this.userExt"></UserInfo>
-                </div>
+                <UserInfo :user-ext="this.userExt"></UserInfo>
                 <el-card style="margin-top: 10px">
                     热门博客
                 </el-card>
             </el-col>
             <el-col :span="18">
-                <el-tabs type="border-card">
-                    <el-tab-pane label="所有博客">
-<!--                        <p style="font-size: 20px; margin-top: 5px">博客列表</p>-->
-                        <div v-for="item in this.tableData" :key="item" class="text item">
-                            <div style="margin: 20px 0px;">
+                <el-card>
+                    <el-tabs v-model="activeTab" @tab-click="handleClick">
+                        <el-tab-pane label="所有博客" name="all"/>
+                        <el-tab-pane label="草稿箱" name="draft"/>
+                        <el-tab-pane label="审核中" name="examine"/>
+                        <el-tab-pane label="私有" name="private"/>
+                        <el-tab-pane label="回收站" name="garbage"/>
+                    </el-tabs>
+                    <div v-for="item in this.tableData" :key="item" class="text item">
+                        <div style="margin: 20px 0px;">
                             <span class="title"
                                   @click="toBlog(item.blogId)">
                                 {{ item.name }}
                             </span>
-                            </div>
-                            <div class="data">
-                                {{ item.time }}
-                                <el-divider direction="vertical"></el-divider>
-                                <span style="margin-left: 10px">
+                            <el-tag :type="computeTabStatue(item)" style="margin-left: 10px">{{ computeStatue(item) }}</el-tag>
+                        </div>
+                        <div class="data">
+                            {{ item.time }}
+                            <el-divider direction="vertical"></el-divider>
+                            <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ item.visitCounter }}
                             </span>
-                                <span style="margin-left: 10px">
+                            <span style="margin-left: 10px">
                                 <i class="iconfont el-icon-third-like"/>
                                 {{ item.clickCounter }}
                             </span>
-                                <span style="margin-left: 10px">
+                            <span style="margin-left: 10px">
                                 <i class="iconfont el-icon-third-heart"/>
                                 {{ item.storeCounter }}
                             </span>
-                                <el-dropdown trigger="click" style="float: right; margin-left: 15px">
+                            <el-dropdown style="float: right; margin-left: 15px">
                             <span class="el-dropdown-link">
                                 操作<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
-                                    <el-dropdown-menu slot="dropdown">
-                                        <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
-                                        <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
-                                        <el-dropdown-item divided>删除</el-dropdown-item>
-                                    </el-dropdown-menu>
-                                </el-dropdown>
-                            </div>
-                            <div class="divider"></div>
+                                <el-dropdown-menu slot="dropdown">
+                                    <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
+                                    <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
+                                    <el-dropdown-item @click.native="setPrivate(item.blogId)">设为私密</el-dropdown-item>
+                                    <el-dropdown-item divided>删除</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </div>
-                        <div class="pagination-container" style="float: right; margin-bottom: 15px">
-                            <el-pagination
-                                background
-                                @size-change="handleSizeChange"
-                                @current-change="handleCurrentChange"
-                                :current-page="blogQuery.pageNum"
-                                :page-sizes="[5,10,15]"
-                                :page-size="blogQuery.pageSize"
-                                layout="total, sizes, prev, pager, next, jumper"
-                                :total="total"
-                                :hide-on-single-page="isHide">
-                            </el-pagination>
-                        </div></el-tab-pane>
-                    <el-tab-pane label="草稿箱">草稿箱</el-tab-pane>
-                    <el-tab-pane label="审核中">审核中</el-tab-pane>
-                    <el-tab-pane label="私有">私有</el-tab-pane>
-                    <el-tab-pane label="垃圾箱">垃圾箱 </el-tab-pane>
-                </el-tabs>
+                        <div class="divider"></div>
+                    </div>
+                    <div class="pagination-container" style="float: right; margin-bottom: 15px">
+                        <el-pagination
+                            background
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="blogQuery.pageNum"
+                            :page-sizes="[5,10,15]"
+                            :page-size="blogQuery.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total"
+                            :hide-on-single-page="isHide">
+                        </el-pagination>
+                    </div>
+                </el-card>
+
             </el-col>
         </el-row>
     </div>
 </template>
 
 <script>
-import {listBlogPage} from '@/network/api/blog'
-import {getUserInfo, getUserExtByUserId} from "@/network/api/user";
+import {getUserExtByUserId} from "@/network/api/user";
 import UserInfo from "@/views/blog/components/UserStatisticsInfo";
+import {listBlogPage, updateBlog} from "@/network/api/blog";
 
 export default {
     name: "List",
     components: {
-        UserInfo
+        UserInfo,
     },
     data() {
         return {
-            //队伍查询条件
+            //默认记过tab
+            activeTab: 'all',
+            //查询全部
             blogQuery: {
                 userId: this.$store.state.user.userId,
+                status: '',
+                showFlag: '',
                 pageNum: 1,
                 pageSize: 5,
             },
@@ -112,8 +118,18 @@ export default {
     methods: {
         //初始化方法
         init() {
-            this.getList();
             this.getUserExtByUserId(this.$store.state.user.userId);
+            this.getList()
+        },
+        //获取用户扩展信息
+        getUserExtByUserId(userId) {
+            getUserExtByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.userExt = res.data
+            })
         },
         //获取表单信息
         getList() {
@@ -129,39 +145,10 @@ export default {
                 this.blogQuery.pageSize = res.data.pageSize;
                 if (this.total > this.blogQuery.pageSize) {
                     this.isHide = false;
+                } else {
+                    this.isHide = true;
                 }
                 this.listLoading = false;
-            })
-        },
-        //处理页面大小变化
-        handleSizeChange(val) {
-            this.blogQuery.pageNum = 1;
-            this.blogQuery.pageSize = val;
-            this.getList();
-        },
-        //处理当前页面数量变化
-        handleCurrentChange(val) {
-            this.blogQuery.pageNum = val;
-            this.getList();
-        },
-        //获取用户信息
-        getUserInfo(userId) {
-            getUserInfo(userId).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
-                    return false;
-                }
-                this.user = res.data
-            })
-        },
-        //获取用户扩展信息
-        getUserExtByUserId(userId) {
-            getUserExtByUserId(userId).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
-                    return false;
-                }
-                this.userExt = res.data
             })
         },
         toBlog(blogId) {
@@ -176,6 +163,84 @@ export default {
                 query: {blogId}
             })
         },
+        setPrivate(blogId) {
+            const blog ={
+                blogId,
+                showFlag: 0
+            }
+            updateBlog(blog).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                return this.$message.success(res.message);
+            })
+        },
+        //处理页面大小变化
+        handleSizeChange(val) {
+            this.blogQuery.pageNum = 1;
+            this.blogQuery.pageSize = val;
+            this.getList();
+        },
+        //处理当前页面数量变化
+        handleCurrentChange(val) {
+            this.blogQuery.pageNum = val;
+            this.getList();
+        },
+        //切换tab
+        handleClick(tab) {
+            if (tab.name == 'all') {
+                this.blogQuery.status = '';
+                this.blogQuery.showFlag = '';
+            }
+            if (tab.name == 'draft') {
+                this.blogQuery.status = 1;
+                this.blogQuery.showFlag = '';
+            }
+            if (tab.name == 'examine') {
+                this.blogQuery.status = 2;
+                this.blogQuery.showFlag = '';
+            }
+            if (tab.name == 'private') {
+                this.blogQuery.status = '';
+                this.blogQuery.showFlag = 0;
+            }
+            if (tab.name == 'garbage') {
+                this.blogQuery.status = 4;
+                this.blogQuery.showFlag = '';
+            }
+            this.blogQuery.pageNum = 1;
+            this.blogQuery.pageSize = 5;
+            this.getList();
+        },
+        //计算状态
+        computeStatue(blog) {
+            if (blog.status == 1) {
+                return "草稿"
+            }
+            if (blog.status == 2) {
+                return "审核中"
+            }
+            if (blog.status == 3) {
+                return "已发布"
+            }
+            if (blog.status == 4) {
+                return "回收中"
+            }
+        },
+        computeTabStatue(blog) {
+            if (blog.status == 1) {
+                return "info"
+            }
+            if (blog.status == 2) {
+                return "warning"
+            }
+            if (blog.status == 3) {
+                return ""
+            }
+            if (blog.status == 4) {
+                return "danger"
+            }
+        }
     }
 }
 </script>

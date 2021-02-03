@@ -9,8 +9,9 @@
             <el-col :span="16">
                 <el-input v-model="blog.name" placeholder="请输入标题"></el-input>
             </el-col>
-            <el-col :span="2">
-                <el-button type="primary" @click="submit">修改</el-button>
+            <el-col :span="4">
+                <el-button type="info" @click="save" v-if="blog.status==1">保存草稿</el-button>
+                <el-button type="primary" @click="releaseBlog">发布</el-button>
             </el-col>
         </el-row>
         <mavon-editor
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import {updateBlog, getContentById} from '@/network/api/blog'
+import {releaseBlog, getContentById, saveBlog} from '@/network/api/blog'
 
 export default {
     name: "Update",
@@ -32,7 +33,8 @@ export default {
             blog: {
                 name: '',
                 content: '',
-                markdown: ''
+                markdown: '',
+                status: false
             },
         };
     },
@@ -40,8 +42,8 @@ export default {
         this.getContentById(this.$route.query.blogId)
     },
     methods: {
-        initCheck(userId){
-            if (this.$store.state.user.userId != userId){
+        initCheck(userId) {
+            if (this.$store.state.user.userId != userId) {
                 this.$message.error("请用发布账号登录");
                 this.$router.push('/home')
             }
@@ -59,27 +61,27 @@ export default {
                 this.initCheck(this.blog.userId)
             })
         },
-        // 将图片上传到服务器，返回地址替换到md中
-        $imgAdd(pos, $file) {
-            var formdata = new FormData();
-            formdata.append("file", $file);
-            //将下面上传接口替换为你自己的服务器接口
-            axios({
-                url: "/common/upload",
-                method: "post",
-                data: formdata,
-                headers: { "Content-Type": "multipart/form-data" }
-            }).then(url => {
-                this.$refs.md.$img2Url(pos, url);
-            });
-        },
         change(value, render) {
             this.blog.content = render;
         },
-        submit() {
+        save() {
+            const blog = {
+                blogId: this.$route.query.blogId,
+                userId: this.$store.state.user.userId,
+                name: this.blog.name,
+                content: this.blog.content,
+                markdown: this.blog.markdown,
+            }
+            saveBlog(blog).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                return this.$message.success(res.message);
+            })
+        },
+        releaseBlog() {
             this.blog.blogId = this.$route.query.blogId
-            console.log(this.blog)
-            updateBlog(this.blog).then(res => {
+            releaseBlog(this.blog).then(res => {
                 if (res.code != 200) {
                     return this.$message.error(res.message);
                 }
@@ -91,6 +93,20 @@ export default {
                 name: 'blogInfo',
                 query: {blogId}
             })
+        },
+        // 将图片上传到服务器，返回地址替换到md中
+        $imgAdd(pos, $file) {
+            var formdata = new FormData();
+            formdata.append("file", $file);
+            //将下面上传接口替换为你自己的服务器接口
+            axios({
+                url: "/common/upload",
+                method: "post",
+                data: formdata,
+                headers: {"Content-Type": "multipart/form-data"}
+            }).then(url => {
+                this.$refs.md.$img2Url(pos, url);
+            });
         },
     },
 }

@@ -1,11 +1,27 @@
 import {request} from "@/network/request";
 
 //创建博客
-export function createBlog(blog) {
+export function releaseBlog(blog) {
     return request({
-        url: '/blog/create',
+        url: '/blog/release',
         method: 'post',
         data: {
+            blogId: blog.blogId,
+            userId: blog.userId,
+            name: blog.name,
+            content: blog.content,
+            markdown: blog.markdown,
+        }
+    })
+}
+
+//保存为草稿
+export function saveBlog(blog) {
+    return request({
+        url: '/blog/save',
+        method: 'post',
+        data: {
+            blogId: blog.blogId,
             userId: blog.userId,
             name: blog.name,
             content: blog.content,
@@ -24,6 +40,7 @@ export function updateBlog(blog) {
             name: blog.name,
             content: blog.content,
             markdown: blog.markdown,
+            showFlag: blog.showFlag
         }
     })
 }
@@ -36,6 +53,8 @@ export function listBlogPage(BlogQueryParam) {
         data: {
             userId: BlogQueryParam.userId,
             name: BlogQueryParam.name,
+            status: BlogQueryParam.status,
+            showFlag: BlogQueryParam.showFlag,
             pageNum: BlogQueryParam.pageNum,
             pageSize: BlogQueryParam.pageSize,
         }
