@@ -11,7 +11,7 @@
             </el-col>
             <el-col :span="4">
                 <el-button type="info" @click="save" v-if="blog.status==1">保存草稿</el-button>
-                <el-button type="primary" @click="releaseBlog">发布</el-button>
+                <el-button type="primary" @click="release">发布</el-button>
             </el-col>
         </el-row>
         <mavon-editor
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {releaseBlog, getContentById, saveBlog} from '@/network/api/blog'
+import {releaseBlog, getContentByBlogId, saveBlog} from '@/network/api/blog'
 
 export default {
     name: "Update",
@@ -34,12 +34,12 @@ export default {
                 name: '',
                 content: '',
                 markdown: '',
-                status: false
+                status: 1
             },
         };
     },
     created() {
-        this.getContentById(this.$route.query.blogId)
+        this.getContentByBlogId(this.$route.query.blogId)
     },
     methods: {
         initCheck(userId) {
@@ -49,11 +49,8 @@ export default {
             }
         },
         //获取博客信息
-        getContentById(blogId) {
-            const blog = {
-                blogId
-            }
-            getContentById(blog).then(res => {
+        getContentByBlogId(blogId) {
+            getContentByBlogId(blogId).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
@@ -79,7 +76,7 @@ export default {
                 return this.$message.success(res.message);
             })
         },
-        releaseBlog() {
+        release() {
             this.blog.blogId = this.$route.query.blogId
             releaseBlog(this.blog).then(res => {
                 if (res.code != 200) {

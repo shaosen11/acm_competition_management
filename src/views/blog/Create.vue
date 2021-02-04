@@ -7,7 +7,7 @@
         </el-breadcrumb>
         <el-row :gutter="20" type="flex" justify="center" style="margin-top: 30px">
             <el-col :span="16">
-                <el-input v-model="name" placeholder="请输入标题"></el-input>
+                <el-input v-model="blog.name" placeholder="请输入标题"></el-input>
             </el-col>
             <el-col :span="4">
                 <el-button type="info" @click="save">保存草稿</el-button>
@@ -15,7 +15,7 @@
             </el-col>
         </el-row>
         <mavon-editor
-            v-model="markdown"
+            v-model="blog.markdown"
             ref="md"
             @imgAdd="$imgAdd"
             @change="change"
@@ -30,48 +30,52 @@
         name: "Create",
         data() {
             return {
-                name: "",
-                markdown: "",
-                content: "",
+                blog: {
+                    name: "",
+                    markdown: "",
+                    content: "",
+                }
             };
-        },
-        created() {
         },
         methods: {
             change(value, render) {
                 // render 为 markdown 解析后的结果
-                this.content = render;
+                this.blog.content = render;
             },
             save(){
                 const blog = {
                     userId: this.$store.state.user.userId,
-                    name: this.name,
-                    content: this.content,
-                    markdown: this.markdown,
+                    name: this.blog.name,
+                    content: this.blog.content,
+                    markdown: this.blog.markdown,
                 }
                 saveBlog(blog).then(res => {
                     if (res.code != 200) {
                         return this.$message.error(res.message);
                     }
-                    this.$router.push({
-                        name: 'blogUpdate',
-                        query: {blogId: res.data.blogId}
-                    })
+                    this.toUpdateBlog(res.data.blogId)
+                })
+            },
+            toUpdateBlog(blogId) {
+                this.$router.push({
+                    name: 'blogUpdate',
+                    query: {blogId}
                 })
             },
             release() {
-                const blog = {
-                    userId: this.$store.state.user.userId,
-                    name: this.name,
-                    content: this.content,
-                    markdown: this.markdown,
-                }
-                releaseBlog(blog).then(res => {
+                this.blog.userId = this.$store.state.user.userId,
+                releaseBlog(this.blog).then(res => {
                     if (res.code != 200) {
                         this.$message.error(res.message);
                         return false;
                     }
-                    this.$router.push('/blogList')
+                    this.toBlog(this.blog.blogId)
+                })
+            },
+            toBlog(blogId) {
+                this.$router.push({
+                    name: 'blogInfo',
+                    query: {blogId}
                 })
             },
             // 将图片上传到服务器，返回地址替换到md中

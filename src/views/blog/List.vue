@@ -15,10 +15,11 @@
             <el-col :span="18">
                 <el-card>
                     <el-tabs v-model="activeTab" @tab-click="handleClick">
+                        <el-tab-pane label="已发布" name="release"/>
                         <el-tab-pane label="所有博客" name="all"/>
                         <el-tab-pane label="草稿箱" name="draft"/>
                         <el-tab-pane label="审核中" name="examine"/>
-                        <el-tab-pane label="私有" name="private"/>
+                        <el-tab-pane label="仅自己可见" name="private"/>
                         <el-tab-pane label="回收站" name="garbage"/>
                     </el-tabs>
                     <div v-for="item in this.tableData" :key="item" class="text item">
@@ -27,7 +28,12 @@
                                   @click="toBlog(item.blogId)">
                                 {{ item.name }}
                             </span>
-                            <el-tag :type="computeTabStatue(item)" style="margin-left: 10px">{{ computeStatue(item) }}</el-tag>
+                            <el-tag :type="computeTabStatue(item)" style="margin-left: 10px">{{
+                                    computeStatue(item)
+                                }}
+                            </el-tag>
+                            <el-tag v-if="item.showFlag==0" type="info" style="margin-left: 10px">仅自己可见</el-tag>
+                            <el-tag v-if="item.garbageFlag==1" type="danger" style="margin-left: 10px">回收站</el-tag>
                         </div>
                         <div class="data">
                             {{ item.time }}
@@ -49,10 +55,29 @@
                                 操作<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                                 <el-dropdown-menu slot="dropdown">
-                                    <el-dropdown-item @click.native="toBlog(item.blogId)">预览</el-dropdown-item>
-                                    <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">编辑</el-dropdown-item>
-                                    <el-dropdown-item @click.native="setPrivate(item.blogId)">设为私密</el-dropdown-item>
-                                    <el-dropdown-item divided>删除</el-dropdown-item>
+                                    <el-dropdown-item @click.native="toBlog(item.blogId)">
+                                        预览
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="toUpdateBlog(item.blogId)">
+                                        编辑
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="setPublic(item.blogId)" v-if="item.showFlag==0">
+                                        所有人可见
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="setPrivate(item.blogId)" v-else>
+                                        尽自己可见
+                                    </el-dropdown-item>
+                                    <el-dropdown-item divided v-if="item.garbageFlag==1"
+                                                      @click.native="returnGarbage(item.blogId)">
+                                        还原
+                                    </el-dropdown-item>
+                                    <el-dropdown-item v-if="item.garbageFlag==1"
+                                                      @click.native="deleteBlog(item.blogId)">
+                                        彻底删除
+                                    </el-dropdown-item>
+                                    <el-dropdown-item @click.native="setGarbage(item.blogId)" v-else>
+                                        移至回收站
+                                    </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </div>
@@ -81,7 +106,15 @@
 <script>
 import {getUserExtByUserId} from "@/network/api/user";
 import UserInfo from "@/views/blog/components/UserStatisticsInfo";
-import {listBlogPage, updateBlog} from "@/network/api/blog";
+import {listBlogPage, updateBlog, deleteBlog} from "@/network/api/blog";
+
+const defaultBlogQuery = {
+    status: '',
+    showFlag: '',
+    garbageFlag: '',
+    pageNum: 1,
+    pageSize: 5,
+};
 
 export default {
     name: "List",
@@ -91,12 +124,13 @@ export default {
     data() {
         return {
             //默认记过tab
-            activeTab: 'all',
+            activeTab: 'release',
             //查询全部
             blogQuery: {
                 userId: this.$store.state.user.userId,
                 status: '',
                 showFlag: '',
+                garbageFlag: '',
                 pageNum: 1,
                 pageSize: 5,
             },
@@ -108,7 +142,6 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
-            userId: '',
             userExt: {}
         }
     },
@@ -163,15 +196,49 @@ export default {
                 query: {blogId}
             })
         },
-        setPrivate(blogId) {
-            const blog ={
-                blogId,
-                showFlag: 0
-            }
+        updateBlog(blog) {
             updateBlog(blog).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
+                this.getList()
+                return this.$message.success(res.message);
+            })
+        },
+        setPrivate(blogId) {
+            const blog = {
+                blogId,
+                showFlag: 0
+            }
+            this.updateBlog(blog)
+        },
+        setPublic(blogId) {
+            const blog = {
+                blogId,
+                showFlag: 1
+            }
+            this.updateBlog(blog)
+        },
+        setGarbage(blogId) {
+            const blog = {
+                blogId,
+                garbageFlag: 1
+            }
+            this.updateBlog(blog)
+        },
+        returnGarbage(blogId) {
+            const blog = {
+                blogId,
+                garbageFlag: 0
+            }
+            this.updateBlog(blog)
+        },
+        deleteBlog(blogId) {
+            deleteBlog(blogId).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.getList()
                 return this.$message.success(res.message);
             })
         },
@@ -188,28 +255,22 @@ export default {
         },
         //切换tab
         handleClick(tab) {
-            if (tab.name == 'all') {
-                this.blogQuery.status = '';
-                this.blogQuery.showFlag = '';
-            }
+            this.blogQuery = Object.assign({}, defaultBlogQuery);
             if (tab.name == 'draft') {
                 this.blogQuery.status = 1;
-                this.blogQuery.showFlag = '';
             }
             if (tab.name == 'examine') {
                 this.blogQuery.status = 2;
-                this.blogQuery.showFlag = '';
+            }
+            if (tab.name == 'release') {
+                this.blogQuery.status = 3;
             }
             if (tab.name == 'private') {
-                this.blogQuery.status = '';
                 this.blogQuery.showFlag = 0;
             }
             if (tab.name == 'garbage') {
-                this.blogQuery.status = 4;
-                this.blogQuery.showFlag = '';
+                this.blogQuery.garbageFlag = 1
             }
-            this.blogQuery.pageNum = 1;
-            this.blogQuery.pageSize = 5;
             this.getList();
         },
         //计算状态
@@ -223,9 +284,6 @@ export default {
             if (blog.status == 3) {
                 return "已发布"
             }
-            if (blog.status == 4) {
-                return "回收中"
-            }
         },
         computeTabStatue(blog) {
             if (blog.status == 1) {
@@ -233,12 +291,6 @@ export default {
             }
             if (blog.status == 2) {
                 return "warning"
-            }
-            if (blog.status == 3) {
-                return ""
-            }
-            if (blog.status == 4) {
-                return "danger"
             }
         }
     }

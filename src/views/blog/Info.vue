@@ -91,7 +91,7 @@ import {
     getStatisticsByBlogId,
     click,
     getClickByBlogIdAndUserId,
-    getContentById,
+    getContentByBlogId,
     insertBlogUserView,
 } from '@/network/api/blog'
 import {getUserStoreByBlogIdAndUserId, createUserStore, getUserStoreFolder, deleteUserStore} from '@/network/api/user'
@@ -110,7 +110,6 @@ export default {
     },
     data() {
         return {
-            userId: '',
             blog: {},
             blogContent: '',
             userExt: {},
@@ -130,12 +129,40 @@ export default {
     },
     methods: {
         init() {
-            this.getStatisticsByBlogId(this.$route.query.blogId);
-            this.getContentById();
+            this.getStatisticsByBlogId(this.$route.query.blogId)
+        },
+        //判断是否仅自己可见
+        isPrivate() {
+            if (this.blog.showFlag == 0) {
+                if (this.blog.userId != this.$store.state.user.userId) {
+                    this.$message.error("请用发布账号登录");
+                    return this.$router.push('/home')
+                }
+            }
+            //是本人登录，进行初始化
+            this.afterInit()
+        },
+        afterInit() {
+            this.getUserExtByUserId(this.blog.userId);
+            this.getContentByBlogId(this.blog.blogId);
             this.getClickByBlogIdAndUserId();
             this.getUserStoreByBlogIdAndUserId();
             this.insertBlogUserView();
             this.commentData = CommentData.comment.data;
+            this.isDraft();
+            this.isGarbage()
+        },
+        isDraft() {
+            if (this.blog.status == 1) {
+                if (this.blog.userId == this.$store.state.user.userId) {
+                    this.$message.info("此博客还在草稿状态");
+                }
+            }
+        },
+        isGarbage() {
+            if (this.blog.garbageFlag == 1) {
+                this.$message.info("此博客已被博主移至回收站，随时可能删除");
+            }
         },
         //获取博客数据
         getStatisticsByBlogId(blogId) {
@@ -143,18 +170,17 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
+                if (res.data == null){
+                    return this.$message.info("博客已被博主删除");
+                }
                 this.blog = res.data;
-                this.userId = res.data.userId;
-                this.getUserExtByUserId(res.data.userId);
+                //判断是否仅自己可见
+                this.isPrivate()
             })
         },
         //获取博客内容
-        getContentById() {
-            const blogUserClick = {
-                blogId: this.$route.query.blogId,
-                userId: this.$store.state.user.userId
-            }
-            getContentById(blogUserClick).then(res => {
+        getContentByBlogId(blogId) {
+            getContentByBlogId(blogId).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
@@ -193,11 +219,11 @@ export default {
                 if (res.code != 200) {
                     this.$message.error(res.message);
                 }
-                if (this.clickFlag == true){
+                if (this.clickFlag == true) {
                     this.blog.clickCounter -= 1;
                     this.userExt.clickCounter -= 1;
                     this.clickFlag = false;
-                }else {
+                } else {
                     this.blog.clickCounter += 1;
                     this.userExt.clickCounter += 1;
                     this.clickFlag = true;
@@ -298,16 +324,6 @@ export default {
             })
         }
     },
-    filters:{
-        unescape:function (html) {
-            return html
-                .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
-                .replace(/&lt;/g, "<")
-                .replace(/&gt;/g, ">")
-                .replace(/&quot;/g, "\"")
-                .replace(/&#39;/g, "\'");
-        }
-    }
 }
 </script>
 

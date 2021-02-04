@@ -42,7 +42,7 @@
                                        circle/>
                         </span>
                         <span style="float: right;">
-                            <span>公开：
+                            <span>仅自己可见：
                                 <el-switch
                                     @change="handleShowFlagStatusChange(userStoreFolderItem)"
                                     :active-value="1"
@@ -92,7 +92,11 @@
                                         <span class="userStoreName">{{ userStore.reportName }}</span>
                                     </span>
                                     <span style="float: right;">
-                                        <span>公开：
+                                        <span v-if="userStore.status==0">
+                                            （博客已被博主删除）
+                                            <el-divider direction="vertical"></el-divider>
+                                        </span>
+                                        <span>仅自己可见：
                                             <el-switch
                                                 @change="handleShowFlagStatusChange(userStore)"
                                                 :active-value="1"

@@ -40,7 +40,20 @@ export function updateBlog(blog) {
             name: blog.name,
             content: blog.content,
             markdown: blog.markdown,
+            status: blog.status,
+            garbageFlag: blog.garbageFlag,
             showFlag: blog.showFlag
+        }
+    })
+}
+
+//删除博客
+export function deleteBlog(blogId) {
+    return request({
+        url: '/blog/delete',
+        method: 'post',
+        data: {
+            blogId,
         }
     })
 }
@@ -55,6 +68,7 @@ export function listBlogPage(BlogQueryParam) {
             name: BlogQueryParam.name,
             status: BlogQueryParam.status,
             showFlag: BlogQueryParam.showFlag,
+            garbageFlag: BlogQueryParam.garbageFlag,
             pageNum: BlogQueryParam.pageNum,
             pageSize: BlogQueryParam.pageSize,
         }
@@ -73,13 +87,12 @@ export function getStatisticsByBlogId(blogId) {
 }
 
 //获取博客内容
-export function getContentById(blog) {
+export function getContentByBlogId(blogId) {
     return request({
-        url: '/blog/getContentById',
+        url: '/blog/getContentByBlogId',
         method: 'post',
         data: {
-            blogId: blog.blogId,
-            userId: blog.userId
+            blogId,
         }
     })
 }
