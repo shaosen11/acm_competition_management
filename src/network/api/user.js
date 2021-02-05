@@ -212,3 +212,28 @@ export function updateUserStore(userStore) {
         }
     })
 }
+
+//忘记密码
+export function forgetPassword(user) {
+    return request({
+        url: '/user/forgetPassword',
+        method: 'post',
+        data: {
+            userId: user.userId,
+            email: user.email,
+        }
+    })
+}
+
+//检查重置连接
+export function checkResetLink(userPasswordDto) {
+    return request({
+        url: '/user/checkResetLink',
+        method: 'post',
+        data: {
+            sid: userPasswordDto.sid,
+            userId: userPasswordDto.userId,
+        }
+    })
+}
+

@@ -16,7 +16,7 @@
                 <el-form-item>
                     <!--绑定rem，如果勾选，存储账号和密码-->
                     <el-checkbox v-model="form.rem" label="记住我"></el-checkbox>
-                    <el-button type="text" style="float: right; padding: 15px 0">忘记密码？</el-button>
+                    <el-button type="text" style="float: right; padding: 15px 0" @click="toForgetPassword">忘记密码？</el-button>
                 </el-form-item>
                 <el-row :gutter="10" type="flex" justify="center">
                     <!--loading防止重复点击-->
@@ -117,6 +117,9 @@
             },
             toRegister() {
                 this.$router.push('/register')
+            },
+            toForgetPassword(){
+                this.$router.push('/forgetPassword')
             },
             passwordUpdateAlert() {
                 const h = this.$createElement;

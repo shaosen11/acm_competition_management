@@ -64,6 +64,18 @@ const routes = [
         meta: {title: '注册'}
     },
     {
+        path: '/forgetPassword',
+        name: 'forgetPassword',
+        component: () => import('@/views/ForgetPassword'),
+        meta: {title: '忘记密码'}
+    },
+    {
+        path: '/resetPassword',
+        name: 'resetPassword',
+        component: () => import('@/views/ResetPassword'),
+        meta: {title: '重置密码'}
+    },
+    {
         path: '/404',
         component: () => import('@/views/404'), hidden: true
     },
