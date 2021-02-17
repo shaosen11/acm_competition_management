@@ -7,7 +7,10 @@
             <el-row :gutter="10">
                 <el-col :span="10">
                     <el-form :model="form"
-                             label-width="80px">
+                             label-width="100px">
+                        <el-form-item label="头像：" prop="logo">
+                            <single-upload v-model="form.userIcon"></single-upload>
+                        </el-form-item>
                         <el-form-item label="学号">
                             <el-input v-model="form.userId" :disabled="true"></el-input>
                         </el-form-item>
@@ -39,65 +42,69 @@
 </template>
 
 <script>
-    import {getUserInfo, updateUserInfo} from '@/network/api/user';
+import {getUserInfo, updateUserInfo} from '@/network/api/user';
+import SingleUpload from "@/component/SingleUpload";
 
-    export default {
-        name: "Setting",
-        data() {
-            return {
-                //表单数据
-                form: {
-                    userId: '',
-                    username: '',
-                    userIcon: '',
-                    email: '',
-                    gender: '',
-                },
-                //修改用户信息按钮加载
-                updateUserInfoButtonLoading: false,
-            }
-        },
-        created() {
-            this.init()
-        },
-        methods: {
-            //初始化
-            init(){
-                this.getUserInfo(this.$store.state.user.userId);
+export default {
+    name: "Setting",
+    components:{
+      SingleUpload
+    },
+    data() {
+        return {
+            //表单数据
+            form: {
+                userId: '',
+                username: '',
+                userIcon: '',
+                email: '',
+                gender: '',
             },
-            //获取用户信息
-            getUserInfo(userId) {
-                getUserInfo(userId).then(res => {
-                    this.form.userId = res.data.userId;
-                    this.form.username = res.data.name;
-                    this.form.email = res.data.email;
-                    this.form.gender = res.data.gender;
-                })
-            },
-            //修改用户信息
-            updateUserInfo() {
-                this.updateUserInfoButtonLoading = true;
-                const user = {
-                    userId: this.form.userId,
-                    name: this.form.username,
-                    icon: '',
-                    email: this.form.email,
-                    gender: this.form.gender,
-                    password: this.form.password
-                }
-                updateUserInfo(user).then(res => {
-                    if (res.code != 200) {
-                        this.$message.success(res.message);
-                        this.updateUserInfoButtonLoading = false;
-                        return false;
-                    }
-                    this.$store.dispatch('SetUserAllInfo', this.$store.state.user.userId);
-                    this.updateUserInfoButtonLoading = false;
-                    this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
-                })
-            },
+            //修改用户信息按钮加载
+            updateUserInfoButtonLoading: false,
         }
+    },
+    created() {
+        this.init()
+    },
+    methods: {
+        //初始化
+        init() {
+            this.getUserInfo(this.$store.state.user.userId);
+        },
+        //获取用户信息
+        getUserInfo(userId) {
+            getUserInfo(userId).then(res => {
+                this.form.userId = res.data.userId;
+                this.form.username = res.data.name;
+                this.form.email = res.data.email;
+                this.form.gender = res.data.gender;
+            })
+        },
+        //修改用户信息
+        updateUserInfo() {
+            this.updateUserInfoButtonLoading = true;
+            const user = {
+                userId: this.form.userId,
+                name: this.form.username,
+                icon: '',
+                email: this.form.email,
+                gender: this.form.gender,
+                password: this.form.password
+            }
+            updateUserInfo(user).then(res => {
+                if (res.code != 200) {
+                    this.$message.success(res.message);
+                    this.updateUserInfoButtonLoading = false;
+                    return false;
+                }
+                this.$store.dispatch('SetUserAllInfo', this.$store.state.user.userId);
+                this.updateUserInfoButtonLoading = false;
+                this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
+            })
+        },
     }
+}
 </script>
 
 <style scoped>

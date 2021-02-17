@@ -19,7 +19,7 @@
             </el-col>
 
             <el-col :span="20">
-                <el-card style="width: 1000px">
+                <el-card style="width: 800px">
                     <div>
                         <span class="name" v-if="this.userStoreFolderNameEditFlag == false">
                             {{ this.userStoreFolderItem.name }}
@@ -76,7 +76,6 @@
                                    @click="updateUserStoreFolderDescription"
                                    circle/>
                     </p>
-
                     <el-row :gutter="10">
                         <el-col :span="24" v-for="userStore in this.userStore" :key="userStore"
                                 style="margin-top: 10px">

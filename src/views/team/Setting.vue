@@ -146,6 +146,7 @@ export default {
                     this.updateTeamInfoButtonLoading = false;
                     return this.$message.error(res.message);
                 }
+                this.$message.success(res.message);
                 this.updateTeamInfoButtonLoading = false;
                 this.init();
             })

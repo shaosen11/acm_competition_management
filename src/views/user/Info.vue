@@ -78,14 +78,15 @@
 import TeamInfo from "@/component/TeamInfo";
 import ReportList from "./components/ReportList";
 import {getUserInfo} from '@/network/api/user';
-import {getOrganizationByUserId} from '@/network/api/organization'
+import {getOrganizationByUserId} from '@/network/api/organization';
 import {getTeamAllInfoByUserId} from "@/network/api/team";
+
 
 export default {
     name: "Info",
     components: {
         TeamInfo,
-        ReportList
+        ReportList,
     },
     data() {
         return {

@@ -46,7 +46,7 @@ const user = {
         SetUserAllInfo({commit}, userId) {
             return new Promise((resolve, reject) => {
                 getUserAllInfoByUserId(userId).then(response => {
-                    const data = response
+                    const data = response.data
                     //设置用户信息
                     commit('SET_USER_ID', data.userId);
                     commit('SET_NAME', data.userName);
