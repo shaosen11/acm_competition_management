@@ -1,5 +1,11 @@
 const routers = [
     {
+        path: 'blog',
+        name: 'blog',
+        component: () => import('@/views/blog/Blog'),
+        meta: {title: '博客首页'}
+    },
+    {
         path: 'blogCreate',
         name: 'blogCreate',
         component: () => import('@/views/blog/Create'),

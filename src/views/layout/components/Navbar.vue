@@ -26,8 +26,11 @@
         <el-submenu index="4">
             <template slot="title">
                 <i class="iconfont el-icon-third-blog"></i>
-                博客
+                博客首页
             </template>
+            <el-menu-item index="4-1" @click="toBlog">
+                博客
+            </el-menu-item>
             <el-menu-item v-if="this.isLogin" index="4-1" @click="toMyBlogList">
                 我的博客
             </el-menu-item>
@@ -69,11 +72,16 @@
             <i class="iconfont el-icon-third-message"></i>
             消息
         </el-menu-item>
-        <el-menu-item index="8">
-            <el-input
+        <el-menu-item>
+            <el-autocomplete
+                    prefix-icon="iconfont el-icon-third-search"
+                    v-model="keyword"
+                    :fetch-suggestions="querySearchAsync"
                     placeholder="请输入内容"
-                    prefix-icon="iconfont el-icon-third-search">
-            </el-input>
+                    @select="handleSelect"
+                    clearable>
+                <el-button slot="append" type="success" icon="el-icon-search" @click="toBlogWithKeyWord"></el-button>
+            </el-autocomplete>
         </el-menu-item>
         <div v-if="this.isLogin">
             <el-menu-item index="9" style="float: right;">
@@ -114,6 +122,7 @@
 
 <script>
     import store from '@/store'
+    import {searchHitEsBlog} from '@/network/api/blog'
 
     export default {
         name: "Navbar",
@@ -128,23 +137,38 @@
                 myOrganizationFlag: store.getters.myOrganizationFlag,
                 icon: store.getters.icon,
                 identityFlag: store.getters.identityFlag,
+                restaurants: [],
+                keyword: '',
+                blogList: []
             }
         },
+        created() {
+            this.init()
+        },
         methods: {
+            init() {
+                if (this.$route.query.keyword != "") {
+                    this.keyword = this.$route.query.keyword;
+                    this.$router.push({name: 'blog', query: {keyword: this.$route.query.keyword}})
+                }
+            },
             toHome() {
                 this.$router.push('/')
             },
             toCompetition() {
                 this.$router.push('/competition')
             },
-            toCompetitionType(){
+            toCompetitionType() {
                 this.$router.push('/competitionType')
             },
-            toCompetitionProblemType(){
+            toCompetitionProblemType() {
                 this.$router.push('/competitionProblemType')
             },
             toReport() {
                 this.$router.push('/report')
+            },
+            toBlog() {
+                this.$router.push('/blog')
             },
             toMyBlogList() {
                 this.$router.push('/blogList')
@@ -195,7 +219,32 @@
                 this.$store.dispatch('LoginOut');
                 this.$router.push('/loginOut')
             },
-        }
+            querySearchAsync(queryString, cb) {
+                if (queryString != "") {
+                    searchHitEsBlog(queryString).then(res => {
+                        if (res.code != 200) {
+                            return this.$message.error(res.message);
+                        }
+                        this.blogList = res.data
+                        const results = queryString ? this.blogList : [];
+                        cb(results);
+                    })
+                }
+            },
+            toBlogWithKeyWord() {
+                let routeUrl = this.$router.resolve({
+                    path: "blog",
+                    query: {keyword: this.keyword}
+                });
+                window.open(routeUrl.href, '_blank');
+            },
+            handleSelect(item) {
+                this.toBlogInfo(item.blogId)
+            },
+            toBlogInfo(blogId) {
+                this.$router.push({name: 'blogInfo', query: {blogId}})
+            },
+        },
     };
 </script>
 
