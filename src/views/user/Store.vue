@@ -44,10 +44,10 @@
                         <span style="float: right;">
                             <span>仅自己可见：
                                 <el-switch
-                                    @change="handleShowFlagStatusChange(userStoreFolderItem)"
-                                    :active-value="1"
-                                    :inactive-value="0"
-                                    v-model="userStoreFolderItem.showFlag">
+                                        @change="handleShowFlagStatusChange(userStoreFolderItem)"
+                                        :active-value="1"
+                                        :inactive-value="0"
+                                        v-model="userStoreFolderItem.showFlag">
                                 </el-switch>
                                 <el-divider direction="vertical"></el-divider>
                                         <i class="iconfont el-icon-third-delete"
@@ -85,6 +85,8 @@
                                         <el-tag>blog</el-tag>
                                         <span class="userStoreName"
                                               @click="toBlog(userStore.blogId)">{{ userStore.blogName }}</span>
+                                        <el-divider direction="vertical"></el-divider>
+                                        <span class="userName" v-dompurify-html="userStore.userName"/>
                                     </span>
                                     <span v-if="userStore.reportFlag == 1">
                                         <el-tag type="info">report</el-tag>
@@ -97,10 +99,10 @@
                                         </span>
                                         <span>仅自己可见：
                                             <el-switch
-                                                @change="handleShowFlagStatusChange(userStore)"
-                                                :active-value="1"
-                                                :inactive-value="0"
-                                                v-model="userStore.showFlag">
+                                                    @change="handleShowFlagStatusChange(userStore)"
+                                                    :active-value="1"
+                                                    :inactive-value="0"
+                                                    v-model="userStore.showFlag">
                                             </el-switch>
                                         </span>
                                         <el-divider direction="vertical"></el-divider>
@@ -122,197 +124,197 @@
 </template>
 
 <script>
-import CreateStore from "@/views/user/components/CreateStore";
-import {
-    getUserStoreFolder,
-    createUserStore,
-    listUserStoreByParentId,
-    deleteUserStore,
-    updateUserStore
-} from "@/network/api/user"
+    import CreateStore from "@/views/user/components/CreateStore";
+    import {
+        getUserStoreFolder,
+        createUserStore,
+        listUserStoreByParentId,
+        deleteUserStore,
+        updateUserStore
+    } from "@/network/api/user"
 
-export default {
-    name: "Store",
-    components: {
-        CreateStore
-    },
-    data() {
-        return {
-            createStoreDialogVisible: false,
-            userStoreFolder: [],
-            userStoreFolderItem: {
-                id: 0,
-                showFlag: 0
+    export default {
+        name: "Store",
+        components: {
+            CreateStore
+        },
+        data() {
+            return {
+                createStoreDialogVisible: false,
+                userStoreFolder: [],
+                userStoreFolderItem: {
+                    id: 0,
+                    showFlag: 0
+                },
+                userStoreFolderIndex: 0,
+                userStoreFolderNameEditFlag: false,
+                userStoreFolderNameCopy: '',
+                userStoreFolderDescriptionEditFlag: false,
+                userStoreFolderDescriptionCopy: '',
+                userStore: [],
+            }
+        },
+        created() {
+            this.init()
+        },
+        methods: {
+            init() {
+                this.getUserStoreFolder()
             },
-            userStoreFolderIndex: 0,
-            userStoreFolderNameEditFlag: false,
-            userStoreFolderNameCopy: '',
-            userStoreFolderDescriptionEditFlag: false,
-            userStoreFolderDescriptionCopy: '',
-            userStore: [],
-        }
-    },
-    created() {
-        this.init()
-    },
-    methods: {
-        init() {
-            this.getUserStoreFolder()
-        },
-        //获取收藏夹
-        getUserStoreFolder() {
-            const userStore = {
-                userId: this.$store.state.user.userId,
-                folderFlag: 0,
-            }
-            getUserStoreFolder(userStore).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+            //获取收藏夹
+            getUserStoreFolder() {
+                const userStore = {
+                    userId: this.$store.state.user.userId,
+                    folderFlag: 0,
                 }
-                this.userStoreFolder = res.data
-                this.selectUserStoreFolder(this.userStoreFolderIndex)
-            })
-        },
-        //创建文件夹
-        createStoreDialogVisibleTure() {
-            if (this.$store.state.user.userId == '') {
-                this.$message.error("请先登录");
-                return false;
-            }
-            this.createStoreDialogVisible = true;
-        },
-        createStoreDialogVisibleFalse() {
-            this.createStoreDialogVisible = false;
-        },
-        createStore(userStore) {
-            createUserStore(userStore).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+                getUserStoreFolder(userStore).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.userStoreFolder = res.data
+                    this.selectUserStoreFolder(this.userStoreFolderIndex)
+                })
+            },
+            //创建文件夹
+            createStoreDialogVisibleTure() {
+                if (this.$store.state.user.userId == '') {
+                    this.$message.error("请先登录");
+                    return false;
                 }
-                this.getUserStoreFolder()
+                this.createStoreDialogVisible = true;
+            },
+            createStoreDialogVisibleFalse() {
                 this.createStoreDialogVisible = false;
-            })
-        },
-        //选择收藏夹
-        selectUserStoreFolder(index) {
-            this.userStoreFolderIndex = index;
-            this.userStoreFolderItem = this.userStoreFolder[index];
-            listUserStoreByParentId(this.userStoreFolderItem.id).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+            },
+            createStore(userStore) {
+                createUserStore(userStore).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.getUserStoreFolder()
+                    this.createStoreDialogVisible = false;
+                })
+            },
+            //选择收藏夹
+            selectUserStoreFolder(index) {
+                this.userStoreFolderIndex = index;
+                this.userStoreFolderItem = this.userStoreFolder[index];
+                listUserStoreByParentId(this.userStoreFolderItem.id).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.userStore = res.data
+                })
+            },
+            //跳转博客
+            toBlog(blogId) {
+                this.$router.push({
+                    name: 'blogInfo',
+                    query: {blogId}
+                })
+            },
+            //取消收藏
+            cancelStore(userStore) {
+                userStore.folderFlag = 1;
+                deleteUserStore(userStore).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.selectUserStoreFolder(this.userStoreFolderIndex);
+                })
+            },
+            //删除收藏夹
+            deleteStore(userStoreFolder) {
+                deleteUserStore(userStoreFolder).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.userStoreFolderIndex = 0
+                    this.getUserStoreFolder()
+                })
+            },
+            //是否向大家展示收藏夹内容
+            handleShowFlagStatusChange(userStore) {
+                const userStoreBody = {
+                    id: userStore.id,
+                    showFlag: userStore.showFlag
                 }
-                this.userStore = res.data
-            })
-        },
-        //跳转博客
-        toBlog(blogId) {
-            this.$router.push({
-                name: 'blogInfo',
-                query: {blogId}
-            })
-        },
-        //取消收藏
-        cancelStore(userStore) {
-            userStore.folderFlag = 1;
-            deleteUserStore(userStore).then(res => {
-                if (res.code != 200) {
-                    return this.$message.error(res.message);
+                updateUserStore(userStoreBody).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.selectUserStoreFolder(this.userStoreFolderIndex)
+                })
+            },
+            //修改收藏夹名称
+            userStoreFolderNameEditFlagTrue() {
+                this.userStoreFolderNameCopy = this.userStoreFolderItem.name
+                this.userStoreFolderNameEditFlag = true
+            },
+            userStoreFolderNameEditFlagFalse() {
+                this.userStoreFolderNameEditFlag = false
+            },
+            updateUserStoreFolderName() {
+                const userStoreBody = {
+                    id: this.userStoreFolderItem.id,
+                    name: this.userStoreFolderNameCopy
                 }
-                this.selectUserStoreFolder(this.userStoreFolderIndex);
-            })
-        },
-        //删除收藏夹
-        deleteStore(userStoreFolder) {
-            deleteUserStore(userStoreFolder).then(res => {
-                if (res.code != 200) {
-                    return this.$message.error(res.message);
+                updateUserStore(userStoreBody).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.getUserStoreFolder()
+                    this.userStoreFolderNameEditFlagFalse()
+                })
+            },
+            //修改收藏夹描述
+            userStoreFolderDescriptionEditFlagTrue() {
+                this.userStoreFolderDescriptionCopy = this.userStoreFolderItem.description
+                this.userStoreFolderDescriptionEditFlag = true
+            },
+            userStoreFolderDescriptionEditFlagFalse() {
+                this.userStoreFolderDescriptionEditFlag = false
+            },
+            updateUserStoreFolderDescription() {
+                const userStoreBody = {
+                    id: this.userStoreFolderItem.id,
+                    description: this.userStoreFolderDescriptionCopy
                 }
-                this.userStoreFolderIndex = 0
-                this.getUserStoreFolder()
-            })
-        },
-        //是否向大家展示收藏夹内容
-        handleShowFlagStatusChange(userStore) {
-            const userStoreBody = {
-                id: userStore.id,
-                showFlag: userStore.showFlag
-            }
-            updateUserStore(userStoreBody).then(res => {
-                if (res.code != 200) {
-                    return this.$message.error(res.message);
-                }
-                this.selectUserStoreFolder(this.userStoreFolderIndex)
-            })
-        },
-        //修改收藏夹名称
-        userStoreFolderNameEditFlagTrue() {
-            this.userStoreFolderNameCopy = this.userStoreFolderItem.name
-            this.userStoreFolderNameEditFlag = true
-        },
-        userStoreFolderNameEditFlagFalse() {
-            this.userStoreFolderNameEditFlag = false
-        },
-        updateUserStoreFolderName() {
-            const userStoreBody = {
-                id: this.userStoreFolderItem.id,
-                name: this.userStoreFolderNameCopy
-            }
-            updateUserStore(userStoreBody).then(res => {
-                if (res.code != 200) {
-                    return this.$message.error(res.message);
-                }
-                this.getUserStoreFolder()
-                this.userStoreFolderNameEditFlagFalse()
-            })
-        },
-        //修改收藏夹描述
-        userStoreFolderDescriptionEditFlagTrue() {
-            this.userStoreFolderDescriptionCopy = this.userStoreFolderItem.description
-            this.userStoreFolderDescriptionEditFlag = true
-        },
-        userStoreFolderDescriptionEditFlagFalse() {
-            this.userStoreFolderDescriptionEditFlag = false
-        },
-        updateUserStoreFolderDescription() {
-            const userStoreBody = {
-                id: this.userStoreFolderItem.id,
-                description: this.userStoreFolderDescriptionCopy
-            }
-            updateUserStore(userStoreBody).then(res => {
-                if (res.code != 200) {
-                    return this.$message.error(res.message);
-                }
-                this.getUserStoreFolder()
-                this.userStoreFolderDescriptionEditFlagFalse()
-            })
-        },
+                updateUserStore(userStoreBody).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.getUserStoreFolder()
+                    this.userStoreFolderDescriptionEditFlagFalse()
+                })
+            },
+        }
     }
-}
 </script>
 
 <style scoped lang="scss">
-.name {
-    margin: 10px 0px;
+    .name {
+        margin: 10px 0px;
 
-    .icon {
-        margin-left: 5px;
+        .icon {
+            margin-left: 5px;
+        }
+
+        .icon:hover {
+            color: #409EFF;
+        }
     }
 
-    .icon:hover {
+    .description {
+        margin: 5px 0px;
+        color: #909399;
+    }
+
+    .userStoreName {
+        margin-left: 15px
+    }
+
+    .userStoreName:hover {
         color: #409EFF;
     }
-}
-
-.description {
-    margin: 5px 0px;
-    color: #909399;
-}
-
-.userStoreName {
-    margin-left: 15px
-}
-
-.userStoreName:hover {
-    color: #409EFF;
-}
 </style>

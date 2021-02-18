@@ -53,23 +53,23 @@
                 <el-row :gutter="20" style="margin: 10px auto">
                     <el-col :offset="6" :span="18">
                         <el-input
-                            v-model="input"
-                            placeholder="请输入内容"
-                            suffix-icon="el-icon-edit"
-                            style="width: 300px;"/>
+                                v-model="input"
+                                placeholder="请输入内容"
+                                suffix-icon="el-icon-edit"
+                                style="width: 300px;"/>
                         <el-link
-                            :underline="false"
-                            style="margin-left: 20px"
-                            @click="click">
+                                :underline="false"
+                                style="margin-left: 20px"
+                                @click="click">
                             <div :class="{ 'click' : clickFlag }">
                                 <i class="iconfont el-icon-third-like" style="font-size: 20px"/>
                                 {{ this.blog.clickCounter }}
                             </div>
                         </el-link>
                         <el-link
-                            :underline="false"
-                            style="margin-left: 15px"
-                            @click="beforeStore">
+                                :underline="false"
+                                style="margin-left: 15px"
+                                @click="beforeStore">
                             <div :class="{ 'store' : storeFlag }">
                                 <i class="iconfont el-icon-third-heart" style="font-size: 20px"/>
                                 {{ this.blog.storeCounter }}
@@ -87,267 +87,281 @@
 </template>
 
 <script>
-import {
-    getStatisticsByBlogId,
-    click,
-    getClickByBlogIdAndUserId,
-    getContentByBlogId,
-    insertBlogUserView,
-} from '@/network/api/blog'
-import {getUserStoreByBlogIdAndUserId, createUserStore, getUserStoreFolder, deleteUserStore} from '@/network/api/user'
-import {getUserExtByUserId} from "@/network/api/user";
-import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
-import Comment from "@/views/blog/components/Comment";
-import Store from "@/views/blog/components/Store";
-import * as CommentData from '@/data/mockdata'
+    import {
+        getStatisticsByBlogId,
+        click,
+        getClickByBlogIdAndUserId,
+        getContentByBlogId,
+        insertBlogUserView,
+    } from '@/network/api/blog'
+    import {
+        getUserStoreByBlogIdAndUserId,
+        createUserStore,
+        getUserStoreFolder,
+        deleteUserStore
+    } from '@/network/api/user'
+    import {getUserExtByUserId} from "@/network/api/user";
+    import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
+    import Comment from "@/views/blog/components/Comment";
+    import Store from "@/views/blog/components/Store";
+    import * as CommentData from '@/data/mockdata'
 
-export default {
-    name: "Info",
-    components: {
-        UserStatisticsInfo,
-        Comment,
-        Store
-    },
-    data() {
-        return {
-            blog: {},
-            blogContent: '',
-            userExt: {},
-            input: '',
-            commentData: [],
-            showItemId: false,
-            clickFlag: false,
-            storeFlag: false,
-            userStore: '',
-            userStoreParentId: '',
-            userStoreFolder: [],
-            storeDialogVisible: false
-        }
-    },
-    created() {
-        this.init()
-    },
-    methods: {
-        init() {
-            this.getStatisticsByBlogId(this.$route.query.blogId)
+    export default {
+        name: "Info",
+        components: {
+            UserStatisticsInfo,
+            Comment,
+            Store
         },
-        //判断是否仅自己可见
-        isPrivate() {
-            if (this.blog.showFlag == 0) {
-                if (this.blog.userId != this.$store.state.user.userId) {
-                    this.$message.error("请用发布账号登录");
-                    return this.$router.push('/home')
-                }
-            }
-            //是本人登录，进行初始化
-            this.afterInit()
-        },
-        afterInit() {
-            this.getUserExtByUserId(this.blog.userId);
-            this.getContentByBlogId(this.blog.blogId);
-            this.getClickByBlogIdAndUserId();
-            this.getUserStoreByBlogIdAndUserId();
-            this.insertBlogUserView();
-            this.commentData = CommentData.comment.data;
-            this.isDraft();
-            this.isGarbage()
-        },
-        isDraft() {
-            if (this.blog.status == 1) {
-                if (this.blog.userId == this.$store.state.user.userId) {
-                    this.$message.info("此博客还在草稿状态");
-                }
+        data() {
+            return {
+                blog: {},
+                blogContent: '',
+                userExt: {},
+                input: '',
+                commentData: [],
+                showItemId: false,
+                clickFlag: false,
+                storeFlag: false,
+                userStore: '',
+                userStoreParentId: '',
+                userStoreFolder: [],
+                storeDialogVisible: false
             }
         },
-        isGarbage() {
-            if (this.blog.garbageFlag == 1) {
-                this.$message.info("此博客已被博主移至回收站，随时可能删除");
-            }
+        created() {
+            this.init()
         },
-        //获取博客数据
-        getStatisticsByBlogId(blogId) {
-            getStatisticsByBlogId(blogId).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+        methods: {
+            init() {
+                this.getStatisticsByBlogId(this.$route.query.blogId)
+            },
+            //判断是否仅自己可见
+            isPrivate() {
+                if (this.blog.showFlag == 0) {
+                    if (this.blog.userId != this.$store.state.user.userId) {
+                        this.$message.error("请用发布账号登录");
+                        return this.$router.push('/home')
+                    }
                 }
-                if (res.data == null){
-                    return this.$message.info("博客已被博主删除");
+                //是本人登录，进行初始化
+                this.afterInit()
+            },
+            afterInit() {
+                this.getUserExtByUserId(this.blog.userId);
+                this.getContentByBlogId(this.blog.blogId);
+                this.getClickByBlogIdAndUserId();
+                this.getUserStoreByBlogIdAndUserId();
+                this.insertBlogUserView();
+                this.commentData = CommentData.comment.data;
+                this.isDraft();
+                this.isGarbage()
+            },
+            isDraft() {
+                if (this.blog.status == 1) {
+                    if (this.blog.userId == this.$store.state.user.userId) {
+                        this.$message.info("此博客还在草稿状态");
+                    }
                 }
-                this.blog = res.data;
-                //判断是否仅自己可见
-                this.isPrivate()
-            })
-        },
-        //获取博客内容
-        getContentByBlogId(blogId) {
-            getContentByBlogId(blogId).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+            },
+            isGarbage() {
+                if (this.blog.garbageFlag == 1) {
+                    this.$message.info("此博客已被博主移至回收站，随时可能删除");
                 }
-                this.blogContent = res.data.content
-            })
-        },
-        //插入浏览记录
-        insertBlogUserView() {
-            const blogUserView = {
-                blogId: this.$route.query.blogId,
-                userId: this.$store.state.user.userId
-            }
-            insertBlogUserView(blogUserView).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+            },
+            //获取博客数据
+            getStatisticsByBlogId(blogId) {
+                getStatisticsByBlogId(blogId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    if (res.data == null) {
+                        return this.$message.info("博客已被博主删除");
+                    }
+                    this.blog = res.data;
+                    //判断是否仅自己可见
+                    this.isPrivate()
+                })
+            },
+            //获取博客内容
+            getContentByBlogId(blogId) {
+                getContentByBlogId(blogId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.blogContent = res.data.content
+                })
+            },
+            //插入浏览记录
+            insertBlogUserView() {
+                if (this.$store.state.user.userId == "") {
+                    return ;
                 }
-            })
-        },
-        //获取用户扩展信息
-        getUserExtByUserId(userId) {
-            getUserExtByUserId(userId).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
-                    return false;
+                const blogUserView = {
+                    blogId: this.$route.query.blogId,
+                    userId: this.$store.state.user.userId
                 }
-                this.userExt = res.data
-            })
-        },
-        //点赞
-        click() {
-            const blogUserClick = {
-                blogId: this.$route.query.blogId,
-                userId: this.$store.state.user.userId
-            }
-            click(blogUserClick).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
+                insertBlogUserView(blogUserView).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                })
+            },
+            //获取用户扩展信息
+            getUserExtByUserId(userId) {
+                getUserExtByUserId(userId).then(res => {
+                    if (res.code != 200) {
+                        this.$message.error(res.message);
+                        return false;
+                    }
+                    this.userExt = res.data
+                })
+            },
+            //点赞
+            click() {
+                if (this.$store.state.user.userId == "") {
+                    return this.$message.info("请先登录");
                 }
-                if (this.clickFlag == true) {
-                    this.blog.clickCounter -= 1;
-                    this.userExt.clickCounter -= 1;
-                    this.clickFlag = false;
-                } else {
-                    this.blog.clickCounter += 1;
-                    this.userExt.clickCounter += 1;
-                    this.clickFlag = true;
+                const blogUserClick = {
+                    blogId: this.$route.query.blogId,
+                    userId: this.$store.state.user.userId
                 }
-                this.getClickByBlogIdAndUserId()
-            })
-        },
-        //查询用户是否点赞
-        getClickByBlogIdAndUserId() {
-            const blogUserClick = {
-                blogId: this.$route.query.blogId,
-                userId: this.$store.state.user.userId
-            }
-            getClickByBlogIdAndUserId(blogUserClick).then(res => {
-                if (res.code != 200) {
-                    return this.$message.error(res.message);
+                click(blogUserClick).then(res => {
+                    if (res.code != 200) {
+                        this.$message.error(res.message);
+                    }
+                    if (this.clickFlag == true) {
+                        this.blog.clickCounter -= 1;
+                        this.userExt.clickCounter -= 1;
+                        this.clickFlag = false;
+                    } else {
+                        this.blog.clickCounter += 1;
+                        this.userExt.clickCounter += 1;
+                        this.clickFlag = true;
+                    }
+                    this.getClickByBlogIdAndUserId()
+                })
+            },
+            //查询用户是否点赞
+            getClickByBlogIdAndUserId() {
+                const blogUserClick = {
+                    blogId: this.$route.query.blogId,
+                    userId: this.$store.state.user.userId
                 }
-                this.clickFlag = res.data
-            })
-        },
-        //判断是否收藏过
-        beforeStore() {
-            if (this.storeFlag == true) {
-                const userStore = {
-                    id: this.userStore.id,
-                    blogId: this.userStore.blogId,
-                    blogFlag: 1,
-                    folderFlag: 1,
-                }
-                deleteUserStore(userStore).then(res => {
+                getClickByBlogIdAndUserId(blogUserClick).then(res => {
                     if (res.code != 200) {
                         return this.$message.error(res.message);
                     }
-                    this.blog.storeCounter -= 1;
-                    this.getUserStoreByBlogIdAndUserId();
+                    this.clickFlag = res.data
                 })
-            } else {
-                this.storeDialogVisibleTure()
-            }
-        },
-        //打开dialog
-        storeDialogVisibleTure() {
-            this.storeDialogVisible = true;
-            this.getUserStoreFolder();
-        },
-        storeDialogVisibleFalse() {
-            this.storeDialogVisible = false;
-        },
-        //获取收藏夹
-        getUserStoreFolder() {
-            const userStore = {
-                userId: this.$store.state.user.userId,
-                folderFlag: 0,
-            }
-            getUserStoreFolder(userStore).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+            },
+            //判断是否收藏过
+            beforeStore() {
+                if (this.$store.state.user.userId == "") {
+                    return this.$message.info("请先登录");
                 }
-                this.userStoreFolder = res.data
-            })
-        },
-        //收藏
-        store(id) {
-            const userStore = {
-                userId: this.$store.state.user.userId,
-                blogId: this.$route.query.blogId,
-                blogFlag: 1,
-                folderFlag: 1,
-                parentId: id,
-                showFlag: 1,
-            }
-            createUserStore(userStore).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
-                }
-                this.blog.storeCounter += 1;
-                this.userExt.storeCounter += 1;
-                this.getUserStoreByBlogIdAndUserId()
-                this.storeDialogVisibleFalse()
-            })
-        },
-        //查询用户是否收藏
-        getUserStoreByBlogIdAndUserId() {
-            const userStore = {
-                blogId: this.$route.query.blogId,
-                userId: this.$store.state.user.userId
-            }
-            getUserStoreByBlogIdAndUserId(userStore).then(res => {
-                if (res.code != 200) {
-                    this.$message.error(res.message);
-                }
-                if (res.data != null) {
-                    this.userStore = res.data
-                    this.storeFlag = true
+                if (this.storeFlag == true) {
+                    const userStore = {
+                        id: this.userStore.id,
+                        blogId: this.userStore.blogId,
+                        blogFlag: 1,
+                        folderFlag: 1,
+                    }
+                    deleteUserStore(userStore).then(res => {
+                        if (res.code != 200) {
+                            return this.$message.error(res.message);
+                        }
+                        this.blog.storeCounter -= 1;
+                        this.getUserStoreByBlogIdAndUserId();
+                    })
                 } else {
-                    this.storeFlag = false
+                    this.storeDialogVisibleTrue()
                 }
-            })
-        }
-    },
-}
+            },
+            //打开dialog
+            storeDialogVisibleTrue() {
+                this.storeDialogVisible = true;
+                this.getUserStoreFolder();
+            },
+            storeDialogVisibleFalse() {
+                this.storeDialogVisible = false;
+            },
+            //获取收藏夹
+            getUserStoreFolder() {
+                const userStore = {
+                    userId: this.$store.state.user.userId,
+                    folderFlag: 0,
+                }
+                getUserStoreFolder(userStore).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.userStoreFolder = res.data
+                })
+            },
+            //收藏
+            store(id) {
+                const userStore = {
+                    userId: this.$store.state.user.userId,
+                    blogId: this.$route.query.blogId,
+                    blogFlag: 1,
+                    folderFlag: 1,
+                    parentId: id,
+                    showFlag: 1,
+                }
+                createUserStore(userStore).then(res => {
+                    if (res.code != 200) {
+                        this.$message.error(res.message);
+                    }
+                    this.blog.storeCounter += 1;
+                    this.userExt.storeCounter += 1;
+                    this.getUserStoreByBlogIdAndUserId()
+                    this.storeDialogVisibleFalse()
+                })
+            },
+            //查询用户是否收藏
+            getUserStoreByBlogIdAndUserId() {
+                const userStore = {
+                    blogId: this.$route.query.blogId,
+                    userId: this.$store.state.user.userId
+                }
+                getUserStoreByBlogIdAndUserId(userStore).then(res => {
+                    if (res.code != 200) {
+                        this.$message.error(res.message);
+                    }
+                    if (res.data != null) {
+                        this.userStore = res.data
+                        this.storeFlag = true
+                    } else {
+                        this.storeFlag = false
+                    }
+                })
+            }
+        },
+    }
 </script>
 
 <style scoped>
-.blog-container {
-    width: 80%;
-    margin: 0px auto;
-    margin-bottom: 80px;
-}
+    .blog-container {
+        width: 80%;
+        margin: 0px auto;
+        margin-bottom: 80px;
+    }
 
-.blog-footer {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 100%;
-    background: #fff;
-    box-shadow: 0px 0px 1px #909399;
-}
+    .blog-footer {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        background: #fff;
+        box-shadow: 0px 0px 1px #909399;
+    }
 
-.click {
-    color: #409EFF;
-}
+    .click {
+        color: #409EFF;
+    }
 
-.store {
-    color: #F56C6C;
-}
+    .store {
+        color: #F56C6C;
+    }
 </style>

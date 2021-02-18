@@ -14,14 +14,11 @@
                                 <span v-dompurify-html="item.name"/>
                             </span>
                             <el-divider direction="vertical"></el-divider>
-                            <span>
-                                <span>作者：</span>
-                                <span class="userName" v-dompurify-html="item.userName" @click="toUserInfo(item.userId)"/>
-                            </span>
+                            <span class="userName" v-dompurify-html="item.userName" @click="toUserInfo(item.userId)"/>
                         </div>
                         <div class="data">
                             {{ item.time }}
-
+                            <el-divider direction="vertical"></el-divider>
                             <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ item.visitCounter }}

@@ -147,7 +147,7 @@
         },
         methods: {
             init() {
-                if (this.$route.query.keyword != "") {
+                if (this.$route.query.keyword != null) {
                     this.keyword = this.$route.query.keyword;
                     this.$router.push({name: 'blog', query: {keyword: this.$route.query.keyword}})
                 }
@@ -232,6 +232,9 @@
                 }
             },
             toBlogWithKeyWord() {
+                if (this.keyword==""){
+                    return this.toBlog()
+                }
                 let routeUrl = this.$router.resolve({
                     path: "blog",
                     query: {keyword: this.keyword}
