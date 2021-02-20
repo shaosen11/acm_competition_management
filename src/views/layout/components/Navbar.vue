@@ -26,7 +26,7 @@
         <el-submenu index="4">
             <template slot="title">
                 <i class="iconfont el-icon-third-blog"></i>
-                博客首页
+                博客
             </template>
             <el-menu-item index="4-1" @click="toBlog">
                 博客

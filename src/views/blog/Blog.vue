@@ -15,6 +15,7 @@
                             </span>
                             <el-divider direction="vertical"></el-divider>
                             <span class="userName" v-dompurify-html="item.userName" @click="toUserInfo(item.userId)"/>
+                            <p class="content markdown-body" v-dompurify-html="item.subContent"></p>
                         </div>
                         <div class="data">
                             {{ item.time }}
@@ -32,7 +33,7 @@
                                 {{ item.storeCounter }}
                             </span>
                         </div>
-                        <div class="divider"></div>
+                        <el-divider/>
                     </div>
                     <div class="pagination-container" style="float: right; margin-bottom: 15px">
                         <el-pagination
@@ -108,6 +109,7 @@
                         return this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
+                    console.log(res.data.list)
                     this.total = res.data.total;
                     this.esBlogQueryParam.pageNum = res.data.pageNum;
                     this.esBlogQueryParam.pageSize = res.data.pageSize;
@@ -161,13 +163,28 @@
         color: #909399;
     }
 
+    .title{
+        font-size: 24px;
+    }
+
     .title:hover {
         color: #409eff;
-        font-size: 16px;
+    }
+
+    .userName{
+        font-size: 20px;
     }
 
     .userName:hover {
         color: #409eff;
-        font-size: 16px;
+    }
+
+    .content{
+        color: #909399;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
 </style>

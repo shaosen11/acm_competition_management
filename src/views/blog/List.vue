@@ -65,7 +65,7 @@
                                         所有人可见
                                     </el-dropdown-item>
                                     <el-dropdown-item @click.native="setPrivate(item.blogId)" v-else>
-                                        尽自己可见
+                                        仅自己可见
                                     </el-dropdown-item>
                                     <el-dropdown-item divided v-if="item.garbageFlag==1"
                                                       @click.native="returnGarbage(item.blogId)">
@@ -256,6 +256,7 @@ export default {
         //切换tab
         handleClick(tab) {
             this.blogQuery = Object.assign({}, defaultBlogQuery);
+            this.blogQuery.userId = this.$store.state.user.userId;
             if (tab.name == 'draft') {
                 this.blogQuery.status = 1;
             }
