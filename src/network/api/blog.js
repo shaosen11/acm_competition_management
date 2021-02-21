@@ -42,7 +42,8 @@ export function updateBlog(blog) {
             markdown: blog.markdown,
             status: blog.status,
             garbageFlag: blog.garbageFlag,
-            showFlag: blog.showFlag
+            showFlag: blog.showFlag,
+            adminShowFlag: blog.adminShowFlag
         }
     })
 }
@@ -64,11 +65,16 @@ export function listBlogPage(BlogQueryParam) {
         url: '/blog/listByPage',
         method: 'post',
         data: {
-            userId: BlogQueryParam.userId,
+            blogId: BlogQueryParam.blogId,
             name: BlogQueryParam.name,
+            userId: BlogQueryParam.userId,
+            userName: BlogQueryParam.userName,
             status: BlogQueryParam.status,
             showFlag: BlogQueryParam.showFlag,
+            adminShowFlag: BlogQueryParam.adminShowFlag,
             garbageFlag: BlogQueryParam.garbageFlag,
+            startTime: BlogQueryParam.startTime,
+            endTime: BlogQueryParam.endTime,
             pageNum: BlogQueryParam.pageNum,
             pageSize: BlogQueryParam.pageSize,
         }

@@ -143,11 +143,19 @@
                 if (this.blog.showFlag == 0) {
                     if (this.blog.userId != this.$store.state.user.userId) {
                         this.$message.error("请用发布账号登录");
-                        return this.$router.push('/home')
+                        return this.$router.push('/blog');
                     }
                 }
                 //是本人登录，进行初始化
                 this.afterInit()
+            },
+            //判断是否管理员关闭
+            isAdminPrivate() {
+                if (this.blog.adminShowFlag == 0) {
+                    this.$message.error("博客涉及违规内容，以限制浏览");
+                    return this.$router.push('/blog')
+                }
+                this.isPrivate()
             },
             afterInit() {
                 this.getUserExtByUserId(this.blog.userId);
@@ -182,8 +190,8 @@
                         return this.$message.info("博客已被博主删除");
                     }
                     this.blog = res.data;
-                    //判断是否仅自己可见
-                    this.isPrivate()
+                    //判断是否管理员限制浏览
+                    this.isAdminPrivate()
                 })
             },
             //获取博客内容
