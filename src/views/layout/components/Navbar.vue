@@ -31,10 +31,10 @@
             <el-menu-item index="4-1" @click="toBlog">
                 博客
             </el-menu-item>
-            <el-menu-item v-if="this.isLogin" index="4-1" @click="toMyBlogList">
+            <el-menu-item v-if="this.isLogin" index="4-2" @click="toMyBlogList">
                 我的博客
             </el-menu-item>
-            <el-menu-item v-if="this.isLogin" index="4-2" @click="toCreateBlog">
+            <el-menu-item v-if="this.isLogin" index="4-3" @click="toCreateBlog">
                 创建博客
             </el-menu-item>
         </el-submenu>

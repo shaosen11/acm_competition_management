@@ -3,6 +3,11 @@
     margin: 0px auto;
 }
 
+.big-app-container {
+    width: 85%;
+    margin: 0px auto;
+}
+
 .index-container {
     width: 1000px;
 }

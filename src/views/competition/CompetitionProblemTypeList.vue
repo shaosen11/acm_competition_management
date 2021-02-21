@@ -4,21 +4,19 @@
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>比赛</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/competitionProblemType'}">比赛题型</el-breadcrumb-item>
-            <el-breadcrumb-item>{{this.$route.query.name}}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ this.$route.query.name }}</el-breadcrumb-item>
         </el-breadcrumb>
-        <h2>{{this.$route.query.name}}</h2>
+        <h1>{{this.$route.query.name}}</h1>
         <el-divider></el-divider>
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6" v-for="item in this.list" :key="item">
-                <el-card shadow="hover" style="height: 185px;">
-                    <el-tooltip :content="item.name" placement="top">
-                        <h3>{{ item.name|ellipsisName }}</h3>
-                    </el-tooltip>
-                    {{ item.description|ellipsis }}
-                    <p>
+                <el-card shadow="hover" style="height: 160px;">
+                    <h3 class="name">{{ item.name }}</h3>
+                    <span class="description">{{ item.description }}</span>
+                    <div class="degree">
                         <i class="iconfont el-icon-third-fire"></i>
-                        {{ item.degree}}
-                    </p>
+                        {{ item.degree }}
+                    </div>
                 </el-card>
             </el-col>
         </el-row>
@@ -65,13 +63,6 @@
                 }
                 return value
             },
-            ellipsisName(value) {
-                if (!value) return ''
-                if (value.length > 8) {
-                    return value.slice(0, 8) + '...'
-                }
-                return value
-            }
         }
     }
 </script>
@@ -79,5 +70,26 @@
 <style scoped>
     .el-col {
         margin-bottom: 20px;
+    }
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .degree {
+        float: right;
+        margin-top: 10px
     }
 </style>

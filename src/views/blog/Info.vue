@@ -7,9 +7,7 @@
                     <user-statistics-info :user-id="this.userId"
                                           :user-ext="this.userExt"></user-statistics-info>
                     <!--热门博客-->
-                    <el-card style="margin-top: 10px">
-                        热门博客
-                    </el-card>
+                    <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
                 </el-col>
                 <!--博客内容-->
                 <el-col :span="18">
@@ -93,6 +91,7 @@
         getClickByBlogIdAndUserId,
         getContentByBlogId,
         insertBlogUserView,
+        getHotBlogByUserId
     } from '@/network/api/blog'
     import {
         getUserStoreByBlogIdAndUserId,
@@ -104,6 +103,7 @@
     import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
     import Comment from "@/views/blog/components/Comment";
     import Store from "@/views/blog/components/Store";
+    import HotBlog from "@/component/HotBlog";
     import * as CommentData from '@/data/mockdata'
 
     export default {
@@ -111,7 +111,8 @@
         components: {
             UserStatisticsInfo,
             Comment,
-            Store
+            Store,
+            HotBlog
         },
         data() {
             return {
@@ -126,7 +127,8 @@
                 userStore: '',
                 userStoreParentId: '',
                 userStoreFolder: [],
-                storeDialogVisible: false
+                storeDialogVisible: false,
+                blogHotList: []
             }
         },
         created() {
@@ -155,7 +157,8 @@
                 this.insertBlogUserView();
                 this.commentData = CommentData.comment.data;
                 this.isDraft();
-                this.isGarbage()
+                this.isGarbage();
+                this.getHotBlogByUserId(this.blog.userId);
             },
             isDraft() {
                 if (this.blog.status == 1) {
@@ -336,14 +339,22 @@
                         this.storeFlag = false
                     }
                 })
-            }
+            },
+            getHotBlogByUserId(userId) {
+                getHotBlogByUserId(userId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.blogHotList = res.data
+                })
+            },
         },
     }
 </script>
 
 <style scoped>
     .blog-container {
-        width: 80%;
+        width: 85%;
         margin: 0px auto;
         margin-bottom: 80px;
     }

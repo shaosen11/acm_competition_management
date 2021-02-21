@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="big-app-container">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>博客</el-breadcrumb-item>

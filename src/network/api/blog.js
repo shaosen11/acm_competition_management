@@ -159,3 +159,22 @@ export function searchHitEsBlog(keyword) {
         }
     })
 }
+
+//获取热门博客
+export function listBlogHot() {
+    return request({
+        url: '/blogHot/list',
+        method: 'get',
+    })
+}
+
+//根据用户Id获取热门博客
+export function getHotBlogByUserId(userId) {
+    return request({
+        url: '/blog/getHotBlogByUserId',
+        method: 'post',
+        data: {
+            userId
+        }
+    })
+}

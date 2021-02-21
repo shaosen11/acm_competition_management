@@ -51,12 +51,34 @@
                 </el-card>
 
             </el-col>
+            <el-col :span="6">
+                <el-card>
+                    热门博客(24小时更新一次)
+                    <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
+                        <el-row style="margin: 15px auto;">
+                            <el-col :span="2">
+                                <span>{{ index+1 }}</span>
+                            </el-col>
+                            <el-col :span="20">
+                                <div class="name" @click="toBlog(blogHot.blogId)">{{ blogHot.name }}</div>
+                                <el-col :span="16">
+                                    <div class="userName" @click="toUserInfo(blogHot.userId)">{{ blogHot.userName }}</div>
+                                </el-col>
+                                <el-col :span="8">
+                                    <i class="iconfont el-icon-third-fire"></i>
+                                    {{ blogHot.score}}
+                                </el-col>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-card>
+            </el-col>
         </el-row>
     </div>
 </template>
 
 <script>
-    import {searchEsBlog} from '@/network/api/blog'
+    import {searchEsBlog, listBlogHot} from '@/network/api/blog'
 
     const defaultEsBlogQueryParam = {
         keyword: '',
@@ -88,7 +110,7 @@
                 listLoading: false,
                 //是否分页隐藏
                 isHide: true,
-                userExt: {}
+                blogHotList: []
             }
         },
         created() {
@@ -98,6 +120,7 @@
             //初始化方法
             init() {
                 this.getList()
+                this.getBlogHotList()
             },
             //获取表单信息
             getList() {
@@ -109,7 +132,6 @@
                         return this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
-                    console.log(res.data.list)
                     this.total = res.data.total;
                     this.esBlogQueryParam.pageNum = res.data.pageNum;
                     this.esBlogQueryParam.pageSize = res.data.pageSize;
@@ -119,6 +141,14 @@
                         this.isHide = true;
                     }
                     this.listLoading = false;
+                })
+            },
+            getBlogHotList() {
+                listBlogHot().then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.blogHotList = res.data
                 })
             },
             toBlog(blogId) {
@@ -163,7 +193,7 @@
         color: #909399;
     }
 
-    .title{
+    .title {
         font-size: 24px;
     }
 
@@ -171,20 +201,34 @@
         color: #409eff;
     }
 
-    .userName{
-        font-size: 20px;
+    .userName {
+        font-size: 16px;
     }
 
     .userName:hover {
         color: #409eff;
     }
 
-    .content{
+    .content {
         color: #909399;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
+    }
+
+    .name {
+        font-size: 16px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .name:hover {
+        color: #409EFF;
     }
 </style>

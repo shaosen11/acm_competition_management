@@ -30,7 +30,7 @@
                 </el-col>
             </el-row>
             <el-divider></el-divider>
-            <el-row :gutter="20" type="flex" justify="center">
+            <el-row :gutter="5" type="flex" justify="center" class="statistic">
                 <el-col :span="6">
                     <i class="iconfont el-icon-third-follow"/>
                     {{ this.userExt.followCounter }}
@@ -68,5 +68,7 @@ export default {
 </script>
 
 <style scoped>
-
+    .statistic{
+        font-size: 14px;
+    }
 </style>

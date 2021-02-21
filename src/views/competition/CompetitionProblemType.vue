@@ -7,14 +7,14 @@
         </el-breadcrumb>
         <el-row :gutter="20" style="margin: 50px 0px">
             <el-col :span="8" v-for="item in this.list" :key="item">
-                <el-card shadow="hover" style="height: 185px;">
+                <el-card shadow="hover" style="height: 170px;">
                     <div @click="toCompetitionProblemTypeList(item.name)">
-                        <h2>{{ item.name }}</h2>
-                        {{ item.description }}
-                        <p>
+                        <h2 class="name">{{ item.name }}</h2>
+                        <span class="description">{{ item.description }}</span>
+                        <div class="degree">
                             <i class="iconfont el-icon-third-fire"></i>
-                            {{ item.degree}}
-                        </p>
+                            {{ item.degree }}
+                        </div>
                     </div>
                 </el-card>
             </el-col>
@@ -67,5 +67,26 @@
 <style scoped>
     .el-col {
         margin-bottom: 20px;
+    }
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .degree {
+        float: right;
+        margin-top: 10px
     }
 </style>

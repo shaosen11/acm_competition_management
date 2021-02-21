@@ -68,7 +68,6 @@
 
             <!--解题报告-->
             <el-col :span="8">
-                <report-list :user-id="this.$route.query.userId"/>
             </el-col>
         </el-row>
     </div>
@@ -100,7 +99,7 @@ export default {
                 organizationName: '',
             },
             teamName: '',
-            users: ''
+            users: '',
         }
     },
     created() {
