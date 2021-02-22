@@ -5,33 +5,34 @@
                 <el-avatar :size="40"
                            :src="this.$store.state.user.icon"/>
             </el-col>
-            <el-col :span="22" >
+            <el-col :span="22">
                 <el-input
-                    v-model="input"
-                    type="textarea"
-                    :rows="3"
-                    @focus="focusComment"
-                    placeholder="写下你的评论">
+                        v-model="comment"
+                        type="textarea"
+                        :rows="3"
+                        @focus="focusComment"
+                        placeholder="写下你的评论">
                 </el-input>
             </el-col>
         </el-row>
         <transition name="el-zoom-in-top">
-                <div class="btn-control" v-if="this.showCommit">
-                    <span class="cancel" @click="cancelFocusComment">取消</span>
-                    <el-button class="btn" type="primary" round @click="commitComment">确定</el-button>
-                </div>
+            <div class="btn-control" v-if="this.showCommit">
+                <span class="cancel" @click="cancelFocusComment">取消</span>
+                <el-button class="btn" type="primary" round @click="submitComment">确定</el-button>
+            </div>
         </transition>
         <el-divider></el-divider>
+
         <h3>全部评论</h3>
         <div class="comment" v-for="item in comments">
             <div class="info">
-                <img class="avatar" :src="item.fromAvatar" width="36" height="36"/>
+                <img class="avatar" :src="item.fromUserIcon" width="36" height="36"/>
                 <div class="right">
-                    <div class="name">{{item.fromName}}</div>
-                    <div class="date">{{item.date}}</div>
+                    <div class="name">{{item.fromUserName}}</div>
+                    <div class="date">{{item.time}}</div>
                 </div>
             </div>
-            <div class="content">{{item.content}}</div>
+            <div class="content" v-dompurify-html="item.comment"></div>
             <div class="control">
                 <span class="like" :class="{active: item.isLike}" @click="likeClick(item)">
                     <i class="iconfont el-icon-third-like"></i>
@@ -42,16 +43,17 @@
                     <span>回复</span>
                 </span>
             </div>
+
             <div class="reply">
                 <div class="item" v-for="reply in item.reply">
                     <div class="reply-content">
-                        <span class="from-name">{{reply.fromName}}</span>
+                        <span class="from-name">{{reply.fromUserName}}</span>
                         <span>:</span>
-                        <span class="to-name">@{{reply.toName}}</span>
-                        <span>{{reply.content}}</span>
+                        <span class="to-name">@{{reply.toUserName}}</span>
+                        <span v-dompurify-html="reply.comment"></span>
                     </div>
                     <div class="reply-bottom">
-                        <span>{{reply.date}}</span>
+                        <span>{{reply.time}}</span>
                         <span class="reply-text" @click="showCommentInput(item, reply)">
                             <i class="iconfont el-icon-third-comment-copy"></i>
                             <span>回复</span>
@@ -63,7 +65,7 @@
                     <span class="add-comment">添加新评论</span>
                 </div>
                 <transition name="fade">
-                    <div class="input-wrapper" v-if="showItemId === item.id">
+                    <div class="input-wrapper" v-if="showItemId === item.commentId">
                         <el-input class="gray-bg-input"
                                   v-model="inputComment"
                                   type="textarea"
@@ -83,260 +85,331 @@
 </template>
 
 <script>
-export default {
-    props: {
-        comments: {
-            type: Array,
-            required: true
-        }
-    },
-    data() {
+    import {insertBlogComment} from '@/network/api/blog'
 
-        return {
-            inputComment: '',
-            showItemId: '',
-            showCommit: false,
-            input: ''
-        }
-    },
-    methods: {
-        /**
-         * 点赞
-         */
-        likeClick(item) {
-            if (item.isLike === null) {
-                Vue.$set(item, "isLike", true);
-                item.likeNum++
-            } else {
-                if (item.isLike) {
-                    item.likeNum--
-                } else {
+    export default {
+        props: {
+            blogId: {},
+            comments: {
+                type: Array,
+                required: true
+            }
+        },
+        data() {
+
+            return {
+                inputComment: '',
+                showItemId: '',
+                showCommit: false,
+                toUserId: '',
+                comment: ''
+            }
+        },
+        methods: {
+            /**
+             * 点赞
+             */
+            likeClick(item) {
+                if (item.isLike === null) {
+                    Vue.$set(item, "isLike", true);
                     item.likeNum++
+                } else {
+                    if (item.isLike) {
+                        item.likeNum--
+                    } else {
+                        item.likeNum++
+                    }
+                    item.isLike = !item.isLike;
                 }
-                item.isLike = !item.isLike;
-            }
-        },
+            },
 
-        /**
-         * 点击取消按钮
-         */
-        cancel() {
-            this.showItemId = ''
-        },
+            /**
+             * 点击取消按钮
+             */
+            cancel() {
+                this.showItemId = ''
+            },
 
-        /**
-         * 提交评论
-         */
-        commitComment() {
-            console.log(this.inputComment);
-            console.log(this.input);
-        },
-
-        /**
-         * 点击评论按钮显示输入框
-         * item: 当前大评论
-         * reply: 当前回复的评论
-         */
-        showCommentInput(item, reply) {
-            if (reply) {
-                this.inputComment = "@" + reply.fromName + " "
-            } else {
+            /**
+             * 提交评论
+             */
+            commitComment() {
+                let space = this.inputComment.indexOf(" ");
+                let comment = this.inputComment.substring(space+1)
+                const blogComment = {
+                    parentId: this.showItemId,
+                    blogId: this.blogId,
+                    fromUserId: this.$store.state.user.userId,
+                    toUserId: this.toUserId,
+                    comment: comment
+                }
+                this.insertBlogComment(blogComment)
                 this.inputComment = ''
-            }
-            this.showItemId = item.id
+            },
+            submitComment() {
+                if (this.$store.state.user.userId == "") {
+                    return this.$message.info("请先登录");
+                }
+                const blogComment = {
+                    blogId: this.blogId,
+                    fromUserId: this.$store.state.user.userId,
+                    comment: this.comment
+                }
+                this.insertBlogComment(blogComment)
+                this.comment = ''
+            },
+
+            insertBlogComment(blogComment) {
+                insertBlogComment(blogComment).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.$emit('getBlogCommentByBlogId', this.blogId)
+                    this.$message.success(res.message);
+                })
+            },
+
+
+            /**
+             * 点击评论按钮显示输入框
+             * item: 当前大评论
+             * reply: 当前回复的评论
+             */
+            showCommentInput(item, reply) {
+                if (reply) {
+                    this.inputComment = "@" + reply.fromUserName + " "
+                } else {
+                    this.inputComment = ''
+                }
+                this.showItemId = item.commentId
+                this.toUserId = reply.fromUserId
+            },
+
+            focusComment() {
+                this.showCommit = true
+            },
+
+            cancelFocusComment() {
+                this.showCommit = false
+            },
+
         },
-
-        focusComment() {
-            this.showCommit = true
-        },
-
-        cancelFocusComment() {
-            this.showCommit = false
-        }
-
-    },
-    created() {
-        console.log(this.comments)
     }
-}
 </script>
 
 <style scoped lang="scss">
-@import 'src/assets/scss/index';
+    @import 'src/assets/scss/index';
 
-.btn-control {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding-top: 10px;
-    .cancel {
-        font-size: 16px;
-        color: #606266;
-        margin-right: 20px;
-        cursor: pointer;
-        &:hover {
-            color: #333;
-        }
-    }
-    .confirm {
-        font-size: 16px;
-    }
-}
-
-.container {
-    padding: 0 10px;
-    box-sizing: border-box;
-    .comment {
+    .btn-control {
         display: flex;
-        flex-direction: column;
-        padding: 10px;
-        border-bottom: 1px solid $border-fourth;
-        .info {
-            display: flex;
-            align-items: center;
-            .avatar {
-                border-radius: 50%;
-            }
-            .right {
-                display: flex;
-                flex-direction: column;
-                margin-left: 10px;
-                .name {
-                    font-size: 16px;
-                    color: $text-main;
-                    margin-bottom: 5px;
-                    font-weight: 500;
-                }
-                .date {
-                    font-size: 12px;
-                    color: $text-minor;
-                }
-            }
-        }
-        .content {
+        justify-content: flex-end;
+        align-items: center;
+        padding-top: 10px;
+
+        .cancel {
             font-size: 16px;
-            color: $text-main;
-            line-height: 20px;
-            padding: 10px 0;
-        }
-        .control {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            color: $text-minor;
-            .like {
-                display: flex;
-                align-items: center;
-                margin-right: 20px;
-                cursor: pointer;
-                &.active, &:hover {
-                    color: $color-main;
-                }
-                .iconfont {
-                    font-size: 14px;
-                    margin-right: 5px;
-                }
+            color: #606266;
+            margin-right: 20px;
+            cursor: pointer;
+
+            &:hover {
+                color: #333;
             }
-            .comment-reply {
+        }
+
+        .confirm {
+            font-size: 16px;
+        }
+    }
+
+    .container {
+        padding: 0 10px;
+        box-sizing: border-box;
+
+        .comment {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border-bottom: 1px solid $border-fourth;
+
+            .info {
                 display: flex;
                 align-items: center;
-                cursor: pointer;
-                &:hover {
-                    color: $text-333;
+
+                .avatar {
+                    border-radius: 50%;
                 }
-                .iconfont {
-                    font-size: 16px;
-                    margin-right: 5px;
+
+                .right {
+                    display: flex;
+                    flex-direction: column;
+                    margin-left: 10px;
+
+                    .name {
+                        font-size: 16px;
+                        color: $text-main;
+                        margin-bottom: 5px;
+                        font-weight: 500;
+                    }
+
+                    .date {
+                        font-size: 12px;
+                        color: $text-minor;
+                    }
                 }
             }
 
-        }
-        .reply {
-            margin: 10px 0;
-            border-left: 2px solid $border-first;
-            .item {
-                margin: 0 10px;
+            .content {
+                font-size: 16px;
+                color: $text-main;
+                line-height: 20px;
                 padding: 10px 0;
-                border-bottom: 1px dashed $border-third;
-                .reply-content {
-                    display: flex;
-                    align-items: center;
-                    font-size: 14px;
-                    color: $text-main;
-                    .from-name {
-                        color: $color-main;
-                    }
-                    .to-name {
-                        color: $color-main;
-                        margin-left: 5px;
-                        margin-right: 5px;
-                    }
-                }
-                .reply-bottom {
-                    display: flex;
-                    align-items: center;
-                    margin-top: 6px;
-                    font-size: 12px;
-                    color: $text-minor;
-                    .reply-text {
-                        display: flex;
-                        align-items: center;
-                        margin-left: 10px;
-                        cursor: pointer;
-                        &:hover {
-                            color: $text-333;
-                        }
-                        .icon-comment {
-                            margin-right: 5px;
-                        }
-                    }
-                }
             }
-            .write-reply {
+
+            .control {
                 display: flex;
                 align-items: center;
                 font-size: 14px;
                 color: $text-minor;
-                padding: 10px;
-                cursor: pointer;
-                &:hover {
-                    color: $text-main;
-                }
-                .el-icon-edit {
-                    margin-right: 5px;
-                }
-            }
-            .fade-enter-active, fade-leave-active {
-                transition: opacity 0.5s;
-            }
-            .fade-enter, .fade-leave-to {
-                opacity: 0;
-            }
-            .input-wrapper {
-                padding: 10px;
-                .gray-bg-input, .el-input__inner {
-                    /*background-color: #67C23A;*/
-                }
-                .btn-control {
+
+                .like {
                     display: flex;
-                    justify-content: flex-end;
                     align-items: center;
-                    padding-top: 10px;
-                    .cancel {
+                    margin-right: 20px;
+                    cursor: pointer;
+
+                    &.active, &:hover {
+                        color: $color-main;
+                    }
+
+                    .iconfont {
+                        font-size: 14px;
+                        margin-right: 5px;
+                    }
+                }
+
+                .comment-reply {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $text-333;
+                    }
+
+                    .iconfont {
                         font-size: 16px;
-                        color: $text-normal;
-                        margin-right: 20px;
-                        cursor: pointer;
-                        &:hover {
-                            color: $text-333;
+                        margin-right: 5px;
+                    }
+                }
+
+            }
+
+            .reply {
+                margin: 10px 0;
+                border-left: 2px solid $border-first;
+
+                .item {
+                    margin: 0 10px;
+                    padding: 10px 0;
+                    border-bottom: 1px dashed $border-third;
+
+                    .reply-content {
+                        display: flex;
+                        align-items: center;
+                        font-size: 14px;
+                        color: $text-main;
+
+                        .from-name {
+                            color: $color-main;
+                        }
+
+                        .to-name {
+                            color: $color-main;
+                            margin-left: 5px;
+                            margin-right: 5px;
                         }
                     }
-                    .confirm {
-                        font-size: 16px;
+
+                    .reply-bottom {
+                        display: flex;
+                        align-items: center;
+                        margin-top: 6px;
+                        font-size: 12px;
+                        color: $text-minor;
+
+                        .reply-text {
+                            display: flex;
+                            align-items: center;
+                            margin-left: 10px;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: $text-333;
+                            }
+
+                            .icon-comment {
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+                }
+
+                .write-reply {
+                    display: flex;
+                    align-items: center;
+                    font-size: 14px;
+                    color: $text-minor;
+                    padding: 10px;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: $text-main;
+                    }
+
+                    .el-icon-edit {
+                        margin-right: 5px;
+                    }
+                }
+
+                .fade-enter-active, fade-leave-active {
+                    transition: opacity 0.5s;
+                }
+
+                .fade-enter, .fade-leave-to {
+                    opacity: 0;
+                }
+
+                .input-wrapper {
+                    padding: 10px;
+
+                    .gray-bg-input, .el-input__inner {
+                        /*background-color: #67C23A;*/
+                    }
+
+                    .btn-control {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        padding-top: 10px;
+
+                        .cancel {
+                            font-size: 16px;
+                            color: $text-normal;
+                            margin-right: 20px;
+                            cursor: pointer;
+
+                            &:hover {
+                                color: $text-333;
+                            }
+                        }
+
+                        .confirm {
+                            font-size: 16px;
+                        }
                     }
                 }
             }
         }
     }
-}
 </style>

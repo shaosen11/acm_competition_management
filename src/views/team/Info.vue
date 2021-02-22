@@ -88,7 +88,6 @@ export default {
                 if (res.code != 200) {
                     return this.$message.error(res.message);
                 }
-                console.log(res.data)
                 this.team = res.data.team;
                 this.users = res.data.users;
                 //判断是否队长

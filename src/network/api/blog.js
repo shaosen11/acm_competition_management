@@ -184,3 +184,29 @@ export function getHotBlogByUserId(userId) {
         }
     })
 }
+
+//添加评论
+export function insertBlogComment(blogComment) {
+    return request({
+        url: '/blogComment/insert',
+        method: 'post',
+        data: {
+            parentId: blogComment.parentId,
+            blogId: blogComment.blogId,
+            fromUserId: blogComment.fromUserId,
+            toUserId: blogComment.toUserId,
+            comment: blogComment.comment,
+        }
+    })
+}
+
+//获取blogId
+export function getBlogCommentByBlogId(blogId) {
+    return request({
+        url: '/blogComment/getByBlogId',
+        method: 'post',
+        data: {
+            blogId
+        }
+    })
+}

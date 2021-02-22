@@ -36,11 +36,11 @@
                         <el-divider></el-divider>
                         <div class="blog-content markdown-body" v-dompurify-html="this.blogContent"></div>
                     </el-card>
-                </el-col>
-                <!--评论内容-->
-                <el-col :offset="6" :span="18" style="margin-top: 15px">
-                    <el-card class="box-card">
-                        <comment :comments="commentData"></comment>
+                    <!--评论内容-->
+                    <el-card class="box-card" style="margin-top: 15px">
+                        <comment :comments="commentData"
+                                 :blogId="this.$route.query.blogId"
+                                 @getBlogCommentByBlogId="getBlogCommentByBlogId"/>
                     </el-card>
                 </el-col>
             </el-row>
@@ -91,7 +91,8 @@
         getClickByBlogIdAndUserId,
         getContentByBlogId,
         insertBlogUserView,
-        getHotBlogByUserId
+        getHotBlogByUserId,
+        getBlogCommentByBlogId
     } from '@/network/api/blog'
     import {
         getUserStoreByBlogIdAndUserId,
@@ -104,7 +105,6 @@
     import Comment from "@/views/blog/components/Comment";
     import Store from "@/views/blog/components/Store";
     import HotBlog from "@/component/HotBlog";
-    import * as CommentData from '@/data/mockdata'
 
     export default {
         name: "Info",
@@ -163,10 +163,10 @@
                 this.getClickByBlogIdAndUserId();
                 this.getUserStoreByBlogIdAndUserId();
                 this.insertBlogUserView();
-                this.commentData = CommentData.comment.data;
                 this.isDraft();
                 this.isGarbage();
                 this.getHotBlogByUserId(this.blog.userId);
+                this.getBlogCommentByBlogId(this.blog.blogId)
             },
             isDraft() {
                 if (this.blog.status == 1) {
@@ -206,7 +206,7 @@
             //插入浏览记录
             insertBlogUserView() {
                 if (this.$store.state.user.userId == "") {
-                    return ;
+                    return;
                 }
                 const blogUserView = {
                     blogId: this.$route.query.blogId,
@@ -356,6 +356,21 @@
                     this.blogHotList = res.data
                 })
             },
+            //获取评论
+            getBlogCommentByBlogId(blogId) {
+                getBlogCommentByBlogId(blogId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    for (let i = 0; i < res.data.length; i++) {
+                        if (res.data[i].reply == null) {
+                            res.data[i].reply = []
+                        }
+                    }
+                    this.commentData = res.data
+                    console.log(res.data)
+                })
+            }
         },
     }
 </script>
