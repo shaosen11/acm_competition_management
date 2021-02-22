@@ -178,11 +178,12 @@
             showCommentInput(item, reply) {
                 if (reply) {
                     this.inputComment = "@" + reply.fromUserName + " "
+                    this.toUserId = reply.fromUserId
                 } else {
                     this.inputComment = ''
+                    this.toUserId = item.fromUserId
                 }
                 this.showItemId = item.commentId
-                this.toUserId = reply.fromUserId
             },
 
             focusComment() {
