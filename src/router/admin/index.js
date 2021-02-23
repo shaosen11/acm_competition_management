@@ -95,6 +95,22 @@ const routers = [
                 }
             },
             {
+                path: 'onlineJudge',
+                name: 'onlineJudge',
+                meta: {title: 'OJ系统', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/OnlineJudge'),
+                }
+            },
+            {
+                path: 'createOnlineJudge',
+                name: 'createOnlineJudge',
+                meta: {title: '创建OJ系统', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/CreateOnlineJudge'),
+                }
+            },
+            {
                 path: 'competitionProblemType',
                 name: 'competitionProblemType',
                 meta: {title: '比赛题型', requireAuth: true, requireLogin: true},

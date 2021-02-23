@@ -38,6 +38,8 @@
                             <el-menu-item index="5-2" @click="toCreateCompetition">创建比赛</el-menu-item>
                             <el-menu-item index="5-3" @click="toCompetitionType">比赛类型列表</el-menu-item>
                             <el-menu-item index="5-4" @click="toCreateCompetitionType">创建比赛类型</el-menu-item>
+                            <el-menu-item index="5-3" @click="toOnlineJudge">OJ系统列表</el-menu-item>
+                            <el-menu-item index="5-4" @click="toCreateOnlineJudge">创建OJ系统</el-menu-item>
                             <el-menu-item index="5-5" @click="toCompetitionPronblemType">题型列表</el-menu-item>
                             <el-menu-item index="5-6" @click="toCreateCompetitionProblemType">创建题型</el-menu-item>
                         </el-menu-item-group>
@@ -96,6 +98,12 @@ export default {
         },
         toCreateCompetitionType() {
             this.$router.push("/admin/createCompetitionType")
+        },
+        toOnlineJudge() {
+            this.$router.push("/admin/onlineJudge")
+        },
+        toCreateOnlineJudge() {
+            this.$router.push("/admin/createOnlineJudge")
         },
         toCompetitionPronblemType() {
             this.$router.push("/admin/competitionProblemType")

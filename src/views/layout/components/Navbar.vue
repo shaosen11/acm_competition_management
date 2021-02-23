@@ -12,17 +12,31 @@
             <el-menu-item index="2-1" @click="toCompetition">
                 比赛列表
             </el-menu-item>
-            <el-menu-item index="2-2" @click="toCompetitionType">
+            <el-menu-item index="2-2" @click="toOnlineJudge">
+                OJ系统
+            </el-menu-item>
+            <el-menu-item index="2-3" @click="toCompetitionType">
                 比赛类型
             </el-menu-item>
-            <el-menu-item index="2-3" @click="toCompetitionProblemType">
+            <el-menu-item index="2-4" @click="toCompetitionProblemType">
                 比赛题型
             </el-menu-item>
         </el-submenu>
-        <el-menu-item index="3" @click="toReport">
-            <i class="iconfont el-icon-third-file-text"></i>
-            解题报告
-        </el-menu-item>
+        <el-submenu index="3" @click="toReport">
+            <template slot="title">
+                <i class="iconfont el-icon-third-file-text"></i>
+                解题报告
+            </template>
+            <el-menu-item index="3-1" @click="toReport">
+                解题报告
+            </el-menu-item>
+            <el-menu-item v-if="this.isLogin" index="3-2" @click="toMyBlogList">
+                我的报告
+            </el-menu-item>
+            <el-menu-item v-if="this.isLogin" index="3-3" @click="toCreateReport">
+                创建报告
+            </el-menu-item>
+        </el-submenu>
         <el-submenu index="4">
             <template slot="title">
                 <i class="iconfont el-icon-third-blog"></i>
@@ -155,6 +169,9 @@
             toHome() {
                 this.$router.push('/')
             },
+            toOnlineJudge() {
+                this.$router.push('/onlineJudge')
+            },
             toCompetition() {
                 this.$router.push('/competition')
             },
@@ -166,6 +183,9 @@
             },
             toReport() {
                 this.$router.push('/report')
+            },
+            toCreateReport() {
+                this.$router.push('/reportCreate')
             },
             toBlog() {
                 this.$router.push('/blog')

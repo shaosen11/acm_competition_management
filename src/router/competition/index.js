@@ -6,6 +6,12 @@ const routers = [
         meta: {title: '比赛列表'}
     },
     {
+        path: '/onlineJudge',
+        name: 'OnlineJudge',
+        component: () => import('@/views/competition/OnlineJudge'),
+        meta: {title: 'OJ系统'}
+    },
+    {
         path: '/competitionInfo',
         name: 'competitionInfo',
         component: () => import('@/views/competition/Info'),
