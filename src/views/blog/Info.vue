@@ -51,10 +51,24 @@
                 <el-row :gutter="20" style="margin: 10px auto">
                     <el-col :offset="6" :span="18">
                         <el-input
-                                v-model="input"
+                                v-model="buttonComment"
                                 placeholder="请输入内容"
                                 suffix-icon="el-icon-edit"
+                                @input="buttonCommentFlagTrue"
                                 style="width: 300px;"/>
+                        <span v-if="this.buttonCommentFlag==true">
+                            <el-button
+                                       icon="el-icon-close"
+                                       size="small"
+                                       style="margin-left: 15px"
+                                       @click="buttonCommentFlagFalse"
+                                       circle/>
+                            <el-button type="primary"
+                                       icon="el-icon-check"
+                                       size="small"
+                                       @click="submitButtonComment"
+                                       circle/>
+                        </span>
                         <el-link
                                 :underline="false"
                                 style="margin-left: 20px"
@@ -92,7 +106,8 @@
         getContentByBlogId,
         insertBlogUserView,
         getHotBlogByUserId,
-        getBlogCommentByBlogId
+        getBlogCommentByBlogId,
+        insertBlogComment
     } from '@/network/api/blog'
     import {
         getUserStoreByBlogIdAndUserId,
@@ -128,7 +143,9 @@
                 userStoreParentId: '',
                 userStoreFolder: [],
                 storeDialogVisible: false,
-                blogHotList: []
+                blogHotList: [],
+                buttonComment: '',
+                buttonCommentFlag: false
             }
         },
         created() {
@@ -368,7 +385,28 @@
                         }
                     }
                     this.commentData = res.data
-                    console.log(res.data)
+                })
+            },
+            buttonCommentFlagFalse() {
+                this.buttonCommentFlag = false;
+            },
+            buttonCommentFlagTrue() {
+                this.buttonCommentFlag = true;
+            },
+            submitButtonComment() {
+                const blogComment = {
+                    blogId: this.$route.query.blogId,
+                    fromUserId: this.$store.state.user.userId,
+                    comment: this.buttonComment
+                }
+                insertBlogComment(blogComment).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.$message.success(res.message);
+                    this.buttonComment = '';
+                    this.buttonCommentFlag = false;
+                    this.getBlogCommentByBlogId(this.$route.query.blogId)
                 })
             }
         },

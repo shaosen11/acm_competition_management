@@ -34,10 +34,6 @@
             </div>
             <div class="content" v-dompurify-html="item.comment"></div>
             <div class="control">
-                <span class="like" :class="{active: item.isLike}" @click="likeClick(item)">
-                    <i class="iconfont el-icon-third-like"></i>
-                    <span class="like-num">{{item.likeNum > 0 ? item.likeNum + '人赞' : '赞'}}</span>
-                </span>
                 <span class="comment-reply" @click="showCommentInput(item)">
                     <i class="iconfont el-icon-third-comment-copy"></i>
                     <span>回复</span>
@@ -96,32 +92,15 @@
             }
         },
         data() {
-
             return {
                 inputComment: '',
                 showItemId: '',
                 showCommit: false,
                 toUserId: '',
-                comment: ''
+                comment: '',
             }
         },
         methods: {
-            /**
-             * 点赞
-             */
-            likeClick(item) {
-                if (item.isLike === null) {
-                    Vue.$set(item, "isLike", true);
-                    item.likeNum++
-                } else {
-                    if (item.isLike) {
-                        item.likeNum--
-                    } else {
-                        item.likeNum++
-                    }
-                    item.isLike = !item.isLike;
-                }
-            },
 
             /**
              * 点击取消按钮
