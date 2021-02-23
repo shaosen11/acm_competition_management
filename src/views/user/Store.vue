@@ -29,13 +29,12 @@
                         <span v-else>
                             <el-input v-model="userStoreFolderNameCopy" style="width: 30%"
                                       placeholder="请输入收藏夹名称"></el-input>
-                            <el-button type="danger"
-                                       icon="el-icon-close"
+                            <el-button icon="el-icon-close"
                                        size="small"
                                        style="margin-left: 15px"
                                        @click="userStoreFolderNameEditFlagFalse"
                                        circle/>
-                            <el-button type="success"
+                            <el-button type="primary"
                                        icon="el-icon-check"
                                        size="small"
                                        @click="updateUserStoreFolderName"
@@ -64,13 +63,12 @@
                     <p v-else>
                         <el-input v-model="userStoreFolderDescriptionCopy" style="width: 30%"
                                   placeholder="请输入收藏夹描述"></el-input>
-                        <el-button type="danger"
-                                   icon="el-icon-close"
+                        <el-button icon="el-icon-close"
                                    size="small"
                                    style="margin-left: 15px"
                                    @click="userStoreFolderDescriptionEditFlagFalse"
                                    circle/>
-                        <el-button type="success"
+                        <el-button type="primary"
                                    icon="el-icon-check"
                                    size="small"
                                    @click="updateUserStoreFolderDescription"
