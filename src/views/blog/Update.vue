@@ -45,7 +45,7 @@ export default {
         initCheck(userId) {
             if (this.$store.state.user.userId != userId) {
                 this.$message.error("请用发布账号登录");
-                this.$router.push('/home')
+                this.$router.push('/blog')
             }
         },
         //获取博客信息

@@ -62,3 +62,52 @@ export function getByOnlineJudgeSystemName(name) {
         }
     })
 }
+
+//新增报告
+export function saveReport(report) {
+    return request({
+        url: '/report/save',
+        method: 'post',
+        data: {
+            userId: report.userId,
+            reportId: report.reportId,
+            name: report.name,
+            problemName: report.problemName,
+            ojId: report.ojId,
+            problemLink: report.problemLink,
+            problemTypeId: report.problemTypeId,
+            problemDescribe: report.problemDescribe,
+            problemDescribeMd: report.problemDescribeMd,
+            input: report.input,
+            inputMd: report.inputMd,
+            output: report.output,
+            outputMd: report.outputMd,
+            inputExamples: report.inputExamples,
+            inputExamplesMd: report.inputExamplesMd,
+            outputExamples: report.outputExamples,
+            outputExamplesMd: report.outputExamplesMd,
+            analysis: report.analysis,
+            analysisMd: report.analysisMd,
+            program: report.program,
+            programMd: report.programMd,
+            testExamples: report.testExamples,
+            testExamplesMd: report.testExamplesMd,
+            resultPicture: report.resultPicture,
+            resultPictureMd: report.resultPictureMd,
+            resultComment: report.resultComment,
+            resultCommentMd: report.resultCommentMd,
+        }
+    })
+}
+
+
+//根据reportId获取report
+export function getReportByReportId(reportId) {
+    return request({
+        url: '/report/getByReportId',
+        method: 'post',
+        data: {
+            reportId
+        }
+    })
+}

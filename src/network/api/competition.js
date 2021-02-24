@@ -255,6 +255,18 @@ export function listCompetitionProblemType(competitionProblemType) {
     })
 }
 
+//获取题型列表
+export function listCompetitionProblemTypeWithChildren(competitionProblemType) {
+    return request({
+        url: '/competitionProblemType/listWithChildren',
+        method: 'post',
+        data: {
+            parentId: competitionProblemType.parentId,
+            showFlag: competitionProblemType.showFlag
+        }
+    })
+}
+
 //根据比赛类型名称获取比赛类型
 export function getByCompetitionProblemTypeName(name) {
     return request({
