@@ -80,15 +80,17 @@
                             <el-card shadow="hover">
                                 <div>
                                     <span v-if="userStore.blogFlag == 1">
-                                        <el-tag>blog</el-tag>
+                                        <el-tag>博客</el-tag>
                                         <span class="userStoreName"
                                               @click="toBlog(userStore.blogId)">{{ userStore.blogName }}</span>
                                         <el-divider direction="vertical"></el-divider>
                                         <span class="userName" v-dompurify-html="userStore.userName"/>
                                     </span>
                                     <span v-if="userStore.reportFlag == 1">
-                                        <el-tag type="info">report</el-tag>
+                                        <el-tag type="danger">报告</el-tag>
                                         <span class="userStoreName">{{ userStore.reportName }}</span>
+                                        <el-divider direction="vertical"></el-divider>
+                                        <span class="userName" v-dompurify-html="userStore.userName"/>
                                     </span>
                                     <span style="float: right;">
                                         <span v-if="userStore.status==0">
@@ -202,6 +204,7 @@
                         return this.$message.error(res.message);
                     }
                     this.userStore = res.data
+                    console.log(this.userStore)
                 })
             },
             //跳转博客

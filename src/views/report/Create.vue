@@ -11,7 +11,7 @@
             </el-col>
             <el-col :span="4">
                 <el-button type="info" @click="save">保存</el-button>
-                <el-button type="primary">发布</el-button>
+                <el-button type="primary" @click="release">发布</el-button>
             </el-col>
         </el-row>
         <el-tooltip class="item" effect="dark" content="点击相应步骤可跳转" placement="top">
@@ -168,7 +168,7 @@
 </template>
 
 <script>
-    import {listOnlineJudgeSystem, saveReport, getReportByReportId} from '@/network/api/report'
+    import {listOnlineJudgeSystem, saveReport, getReportByReportId, releaseReport} from '@/network/api/report'
     import {listCompetitionProblemTypeWithChildren} from '@/network/api/competition'
 
     export default {
@@ -328,7 +328,7 @@
             save() {
                 let report = JSON.stringify(this.report);
                 let oldReport = JSON.stringify(this.oldReport)
-                if(report == oldReport){
+                if (report == oldReport) {
                     return;
                 }
                 if (this.report.problemTypeId != null && this.report.problemTypeId.length > 0) {
@@ -349,10 +349,29 @@
                     }
                 })
             },
+            release() {
+                if (this.report.problemTypeId != null && this.report.problemTypeId.length > 0) {
+                    this.report.problemTypeId = this.report.problemTypeId[1]
+                }
+                this.report.userId = this.$store.state.user.userId
+                releaseReport(this.report).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    console.log("去报告列表")
+
+                })
+            },
             //保存之后重新进入页面
             toCreate(reportId) {
                 this.$router.push({
                     name: 'reportCreate',
+                    query: {reportId}
+                })
+            },
+            toReportInfo(reportId) {
+                this.$router.push({
+                    name: 'reportInfo',
                     query: {reportId}
                 })
             },

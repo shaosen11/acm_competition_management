@@ -11,6 +11,12 @@ const routers = [
         component: () => import('@/views/report/Create'),
         meta: {title: '创建报告', requireLogin: true}
     },
+    {
+        path: 'reportInfo',
+        name: 'reportInfo',
+        component: () => import('@/views/report/Info'),
+        meta: {title: '报告'}
+    },
 ];
 
 export default routers;

@@ -171,6 +171,18 @@ export function getUserStoreByBlogIdAndUserId(userStore) {
     })
 }
 
+//查询是否收藏报告
+export function getUserStoreByReportIdAndUserId(userStore) {
+    return request({
+        url: '/userStore/getByReportIdAndUserId',
+        method: 'post',
+        data: {
+            reportId: userStore.reportId,
+            userId: userStore.userId
+        }
+    })
+}
+
 
 //查询是否收藏博客
 export function deleteUserStore(userStore) {

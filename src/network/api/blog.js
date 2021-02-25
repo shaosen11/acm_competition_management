@@ -1,6 +1,6 @@
 import {request} from "@/network/request";
 
-//创建博客
+//发布博客
 export function releaseBlog(blog) {
     return request({
         url: '/blog/release',
