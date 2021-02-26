@@ -33,6 +33,9 @@
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>老师列表</span>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateTeacher">
+                    <i class="el-icon-plus"></i>添加老师
+                </el-button>
             </div>
             <el-table
                 v-loading="listLoading"
@@ -183,6 +186,9 @@ export default {
                 this.getList()
             })
         },
+        toCreateTeacher(){
+            this.$router.push("/admin/createTeacher")
+        }
     }
 }
 </script>

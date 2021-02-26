@@ -231,8 +231,8 @@
             //判断是否管理员限制浏览
             isAdminPrivate() {
                 if (this.report.adminShowFlag == 0) {
-                    this.$message.error("博客涉及违规内容，以限制浏览");
-                    return this.$router.push('/blog')
+                    this.$message.error("报告涉及违规内容，以限制浏览");
+                    return this.$router.push('/home')
                 }
                 this.isPrivate()
             },
@@ -250,7 +250,7 @@
                 this.listCompetitionProblemTypeWithChildren()
             },
             isDraft() {
-                if (this.blog.status == 1) {
+                if (this.report.status == 1) {
                     if (this.report.userId == this.$store.state.user.userId) {
                         this.$message.info("此博客还在草稿状态");
                     }

@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <span>OJ系统列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateOnlineJudge">
-                    <i class="el-icon-plus"></i>创建OJ系统
+                    <i class="el-icon-plus"></i>添加OJ系统
                 </el-button>
             </div>
             <el-table
@@ -159,4 +159,7 @@
 </script>
 
 <style scoped>
+    .table-container, .pagination-container {
+        margin: 15px auto;
+    }
 </style>

@@ -17,9 +17,17 @@ const routers = [
             {
                 path: 'teacher',
                 name: 'teacher',
-                meta: {title: '教师管理', requireAuth: true, requireLogin: true},
+                meta: {title: '老师管理', requireAuth: true, requireLogin: true},
                 components: {
                     admin: () => import('@/views/admin/Teacher'),
+                }
+            },
+            {
+                path: 'createTeacher',
+                name: 'createTeacher',
+                meta: {title: '新增老师', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/CreateTeacher'),
                 }
             },
             {

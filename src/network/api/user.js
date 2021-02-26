@@ -26,6 +26,20 @@ export function register(user) {
     })
 }
 
+//注册用户
+export function insertTeacher(user) {
+    return request({
+        url: '/insertTeacher',
+        method: 'post',
+        data: {
+            userId: user.userId,
+            email: user.email,
+            name: user.name,
+            password: user.password
+        }
+    })
+}
+
 //获取用户信息
 export function getUserInfo(userId) {
     return request({

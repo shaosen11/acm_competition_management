@@ -17,10 +17,9 @@
                         size="small">
                     重置
                 </el-button>
-
             </div>
-            <div style="margin-top: 15px">
-                <el-form :inline="true" :model="blogQuery" size="small" label-width="140px">
+            <div style="margin-top: 30px">
+                <el-form :inline="true" :model="blogQuery" size="small" label-width="120px">
                     <el-form-item label="博客id：">
                         <el-input style="width: 203px" v-model="blogQuery.blogId" placeholder="博客id"></el-input>
                     </el-form-item>
@@ -106,6 +105,23 @@
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)" :underline="false">
                             {{ scope.row.userName }}
                         </el-link>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="operation"
+                        label="数据"
+                        width="150"
+                        align="center">
+                    <template slot-scope="scope">
+                        <p>浏览量：
+                            {{scope.row.visitCounter}}
+                        </p>
+                        <p>点赞量：
+                            {{scope.row.clickCounter}}
+                        </p>
+                        <p>点赞量：
+                            {{scope.row.storeCounter}}
+                        </p>
                     </template>
                 </el-table-column>
                 <el-table-column
