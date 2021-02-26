@@ -6,6 +6,66 @@
                     <!--用户信息-->
                     <user-statistics-info :user-id="this.userId"
                                           :user-ext="this.userExt"></user-statistics-info>
+                    <el-card class="box-card" style="margin-top: 10px">
+                        <div slot="header">
+                            <span>题目信息</span>
+                        </div>
+                        <el-form :model="report" label-width="50px">
+                            <el-form-item label="名称" prop="problemName">
+                                <el-input
+                                        v-model="report.problemName"
+                                        placeholder="请输入题目名称"
+                                        autocomplete="off"
+                                        :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="OJ" prop="ojId">
+                                <el-select
+                                        v-model="report.ojId"
+                                        placeholder="请选择"
+                                        :disabled="true">
+                                    <el-option
+                                            v-for="item in this.OJList"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="网址" prop="problemLink">
+                                <el-input
+                                        v-model="report.problemLink"
+                                        placeholder="请输传送门"
+                                        autocomplete="off"
+                                        :disabled="true"></el-input>
+                            </el-form-item>
+                            <el-form-item label="题型" prop="ojId">
+                                <div class="block">
+                                    <el-cascader
+                                            v-model="report.problemTypeId"
+                                            clearable
+                                            placeholder="试试搜索：STL"
+                                            :options="competitionProblemTypeList"
+                                            filterable
+                                            :disabled="true"></el-cascader>
+                                </div>
+                            </el-form-item>
+                            <el-row :gutter="10" type="flex" justify="center">
+                                <el-button
+                                        v-if="this.status>1"
+                                        type="primary"
+                                        @click="lastStep"
+                                        round>上一步
+                                </el-button>
+                                <el-button
+                                        v-if="this.status<5"
+                                        type="primary"
+                                        @click="nextStep"
+                                        round>下一步
+                                </el-button>
+                            </el-row>
+                        </el-form>
+                    </el-card>
+                    <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                 </el-col>
                 <el-col :span="18">
                     <el-card>
@@ -103,7 +163,9 @@
         getContentByReportId,
         insertReportUserView,
         insertReportComment,
-        getReportCommentByReportId
+        getReportCommentByReportId,
+        listOnlineJudgeSystem,
+        getHotReportByUserId
     } from '@/network/api/report'
     import {
         getUserStoreByReportIdAndUserId,
@@ -112,10 +174,11 @@
         deleteUserStore
     } from '@/network/api/user'
     import {getUserExtByUserId} from "@/network/api/user";
+    import {listCompetitionProblemTypeWithChildren} from '@/network/api/competition'
     import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
     import Comment from "@/views/report/components/Comment";
     import Store from "@/views/blog/components/Store";
-    import HotBlog from "@/component/HotBlog";
+    import HotReport from "@/component/HotReport";
 
     export default {
         name: "Info",
@@ -123,14 +186,12 @@
             UserStatisticsInfo,
             Comment,
             Store,
-            HotBlog
+            HotReport
         },
         data() {
             return {
                 report: {},
                 reportContent: {},
-                blog: {},
-                blogContent: '',
                 userExt: {},
                 input: '',
                 commentData: [],
@@ -141,9 +202,11 @@
                 userStoreParentId: '',
                 userStoreFolder: [],
                 storeDialogVisible: false,
-                blogHotList: [],
+                reportHotList: [],
                 buttonComment: '',
-                buttonCommentFlag: false
+                buttonCommentFlag: false,
+                OJList: [],
+                competitionProblemTypeList: []
             }
         },
         created() {
@@ -151,7 +214,8 @@
         },
         methods: {
             init() {
-                this.getStatisticsByReportId(this.$route.query.reportId)
+                this.getStatisticsByReportId(this.$route.query.reportId);
+                this.getHotReportByUserId(this.$store.state.user.userId);
             },
             //判断是否仅自己可见
             isPrivate() {
@@ -182,6 +246,8 @@
                 this.isGarbage();
                 // this.getHotBlogByUserId(this.report.userId);
                 this.getReportCommentByReportId(this.report.reportId)
+                this.listOnlineJudgeSystem()
+                this.listCompetitionProblemTypeWithChildren()
             },
             isDraft() {
                 if (this.blog.status == 1) {
@@ -215,6 +281,7 @@
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
+                    this.report = res.data;
                     this.reportContent = res.data.content
                 })
             },
@@ -365,6 +432,14 @@
                     }
                 })
             },
+            getHotReportByUserId(userId) {
+                getHotReportByUserId(userId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.reportHotList = res.data
+                })
+            },
             //获取评论
             getReportCommentByReportId(reportId) {
                 getReportCommentByReportId(reportId).then(res => {
@@ -400,7 +475,34 @@
                     this.buttonCommentFlag = false;
                     this.getReportCommentByReportId(this.$route.query.reportId)
                 })
-            }
+            },
+            //获取OJ系统
+            listOnlineJudgeSystem() {
+                const onlineJudge = {
+                    showFlag: 1
+                };
+                listOnlineJudgeSystem(onlineJudge).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    for (let i = 0; i < res.data.length; i++) {
+                        this.OJList.push({value: res.data[i].id, label: res.data[i].name})
+                    }
+                })
+            },
+            //获取比赛题型
+            listCompetitionProblemTypeWithChildren() {
+                const competitionProblemType = {
+                    parentId: 0,
+                    showFlag: 1
+                }
+                listCompetitionProblemTypeWithChildren(competitionProblemType).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.competitionProblemTypeList = res.data
+                })
+            },
         }
     }
 </script>

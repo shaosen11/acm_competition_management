@@ -233,3 +233,63 @@ export function getReportCommentByReportId(reportId) {
         }
     })
 }
+
+//获取博客分页信息
+export function listReportPage(reportQueryParam) {
+    return request({
+        url: '/report/listByPage',
+        method: 'post',
+        data: {
+            reportId: reportQueryParam.reportId,
+            name: reportQueryParam.name,
+            userId: reportQueryParam.userId,
+            userName: reportQueryParam.userName,
+            status: reportQueryParam.status,
+            showFlag: reportQueryParam.showFlag,
+            adminShowFlag: reportQueryParam.adminShowFlag,
+            garbageFlag: reportQueryParam.garbageFlag,
+            startTime: reportQueryParam.startTime,
+            endTime: reportQueryParam.endTime,
+            pageNum: reportQueryParam.pageNum,
+            pageSize: reportQueryParam.pageSize,
+        }
+    })
+}
+
+//修改博客
+export function updateReport(report) {
+    return request({
+        url: '/report/update',
+        method: 'post',
+        data: {
+            reportId: report.reportId,
+            name: report.name,
+            status: report.status,
+            garbageFlag: report.garbageFlag,
+            showFlag: report.showFlag,
+            adminShowFlag: report.adminShowFlag
+        }
+    })
+}
+
+//删除博客
+export function deleteReport(reportId) {
+    return request({
+        url: '/report/delete',
+        method: 'post',
+        data: {
+            reportId,
+        }
+    })
+}
+
+//根据用户Id获取热门报告
+export function getHotReportByUserId(userId) {
+    return request({
+        url: '/report/getHotReportByUserId',
+        method: 'post',
+        data: {
+            userId
+        }
+    })
+}

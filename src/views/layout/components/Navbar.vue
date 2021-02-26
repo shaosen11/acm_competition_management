@@ -30,7 +30,7 @@
             <el-menu-item index="3-1" @click="toReport">
                 解题报告
             </el-menu-item>
-            <el-menu-item v-if="this.isLogin" index="3-2" @click="toMyBlogList">
+            <el-menu-item v-if="this.isLogin" index="3-2" @click="toMyReportList">
                 我的报告
             </el-menu-item>
             <el-menu-item v-if="this.isLogin" index="3-3" @click="toCreateReport">
@@ -183,6 +183,9 @@
             },
             toReport() {
                 this.$router.push('/report')
+            },
+            toMyReportList() {
+                this.$router.push('/reportList')
             },
             toCreateReport() {
                 this.$router.push('/reportCreate')

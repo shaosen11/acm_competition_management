@@ -358,20 +358,13 @@
                     if (res.code != 200) {
                         return this.$message.error(res.message);
                     }
-                    console.log("去报告列表")
-
+                    this.$router.push('/reportList')
                 })
             },
             //保存之后重新进入页面
             toCreate(reportId) {
                 this.$router.push({
                     name: 'reportCreate',
-                    query: {reportId}
-                })
-            },
-            toReportInfo(reportId) {
-                this.$router.push({
-                    name: 'reportInfo',
                     query: {reportId}
                 })
             },

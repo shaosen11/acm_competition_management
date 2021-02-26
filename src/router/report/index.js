@@ -17,6 +17,12 @@ const routers = [
         component: () => import('@/views/report/Info'),
         meta: {title: '报告'}
     },
+    {
+        path: 'reportList',
+        name: 'reportList',
+        component: () => import('@/views/report/List'),
+        meta: {title: '报告列表'}
+    },
 ];
 
 export default routers;
