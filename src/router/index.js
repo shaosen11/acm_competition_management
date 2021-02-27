@@ -4,7 +4,7 @@ import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 // 引入vuex
 import store from '@/store';
-import { Message } from 'element-ui'
+import {Message} from 'element-ui'
 
 Vue.use(VueRouter)
 const originalPush = VueRouter.prototype.push
@@ -34,7 +34,7 @@ const routes = [
             name: 'home',
             component: () => import('@/views/home/Home'),
             meta: {title: '首页'}
-        },
+            },
             ...blogRouters,
             ...competitionRouters,
             ...messageRouters,
@@ -93,7 +93,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     NProgress.start()
-    if (to.meta.requireLogin && !store.state.user.isLogin){
+    if (to.meta.requireLogin && !store.state.user.isLogin) {
         Message({
             message: "请先登录",
             type: 'info',

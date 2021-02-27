@@ -49,6 +49,7 @@ export function updateCompetition(competition) {
         method: 'post',
         data: {
             id: competition.id,
+            competitionId: competition.competitionId,
             name: competition.name,
             typeId: competition.typeId,
             description: competition.description,

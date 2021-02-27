@@ -192,7 +192,10 @@ export default {
         },
         //获取比赛类型
         getCompetitionTypeList() {
-            listCompetitionType().then(res => {
+            const competitionType = {
+                showFlag: 1,
+            }
+            listCompetitionType(competitionType).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }

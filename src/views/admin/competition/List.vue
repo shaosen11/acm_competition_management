@@ -358,7 +358,9 @@
             },
             //获取比赛类型
             getCompetitionTypeList() {
-                const competitionType = {};
+                const competitionType = {
+                    showFlag: 1,
+                }
                 listCompetitionType(competitionType).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
@@ -413,7 +415,7 @@
             //处理是否团队报名
             handleTeamFlagStatusChange(row) {
                 const competition = {
-                    id: row.id,
+                    competitionId: row.competitionId,
                     teamFlag: row.teamFlag
                 }
                 updateCompetition(competition).then(res => {
@@ -426,7 +428,7 @@
             //处理是否个人报名
             handlePersonFlagStatusChange(row) {
                 const competition = {
-                    id: row.id,
+                    competitionId: row.competitionId,
                     singleFlag: row.singleFlag
                 }
                 updateCompetition(competition).then(res => {
@@ -439,7 +441,7 @@
             //处理是否截止报名
             handleRegistrationFlagStatusChange(row) {
                 const competition = {
-                    id: row.id,
+                    competitionId: row.competitionId,
                     registrationFlag: row.registrationFlag
                 }
                 updateCompetition(competition).then(res => {
@@ -452,7 +454,7 @@
             //处理是否展示
             handleShowFlagStatusChange(row) {
                 const competition = {
-                    id: row.id,
+                    competitionId: row.competitionId,
                     showFlag: row.showFlag
                 }
                 updateCompetition(competition).then(res => {
@@ -465,7 +467,7 @@
             //处理是否网络比赛
             handleOnlineStatusChange(row) {
                 const competition = {
-                    id: row.id,
+                    competitionId: row.competitionId,
                     online: row.online
                 }
                 updateCompetition(competition).then(res => {

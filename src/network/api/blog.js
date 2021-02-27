@@ -140,32 +140,6 @@ export function insertBlogUserView(blogUserView) {
     })
 }
 
-//搜索博客
-export function searchEsBlog(esBlogQueryParam) {
-    return request({
-        url: '/esBlog/search',
-        method: 'post',
-        data: {
-            keyword: esBlogQueryParam.keyword,
-            pageNum: esBlogQueryParam.pageNum,
-            pageSize: esBlogQueryParam.pageSize,
-            lastFlag: esBlogQueryParam.lastFlag,
-            hotFlag: esBlogQueryParam.hotFlag,
-        }
-    })
-}
-
-//搜索博客
-export function searchHitEsBlog(keyword) {
-    return request({
-        url: '/esBlog/searchHit',
-        method: 'post',
-        data: {
-            keyword
-        }
-    })
-}
-
 //获取热门博客
 export function listBlogHot() {
     return request({
