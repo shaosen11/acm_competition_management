@@ -34,6 +34,12 @@ const routers = [
         name: 'competitionProblemTypeList',
         component: () => import('@/views/competition/CompetitionProblemTypeList'),
         meta: {title: '比赛题型'}
+    },
+    {
+        path: '/competitionProblemTypeSearch',
+        name: 'competitionProblemTypeSearch',
+        component: () => import('@/views/competition/CompetitionProblemTypeSearch'),
+        meta: {title: '比赛题型'}
     }
 ];
 

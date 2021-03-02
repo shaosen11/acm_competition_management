@@ -76,10 +76,13 @@
             </el-menu-item>
             <el-menu-item index="6-2" @click="toOrganization">班级列表</el-menu-item>
         </el-submenu>
-<!--        <el-menu-item index="7" @click="toMessage">-->
-<!--            <i class="iconfont el-icon-third-message"></i>-->
-<!--            消息-->
-<!--        </el-menu-item>-->
+        <el-menu-item @click="toSearch">
+            <el-input
+                    placeholder="去搜索"
+                    prefix-icon="el-icon-search"
+                    :disabled="true">
+            </el-input>
+        </el-menu-item>
         <div v-if="this.isLogin">
             <el-menu-item index="9" style="float: right;">
                 <el-dropdown trigger="click">
@@ -196,8 +199,8 @@
             toOrganization() {
                 this.$router.push('/organizationList')
             },
-            toMessage() {
-                this.$router.push('/message')
+            toSearch() {
+                this.$router.push('/search')
             },
             toUserInfo() {
                 this.$router.push({name: 'userInfo', query: {userId: this.userId}})

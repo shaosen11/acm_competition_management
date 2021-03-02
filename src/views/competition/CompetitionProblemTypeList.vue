@@ -11,11 +11,13 @@
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6" v-for="item in this.list" :key="item">
                 <el-card shadow="hover" style="height: 160px;">
-                    <h3 class="name">{{ item.name }}</h3>
-                    <span class="description">{{ item.description }}</span>
-                    <div class="degree">
-                        <i class="iconfont el-icon-third-fire"></i>
-                        {{ item.degree }}
+                    <div @click="toCompetitionProblemTypeSearch(item.name)">
+                        <h3 class="name">{{ item.name }}</h3>
+                        <span class="description">{{ item.description }}</span>
+                        <div class="degree">
+                            <i class="iconfont el-icon-third-fire"></i>
+                            {{ item.degree }}
+                        </div>
                     </div>
                 </el-card>
             </el-col>
@@ -52,6 +54,12 @@
                         return this.$message.error(res.message);
                     }
                     this.list = res.data
+                })
+            },
+            toCompetitionProblemTypeSearch(problemTypeName){
+                this.$router.push({
+                    name: 'competitionProblemTypeSearch',
+                    query: {problemTypeName}
                 })
             }
         },

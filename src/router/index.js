@@ -35,6 +35,12 @@ const routes = [
             component: () => import('@/views/home/Home'),
             meta: {title: '首页'}
             },
+            {
+                path: 'search',
+                name: 'search',
+                component: () => import('@/views/home/Search'),
+                meta: {title: '搜索'}
+            },
             ...blogRouters,
             ...competitionRouters,
             ...messageRouters,
