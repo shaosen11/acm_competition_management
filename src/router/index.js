@@ -36,6 +36,12 @@ const routes = [
             meta: {title: '首页'}
             },
             {
+                path: 'notice',
+                name: 'notice',
+                component: () => import('@/views/home/Notice'),
+                meta: {title: '通告'}
+            },
+            {
                 path: 'search',
                 name: 'search',
                 component: () => import('@/views/home/Search'),

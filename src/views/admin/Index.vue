@@ -4,51 +4,55 @@
             <el-aside width="200px">
                 <el-menu
                     class="el-menu-vertical-demo">
-                    <el-menu-item index="1" @click="toTeacher">
+                    <el-menu-item index="1" @click="toNotice">
+                        <i class="iconfont el-icon-third-notification"></i>
+                        <span slot="title">公告管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="2" @click="toTeacher">
                         <i class="iconfont el-icon-third-laoshi"></i>
                         <span slot="title">老师管理</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="toStudent">
+                    <el-menu-item index="3" @click="toStudent">
                         <i class="iconfont el-icon-third-student"></i>
                         <span slot="title">学生管理</span>
                     </el-menu-item>
-                    <el-submenu index="3">
+                    <el-submenu index="4">
                         <template slot="title">
                             <i class="iconfont el-icon-third-organization"></i>
                             <span>班级管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="3-1" @click="toOrganizationList">班级列表</el-menu-item>
-                            <el-menu-item index="3-2" @click="toApplyList">审批加入</el-menu-item>
-                            <el-menu-item index="3-3" @click="toCreateOrganization">创建班级</el-menu-item>
+                            <el-menu-item index="4-1" @click="toOrganizationList">班级列表</el-menu-item>
+                            <el-menu-item index="4-2" @click="toApplyList">审批加入</el-menu-item>
+                            <el-menu-item index="4-3" @click="toCreateOrganization">创建班级</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    <el-menu-item index="4" @click="toTeam">
+                    <el-menu-item index="5" @click="toTeam">
                         <i class="iconfont el-icon-third-team"></i>
                         <span slot="title">队伍管理</span>
                     </el-menu-item>
 
-                    <el-submenu index="5">
+                    <el-submenu index="6">
                         <template slot="title">
                             <i class="iconfont el-icon-third-trophy"></i>
                             <span>比赛管理</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="5-1" @click="toCompetitionList">比赛列表</el-menu-item>
-                            <el-menu-item index="5-2" @click="toCreateCompetition">创建比赛</el-menu-item>
-                            <el-menu-item index="5-3" @click="toCompetitionType">比赛类型列表</el-menu-item>
-                            <el-menu-item index="5-4" @click="toCreateCompetitionType">创建比赛类型</el-menu-item>
-                            <el-menu-item index="5-3" @click="toOnlineJudge">OJ系统列表</el-menu-item>
-                            <el-menu-item index="5-4" @click="toCreateOnlineJudge">创建OJ系统</el-menu-item>
-                            <el-menu-item index="5-5" @click="toCompetitionPronblemType">题型列表</el-menu-item>
-                            <el-menu-item index="5-6" @click="toCreateCompetitionProblemType">创建题型</el-menu-item>
+                            <el-menu-item index="6-1" @click="toCompetitionList">比赛列表</el-menu-item>
+                            <el-menu-item index="6-2" @click="toCreateCompetition">创建比赛</el-menu-item>
+                            <el-menu-item index="6-3" @click="toCompetitionType">比赛类型列表</el-menu-item>
+                            <el-menu-item index="6-4" @click="toCreateCompetitionType">创建比赛类型</el-menu-item>
+                            <el-menu-item index="6-3" @click="toOnlineJudge">OJ系统列表</el-menu-item>
+                            <el-menu-item index="6-4" @click="toCreateOnlineJudge">创建OJ系统</el-menu-item>
+                            <el-menu-item index="6-5" @click="toCompetitionPronblemType">题型列表</el-menu-item>
+                            <el-menu-item index="6-6" @click="toCreateCompetitionProblemType">创建题型</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    <el-menu-item index="6" @click="toReport">
+                    <el-menu-item index="7" @click="toReport">
                         <i class="iconfont el-icon-third-file-text"></i>
                         <span slot="title">报告管理</span>
                     </el-menu-item>
-                    <el-menu-item index="7" @click="toBlog">
+                    <el-menu-item index="8" @click="toBlog">
                         <i class="iconfont el-icon-third-blog"></i>
                         <span slot="title">论坛管理</span>
                     </el-menu-item>
@@ -116,6 +120,9 @@ export default {
         },
         toBlog() {
             this.$router.push("/admin/blog")
+        },
+        toNotice() {
+            this.$router.push("/admin/notice")
         }
     }
 }

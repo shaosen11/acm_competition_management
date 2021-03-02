@@ -4,7 +4,7 @@ const routers = [
         name: 'admin',
         component: () => import('@/views/admin/Index'),
         meta: {title: '管理中心', requireAuth: true, requireLogin: true},
-        redirect: 'admin/teacher',
+        redirect: 'admin/notice',
         children: [
             {
                 path: 'student',
@@ -19,7 +19,7 @@ const routers = [
                 name: 'teacher',
                 meta: {title: '老师管理', requireAuth: true, requireLogin: true},
                 components: {
-                    admin: () => import('@/views/admin/Teacher'),
+                    admin: () => import('@/views/admin/teacher/Teacher'),
                 }
             },
             {
@@ -27,7 +27,7 @@ const routers = [
                 name: 'createTeacher',
                 meta: {title: '新增老师', requireAuth: true, requireLogin: true},
                 components: {
-                    admin: () => import('@/views/admin/CreateTeacher'),
+                    admin: () => import('@/views/admin/teacher/CreateTeacher'),
                 }
             },
             {
@@ -148,6 +148,22 @@ const routers = [
                 meta: {title: '论坛管理', requireAuth: true, requireLogin: true},
                 components: {
                     admin: () => import('@/views/admin/Blog'),
+                }
+            },
+            {
+                path: 'notice',
+                name: 'notice',
+                meta: {title: '公告管理', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/notice/Notice'),
+                }
+            },
+            {
+                path: 'createNotice',
+                name: 'createNotice',
+                meta: {title: '创建公告', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/notice/Create'),
                 }
             }
         ]
