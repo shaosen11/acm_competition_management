@@ -103,7 +103,7 @@
 
 <script>
     import {getUserExtByUserId} from "@/network/api/user";
-    import UserInfo from "@/views/blog/components/UserStatisticsInfo";
+    import UserInfo from "@/component/UserStatisticsInfo";
     import HotBlog from "@/component/HotBlog";
     import {listBlogPage, updateBlog, deleteBlog, getHotBlogByUserId} from "@/network/api/blog";
 

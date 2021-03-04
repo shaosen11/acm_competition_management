@@ -4,8 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="6">
                     <!--用户信息-->
-                    <user-statistics-info :user-id="this.userId"
-                                          :user-ext="this.userExt"></user-statistics-info>
+                    <user-statistics-info :user-ext="this.userExt"></user-statistics-info>
                     <el-card class="box-card" style="margin-top: 10px">
                         <div slot="header">
                             <span>题目信息</span>
@@ -175,7 +174,7 @@
     } from '@/network/api/user'
     import {getUserExtByUserId} from "@/network/api/user";
     import {listCompetitionProblemTypeWithChildren} from '@/network/api/competition'
-    import UserStatisticsInfo from "@/views/blog/components/UserStatisticsInfo";
+    import UserStatisticsInfo from "@/component/UserStatisticsInfo";
     import Comment from "@/views/report/components/Comment";
     import Store from "@/views/blog/components/Store";
     import HotReport from "@/component/HotReport";
@@ -219,7 +218,6 @@
             },
             //判断是否仅自己可见
             isPrivate() {
-                console.log("private")
                 if (this.report.showFlag == 0) {
                     if (this.report.userId != this.$store.state.user.userId) {
                         this.$message.info("请用发布账号登录");

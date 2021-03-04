@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="big-app-container">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item :to="{ path: '/organizationList'}">班级列表</el-breadcrumb-item>
@@ -10,8 +10,6 @@
         <h3>{{ this.organization.year }}</h3>
         <p>{{ this.organization.organizationName }}</p>
         <el-divider></el-divider>
-
-
         <!--学生列表-->
         <el-row :gutter="20" style="margin-top: 30px">
             <el-col :span="6" v-for="user in this.list" :key="user">

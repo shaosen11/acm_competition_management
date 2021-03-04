@@ -102,7 +102,7 @@
 
 <script>
     import {getUserExtByUserId} from "@/network/api/user";
-    import UserInfo from "@/views/blog/components/UserStatisticsInfo";
+    import UserInfo from "@/component/UserStatisticsInfo";
     import HotReport from "@/component/HotReport";
     import {listReportPage, updateReport, deleteReport, getHotReportByUserId} from "@/network/api/report";
 
