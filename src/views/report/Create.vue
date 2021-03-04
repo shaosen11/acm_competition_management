@@ -39,7 +39,8 @@
                         <el-form-item label="OJ" prop="ojId">
                             <el-select
                                     v-model="report.ojId"
-                                    placeholder="请选择">
+                                    placeholder="请选择"
+                                    clearable>
                                 <el-option
                                         v-for="item in this.OJList"
                                         :key="item.value"
@@ -58,10 +59,10 @@
                             <div class="block">
                                 <el-cascader
                                         v-model="report.problemTypeId"
-                                        clearable
                                         placeholder="试试搜索：STL"
                                         :options="competitionProblemTypeList"
-                                        filterable></el-cascader>
+                                        filterable
+                                        clearable></el-cascader>
                             </div>
                         </el-form-item>
                         <el-row :gutter="10" type="flex" justify="center">

@@ -5,6 +5,7 @@
                 <!--用户信息-->
                 <user-statistics-info :user-ext="this.userExt"></user-statistics-info>
                 <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
+                <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
             </el-col>
             <el-col :span="18">
                 <el-row :gutter="20">
@@ -111,12 +112,13 @@
     import ReportList from "./components/ReportList";
     import UserStatisticsInfo from "@/component/UserStatisticsInfo";
     import HotReport from "@/component/HotReport";
+    import HotBlog from "@/component/HotBlog";
     import UserInfo from "@/component/UserInfo";
     import { getUserExtByUserId} from '@/network/api/user';
     import {getOrganizationByUserId} from '@/network/api/organization';
     import {getTeamAllInfoByUserId} from "@/network/api/team";
     import {getHotReportByUserId, listReportPage} from '@/network/api/report'
-    import {listBlogPage} from "@/network/api/blog";
+    import {listBlogPage, getHotBlogByUserId} from "@/network/api/blog";
 
 
     export default {
@@ -124,6 +126,7 @@
         components: {
             UserStatisticsInfo,
             HotReport,
+            HotBlog,
             UserInfo,
             ReportList,
         },
@@ -136,6 +139,7 @@
                 userId: '',
                 userExt: {},
                 reportHotList: [],
+                blogHotList: [],
                 query: {
                     userId: '',
                     status: 3,
@@ -166,6 +170,7 @@
                 this.getTeamAllInfoByUserId(userId);
                 this.getUserExtByUserId(userId);
                 this.getHotReportByUserId(userId);
+                this.getHotBlogByUserId(userId);
                 this.getList();
                 this.isLoading = false;
             },
@@ -196,8 +201,6 @@
             toTeamInfo(teamName) {
                 this.$router.push({name: 'teamInfo', query: {teamName}})
             },
-
-
             //获取用户扩展信息
             getUserExtByUserId(userId) {
                 getUserExtByUserId(userId).then(res => {
@@ -214,6 +217,14 @@
                         return this.$message.error(res.message);
                     }
                     this.reportHotList = res.data
+                })
+            },
+            getHotBlogByUserId(userId) {
+                getHotBlogByUserId(userId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.blogHotList = res.data
                 })
             },
             //处理页面大小变化
