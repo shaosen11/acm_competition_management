@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <span>公告列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateNotice">
-                    <i class="el-icon-plus"></i>创建公告
+                    创建公告
                 </el-button>
             </div>
             <el-table
@@ -180,7 +180,7 @@
 </script>
 
 <style scoped>
-    .table-container, .pagination-container {
+    .pagination-container {
         margin: 15px auto;
     }
 </style>

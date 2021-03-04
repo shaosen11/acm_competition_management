@@ -34,7 +34,7 @@
             <div slot="header" class="clearfix">
                 <span>老师列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateTeacher">
-                    <i class="el-icon-plus"></i>添加老师
+                    添加老师
                 </el-button>
             </div>
             <el-table

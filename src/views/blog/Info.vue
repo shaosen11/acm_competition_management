@@ -13,14 +13,14 @@
                 <el-col :span="18">
                     <el-card>
                         <h2>{{ this.blog.name }}</h2>
-                        <div style="margin: 15px 0px">
-                            <h3><i class="iconfont el-icon-third-user"
-                                   style="font-size: 20px; margin-right: 5px"></i>{{ this.blog.userName }}</h3>
-                        </div>
                         <span>
                             <i class="iconfont el-icon-third-time-circle"></i>
                             {{ this.blog.time }}
+                            <el-divider direction="vertical"></el-divider>
+                            <span>by </span>
+                            <span class="userName" v-dompurify-html="this.blog.userName"/>
                         </span>
+                        <el-divider direction="vertical"></el-divider>
                         <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ this.blog.visitCounter }}
@@ -58,11 +58,11 @@
                                 style="width: 300px;"/>
                         <span v-if="this.buttonCommentFlag==true">
                             <el-button
-                                       icon="el-icon-close"
-                                       size="small"
-                                       style="margin-left: 15px"
-                                       @click="buttonCommentFlagFalse"
-                                       circle/>
+                                    icon="el-icon-close"
+                                    size="small"
+                                    style="margin-left: 15px"
+                                    @click="buttonCommentFlagFalse"
+                                    circle/>
                             <el-button type="primary"
                                        icon="el-icon-check"
                                        size="small"
@@ -159,18 +159,22 @@
             isPrivate() {
                 if (this.blog.showFlag == 0) {
                     if (this.blog.userId != this.$store.state.user.userId) {
-                        this.$message.error("请用发布账号登录");
-                        return this.$router.push('/blog');
+                        this.$message.info("请用发布账号登录");
+                        return this.$router.push('/search');
                     }
                 }
-                //是本人登录，进行初始化
-                this.afterInit()
+                //是否处于草稿状态
+                this.isDraft();
             },
             //判断是否管理员限制浏览
             isAdminPrivate() {
                 if (this.blog.adminShowFlag == 0) {
-                    this.$message.error("博客涉及违规内容，以限制浏览");
-                    return this.$router.push('/blog')
+                    if (this.blog.userId == this.$store.state.user.userId) {
+                        this.$message.error("报告涉及违规内容，已限制浏览，请联系管理员");
+                    } else {
+                        this.$message.error("报告涉及违规内容，已限制浏览");
+                        return this.$router.push('/search')
+                    }
                 }
                 this.isPrivate()
             },
@@ -180,7 +184,6 @@
                 this.getClickByBlogIdAndUserId();
                 this.getUserStoreByBlogIdAndUserId();
                 this.insertBlogUserView();
-                this.isDraft();
                 this.isGarbage();
                 this.getHotBlogByUserId(this.blog.userId);
                 this.getBlogCommentByBlogId(this.blog.blogId)
@@ -189,8 +192,13 @@
                 if (this.blog.status == 1) {
                     if (this.blog.userId == this.$store.state.user.userId) {
                         this.$message.info("此博客还在草稿状态");
+                    } else {
+                        this.$message.info("此报告还未发布");
+                        return this.$router.push('/search')
                     }
                 }
+                //是本人登录，进行初始化
+                this.afterInit()
             },
             isGarbage() {
                 if (this.blog.garbageFlag == 1) {

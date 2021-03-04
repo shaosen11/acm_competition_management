@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <span>比赛类型列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetitionType">
-                    <i class="el-icon-plus"></i>创建比赛类型
+                    创建比赛类型
                 </el-button>
             </div>
             <el-table

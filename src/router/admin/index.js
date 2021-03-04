@@ -71,6 +71,14 @@ const routers = [
                 }
             },
             {
+                path: 'competitionInfo',
+                name: 'competitionInfo',
+                meta: {title: '比赛列表', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/competition/CompetitionInfo'),
+                }
+            },
+            {
                 path: 'createCompetition',
                 name: 'createCompetition',
                 meta: {title: '创建比赛', requireAuth: true, requireLogin: true},

@@ -15,8 +15,10 @@ Vue.use(VueDOMPurifyHTML)
 
 import "./assets/css/main.css"
 
-// import VCharts from 'v-charts'
-// Vue.use(VCharts)
+import VeHistogram from 'v-charts/lib/histogram';
+Vue.component(VeHistogram.name, VeHistogram);
+import VePie from 'v-charts/lib/pie';
+Vue.component(VePie.name, VePie);
 Vue.config.productionTip = false
 
 new Vue({

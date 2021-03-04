@@ -3,7 +3,7 @@
         <!--学生列表-->
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>申请列表</span>
+                <el-page-header @back="toOrganizationList" content="申请列表"/>
                 <el-button
                     style="float: right; padding: 3px 0"
                     @click="handleBatchOperate"
@@ -201,7 +201,9 @@ export default {
                 this.listLoading = false;
             })
         },
-
+        toOrganizationList() {
+            this.$router.push("/admin/organizationList")
+        },
     }
 }
 </script>

@@ -70,14 +70,14 @@
                 <el-col :span="18">
                     <el-card>
                         <h2>{{ this.report.name }}</h2>
-                        <div style="margin: 15px 0px">
-                            <h3><i class="iconfont el-icon-third-user"
-                                   style="font-size: 20px; margin-right: 5px"></i>{{ this.report.userName }}</h3>
-                        </div>
                         <span>
                             <i class="iconfont el-icon-third-time-circle"></i>
                             {{ this.report.time }}
+                            <el-divider direction="vertical"></el-divider>
+                            <span>by </span>
+                            <span class="userName" v-dompurify-html="this.report.userName"/>
                         </span>
+                        <el-divider direction="vertical"></el-divider>
                         <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>
                             {{ this.report.visitCounter }}
@@ -219,20 +219,25 @@
             },
             //判断是否仅自己可见
             isPrivate() {
+                console.log("private")
                 if (this.report.showFlag == 0) {
                     if (this.report.userId != this.$store.state.user.userId) {
-                        this.$message.error("请用发布账号登录");
-                        return this.$router.push('/blog');
+                        this.$message.info("请用发布账号登录");
+                        return this.$router.push('/search');
                     }
                 }
-                //是本人登录，进行初始化
-                this.afterInit()
+                //是否处于草稿状态
+                this.isDraft();
             },
             //判断是否管理员限制浏览
             isAdminPrivate() {
                 if (this.report.adminShowFlag == 0) {
-                    this.$message.error("报告涉及违规内容，以限制浏览");
-                    return this.$router.push('/home')
+                    if (this.report.userId == this.$store.state.user.userId){
+                        this.$message.error("报告涉及违规内容，已限制浏览，请联系管理员");
+                    } else {
+                        this.$message.error("报告涉及违规内容，已限制浏览");
+                        return this.$router.push('/search')
+                    }
                 }
                 this.isPrivate()
             },
@@ -242,9 +247,7 @@
                 this.getClickByReportIdAndUserId();
                 this.getUserStoreByReportIdAndUserId();
                 this.insertReportUserView();
-                this.isDraft();
                 this.isGarbage();
-                // this.getHotBlogByUserId(this.report.userId);
                 this.getReportCommentByReportId(this.report.reportId)
                 this.listOnlineJudgeSystem()
                 this.listCompetitionProblemTypeWithChildren()
@@ -252,9 +255,14 @@
             isDraft() {
                 if (this.report.status == 1) {
                     if (this.report.userId == this.$store.state.user.userId) {
-                        this.$message.info("此博客还在草稿状态");
+                        this.$message.info("此报告还在草稿状态");
+                    } else {
+                        this.$message.info("此报告还未发布");
+                        return this.$router.push('/search')
                     }
                 }
+                //是本人登录，进行初始化
+                this.afterInit()
             },
             isGarbage() {
                 if (this.report.garbageFlag == 1) {

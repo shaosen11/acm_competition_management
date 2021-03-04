@@ -2,7 +2,8 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>创建班级</span>
+                <el-page-header @back="toOrganizationList" content="创建班级">
+                </el-page-header>
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">
@@ -30,7 +31,7 @@
                                 filterable
                                 allow-create
                                 default-first-option
-                                placeholder="请选择">
+                                placeholder="请选择或输入">
                                 <el-option
                                     v-for="item in this.yearOptions"
                                     :key="item.value"
@@ -111,10 +112,15 @@ export default {
     },
     methods: {
         init() {
-            this.isLoading = true
+            this.isLoading = true;
             this.getCollegeList();
             this.getYearList();
-            this.isLoading = false
+            this.isLoading = false;
+            this.$notify({
+                title: '提示',
+                message: '1、不存在年级可直接输入年级即可\n 2、创建完成之后去班级列表核对信息是否正确再开放申请',
+                type: 'info'
+            });
         },
         //异步验证用户账号
         async validateOrganizationId(organizationId) {
@@ -171,6 +177,9 @@ export default {
                     this.yearOptions.push({value: res.data[i].year, label: res.data[i].year})
                 }
             })
+        },
+        toOrganizationList() {
+            this.$router.push("/admin/organizationList")
         },
     }
 }

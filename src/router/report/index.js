@@ -21,7 +21,7 @@ const routers = [
         path: 'reportList',
         name: 'reportList',
         component: () => import('@/views/report/List'),
-        meta: {title: '报告列表'}
+        meta: {title: '报告列表', requireLogin: true}
     },
 ];
 

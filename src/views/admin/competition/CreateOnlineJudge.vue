@@ -2,8 +2,7 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <el-page-header @back="toOnlineJudge" content="创建OJ系统">
-                </el-page-header>
+                <el-page-header @back="toOnlineJudge" content="创建OJ系统"/>
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">

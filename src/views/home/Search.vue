@@ -25,11 +25,15 @@
                                 <span v-dompurify-html="item.name"/>
                             </span>
                             <el-divider direction="vertical"></el-divider>
-                            <span class="userName" v-dompurify-html="item.userName" @click="toUserInfo(item.userId)"/>
+                            <el-tag v-if="item.blogId!=null">博客</el-tag>
+                            <el-tag type="danger" v-if="item.reportId!=null">报告</el-tag>
                             <p class="content markdown-body" v-dompurify-html="item.subContent"></p>
                         </div>
                         <div class="data">
                             {{ item.time }}
+                            <el-divider direction="vertical"></el-divider>
+                            <span>by </span>
+                            <span class="userName" v-dompurify-html="item.userName" @click="toUserInfo(item.userId)"/>
                             <el-divider direction="vertical"></el-divider>
                             <span style="margin-left: 10px">
                             <i class="iconfont el-icon-third-eye"/>

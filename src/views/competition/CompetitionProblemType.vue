@@ -43,6 +43,7 @@
                 });
                 this.listParentCompetitionProblemType()
                 loading.close();
+                this.$message.info("点击题型可进入子题型");
             },
             listParentCompetitionProblemType(){
                 const competitionProblemType = {

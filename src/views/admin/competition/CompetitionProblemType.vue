@@ -52,7 +52,7 @@
             <div slot="header" class="clearfix">
                 <span>比赛题型</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetitionProblemType">
-                    <i class="el-icon-plus"></i>创建比赛题型
+                    创建比赛题型
                 </el-button>
             </div>
             <el-table

@@ -52,7 +52,7 @@
             <div slot="header" class="clearfix">
                 <span>比赛列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetition">
-                    <i class="el-icon-plus"></i>创建比赛
+                    创建比赛
                 </el-button>
             </div>
             <el-table
@@ -161,6 +161,13 @@
                                 type="primary"
                                 @click="exportCompetitionUserRelation(scope.row.competitionId)"
                                 round>导出报名数据
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    @click="toCompetitionInfo(scope.row.competitionId)"
+                                    round>报名数据分析
                             </el-button>
                         </p>
                     </template>
@@ -581,6 +588,15 @@
                         document.body.removeChild(elink)
                     } else { // IE10+下载
                         navigator.msSaveBlob(blob, fileName)
+                    }
+                })
+            },
+            //跳转比赛报名分析页面
+            toCompetitionInfo(competitionId){
+                this.$router.push({
+                    path: '/admin/competitionInfo',
+                    query: {
+                        competitionId
                     }
                 })
             }

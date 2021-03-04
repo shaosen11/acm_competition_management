@@ -27,10 +27,10 @@
                 <i class="iconfont el-icon-third-file-text"></i>
                 解题报告
             </template>
-            <el-menu-item v-if="this.isLogin" index="3-1" @click="toMyReportList">
+            <el-menu-item index="3-1" @click="toMyReportList">
                 我的报告
             </el-menu-item>
-            <el-menu-item v-if="this.isLogin" index="3-2" @click="toCreateReport">
+            <el-menu-item index="3-2" @click="toCreateReport">
                 创建报告
             </el-menu-item>
         </el-submenu>
@@ -39,10 +39,10 @@
                 <i class="iconfont el-icon-third-blog"></i>
                 博客
             </template>
-            <el-menu-item v-if="this.isLogin" index="4-1" @click="toMyBlogList">
+            <el-menu-item index="4-1" @click="toMyBlogList">
                 我的博客
             </el-menu-item>
-            <el-menu-item v-if="this.isLogin" index="4-2" @click="toCreateBlog">
+            <el-menu-item index="4-2" @click="toCreateBlog">
                 创建博客
             </el-menu-item>
         </el-submenu>
@@ -76,12 +76,9 @@
             </el-menu-item>
             <el-menu-item index="6-2" @click="toOrganization">班级列表</el-menu-item>
         </el-submenu>
-        <el-menu-item @click="toSearch">
-            <el-input
-                    placeholder="去搜索"
-                    prefix-icon="el-icon-search"
-                    :disabled="true">
-            </el-input>
+        <el-menu-item index="7" @click="toSearch">
+            <i class="iconfont el-icon-third-search"></i>
+            搜索
         </el-menu-item>
         <div v-if="this.isLogin">
             <el-menu-item index="9" style="float: right;">

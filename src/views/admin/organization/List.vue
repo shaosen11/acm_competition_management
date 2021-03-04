@@ -42,7 +42,7 @@
             <div slot="header" class="clearfix">
                 <span>班级列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateOrganization">
-                    <i class="el-icon-plus"></i>创建班级
+                    创建班级
                 </el-button>
             </div>
             <el-table
@@ -52,7 +52,6 @@
                 stripe
                 border
                 style="width: 100%">
-<!--                <el-table-column type="selection" width="60" align="center"></el-table-column>-->
                 <el-table-column
                     prop="collegeName"
                     label="学院"
@@ -102,15 +101,24 @@
                 </el-table-column>
                 <el-table-column
                     prop="operation"
-                    label="详情"
+                    label="操作"
                     width="150"
                     align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            @click="toOrganizationInfo(scope.row)"
-                            round>查看详情
-                        </el-button>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    @click="toOrganizationInfo(scope.row)"
+                                    round>查看详情
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    round>删除
+                            </el-button>
+                        </p>
                     </template>
                 </el-table-column>
             </el-table>
@@ -174,6 +182,11 @@ export default {
         init() {
             this.getList();
             this.getYearList();
+            this.$notify({
+                title: '警告',
+                message: '1、创建班级信息错误，直接删除再创建即可\n2、对于已经创建的班级，修改涉及大量缓存，不适宜修改',
+                type: 'warning'
+            });
         },
         //获取班級信息
         getList() {
@@ -183,7 +196,6 @@ export default {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }
-                console.log(res.data.list)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.totalPage = res.data.totalPage;

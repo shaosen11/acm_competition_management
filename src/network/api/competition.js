@@ -290,3 +290,14 @@ export function listChildrenCompetitionProblemType(name) {
         }
     })
 }
+
+//获取比赛报名图表信息
+export function listChartByCompetitionId(competitionId) {
+    return request({
+        url: '/competitionUserRelation/listChartByCompetitionId',
+        method: 'post',
+        data: {
+            competitionId
+        }
+    })
+}

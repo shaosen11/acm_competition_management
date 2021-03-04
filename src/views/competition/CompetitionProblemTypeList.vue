@@ -46,6 +46,7 @@
                 });
                 this.listChildrenCompetitionProblemType(this.$route.query.name)
                 loading.close();
+                this.$message.info("点击题型可进入对应的报告列表");
             },
             listChildrenCompetitionProblemType(name) {
                 listChildrenCompetitionProblemType(name).then(res => {

@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <span>OJ系统列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateOnlineJudge">
-                    <i class="el-icon-plus"></i>添加OJ系统
+                    添加OJ系统
                 </el-button>
             </div>
             <el-table
