@@ -1,38 +1,67 @@
 <template>
     <div class="app-container">
-        <el-card>
-            <div slot="header" class="clearfix">
-                <span>公告列表</span>
-            </div>
-            <div v-for="item in this.tableData" :key="item" class="text item">
-                <span class="title">
+        <el-row :gutter="20" style="margin-top: 30px">
+        <el-col :span="18">
+            <el-card>
+                <div slot="header" class="clearfix">
+                    <span>公告列表</span>
+                </div>
+                <div v-for="item in this.tableData" :key="item" class="text item">
+                <span class="title" @click="toNoticeInfo(item.noticeId)">
                     {{ item.name }}
                 </span>
-                <p class="content markdown-body" v-dompurify-html="item.content"></p>
-                <div class="data">
-                    {{ item.time }}
+                    <p class="content markdown-body" v-dompurify-html="item.content"></p>
+                    <div class="data">
+                        {{ item.time }}
+                    </div>
+                    <div class="divider"></div>
                 </div>
-                <div class="divider"></div>
-            </div>
-            <div class="pagination-container" style="float: right;">
-                <el-pagination
-                        background
-                        @size-change="handleSizeChange"
-                        @current-change="handleCurrentChange"
-                        :current-page="noticeQuery.pageNum"
-                        :page-sizes="[5,10,15]"
-                        :page-size="noticeQuery.pageSize"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="total"
-                        :hide-on-single-page="isHide">
-                </el-pagination>
-            </div>
-        </el-card>
+                <div class="pagination-container" style="float: right;">
+                    <el-pagination
+                            background
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="noticeQuery.pageNum"
+                            :page-sizes="[5,10,15]"
+                            :page-size="noticeQuery.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total"
+                            :hide-on-single-page="isHide">
+                    </el-pagination>
+                </div>
+            </el-card>
+        </el-col>
+        <el-col :span="6">
+            <el-card>
+                热门博客(24小时更新一次)
+                <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
+                    <el-row style="margin: 15px auto;">
+                        <el-col :span="2">
+                            <span>{{ index+1 }}</span>
+                        </el-col>
+                        <el-col :span="20">
+                            <div class="name" @click="toBlog(blogHot.blogId)">{{ blogHot.name }}</div>
+                            <el-col :span="16">
+                                <div class="userName" @click="toUserInfo(blogHot.userId)">{{ blogHot.userName }}
+                                </div>
+                            </el-col>
+                            <el-col :span="8">
+                                <i class="iconfont el-icon-third-fire"></i>
+                                {{ blogHot.score}}
+                            </el-col>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
+
     </div>
 </template>
 
 <script>
     import {listNoticeTypePage} from '@/network/api/notice';
+    import {listBlogHot} from '@/network/api/blog'
 
     export default {
         name: "Notice",
@@ -51,6 +80,7 @@
                 listLoading: false,
                 //是否分页隐藏
                 isHide: true,
+                blogHotList: []
             }
 
         },
@@ -61,6 +91,7 @@
             //初始化方法
             init() {
                 this.getList();
+                this.getBlogHotList()
             },
             //获取比赛类型信息
             getList() {
@@ -70,7 +101,6 @@
                         return this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
-                    console.log(res.data.list)
                     this.total = res.data.total;
                     this.totalPage = res.data.totalPage;
                     this.noticeQuery.pageNum = res.data.pageNum;
@@ -97,6 +127,23 @@
                 this.$router.push({
                     path: '/notice',
                     query: {noticeId}
+                })
+            },
+            getBlogHotList() {
+                listBlogHot().then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.blogHotList = res.data
+                })
+            },
+            toUserInfo(userId) {
+                this.$router.push({name: 'userInfo', query: {userId}})
+            },
+            toBlog(blogId) {
+                this.$router.push({
+                    name: 'blogInfo',
+                    query: {blogId}
                 })
             },
         }

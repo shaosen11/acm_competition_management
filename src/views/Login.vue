@@ -86,6 +86,7 @@
                     }
                     this.$message.success("登录成功");
                     const data = res.data;
+                    console.log(data)
                     if (!data) {
                         this.isLoading = false;
                         return false;
@@ -105,6 +106,9 @@
                     this.isLoading = false
                     if (this.$store.state.user.passwordFlag == 0) {
                         this.passwordUpdateAlert()
+                    }
+                    if (this.$store.state.user.enableFlag == 0) {
+                        this.enableFlagAlert()
                     }
                     await this.$router.replace('/');
                 })
@@ -126,6 +130,14 @@
                 this.$notify.warning({
                     title: '安全提醒',
                     message: h('i', {style: 'color: teal'}, '你的密码还未修改过，请点击右上角头像->个人设置->安全设置修改密码'),
+                    offset: 70
+                });
+            },
+            enableFlagAlert() {
+                const h = this.$createElement;
+                this.$notify.warning({
+                    title: '禁用提醒',
+                    message: h('i', {style: 'color: teal'}, '你的账号已被禁用，请联系管理员'),
                     offset: 70
                 });
             },

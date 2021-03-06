@@ -157,6 +157,7 @@
                         return this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
+                    console.log(res.data)
                     this.total = res.data.total;
                     this.esAllQueryParam.pageNum = res.data.pageNum;
                     this.esAllQueryParam.pageSize = res.data.pageSize;

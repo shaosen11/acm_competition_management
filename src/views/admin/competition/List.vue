@@ -149,11 +149,11 @@
                         width="150"
                         align="center">
                     <template slot-scope="scope">
-                        <p>团队报名数量：
-                            {{scope.row.teamNumber}}
+                        <p>
+                            <span>团队报名数量：{{scope.row.teamNumber}}</span>
                         </p>
-                        <p>个人报名数量：
-                            {{scope.row.userNumber}}
+                        <p>
+                            <span>个人报名数量：{{scope.row.userNumber}}</span>
                         </p>
                         <p>
                             <el-button
@@ -166,7 +166,7 @@
                         <p>
                             <el-button
                                     size="mini"
-                                    @click="toCompetitionInfo(scope.row.competitionId)"
+                                    @click="toCompetitionAnalyzeInfo(scope.row.competitionId)"
                                     round>报名数据分析
                             </el-button>
                         </p>
@@ -592,9 +592,18 @@
                 })
             },
             //跳转比赛报名分析页面
-            toCompetitionInfo(competitionId){
+            toCompetitionAnalyzeInfo(competitionId){
                 this.$router.push({
                     path: '/admin/competitionInfo',
+                    query: {
+                        competitionId
+                    }
+                })
+            },
+            //跳转比赛页面
+            toCompetitionInfo(competitionId){
+                this.$router.push({
+                    path: '/competitionInfo',
                     query: {
                         competitionId
                     }

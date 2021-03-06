@@ -10,8 +10,8 @@
                 <el-input v-model="report.name" placeholder="请输入标题"></el-input>
             </el-col>
             <el-col :span="4">
-                <el-button type="info" @click="save">保存</el-button>
-                <el-button type="primary" @click="release">发布</el-button>
+                <el-button @click="save" :loading="saveButtonLoading">保存</el-button>
+                <el-button type="primary" @click="release" :loading="releaseButtonLoading">发布</el-button>
             </el-col>
         </el-row>
         <el-tooltip class="item" effect="dark" content="点击相应步骤可跳转" placement="top">
@@ -208,7 +208,9 @@
                 },
                 OJList: [],
                 competitionProblemTypeList: [],
-                oldReport: ''
+                oldReport: '',
+                saveButtonLoading: false,
+                releaseButtonLoading: false,
             };
         },
         created() {
@@ -216,55 +218,47 @@
         },
         methods: {
             init() {
-                this.tipNotify()
-                this.listOnlineJudgeSystem()
-                this.listCompetitionProblemTypeWithChildren()
                 this.getReportByReportId(this.$route.query.reportId)
             },
             tipNotify() {
-                this.$message.info("当点击上一步或下一步时，会自动保存内容")
+                this.$message.info("当点击上一步或下一步时，会自动保存内容");
+                const h = this.$createElement;
+                this.$notify.info({
+                    title: '操作提示',
+                    message: h('i', {style: 'color: teal'}, '当点击保存之后，等待系统重新跳转至本页面，请勿重新点击'),
+                    offset: 50,
+                    duration: 5000
+                });
+                this.$notify.info({
+                    title: '操作提示',
+                    message: h('i', {style: 'color: teal'}, '保存是保存为草稿，还不可见，只有发布经过审核才可见，发布之后点击保存会自动发布'),
+                    offset: 150,
+                    duration: 5000
+                });
             },
-            problemDescribeChange(value, render) {
-                this.report.problemDescribe = render;
+            initCheck(userId) {
+                if (this.$store.state.user.userId != userId) {
+                    this.$message.error("请用发布账号登录");
+                    this.$router.push('/home')
+                }
+                this.afterInit()
             },
-            inputChange(value, render) {
-                this.report.input = render;
+            afterInit() {
+                this.tipNotify()
+                this.listOnlineJudgeSystem()
+                this.listCompetitionProblemTypeWithChildren()
             },
-            outputChange(value, render) {
-                this.report.output = render;
-            },
-            inputExamplesChange(value, render) {
-                this.report.inputExamples = render;
-            },
-            outputExamplesChange(value, render) {
-                this.report.outputExamples = render;
-            },
-            analysisChange(value, render) {
-                this.report.analysis = render;
-            },
-            programChange(value, render) {
-                this.report.program = render;
-            },
-            testExamplesChange(value, render) {
-                this.report.testExamples = render;
-            },
-            resultPictureChange(value, render) {
-                this.report.resultPicture = render;
-            },
-            resultCommentChange(value, render) {
-                this.report.resultComment = render;
-            },
-            //根据reportId获取报告
             getReportByReportId(reportId) {
-                //如果第一次进入有reportId，就根据reportId获取
-                //如果没有reportId，则代表是新报告
                 if (reportId != null) {
                     getReportByReportId(reportId).then(res => {
                         if (res.code != 200) {
                             return this.$message.error(res.message);
                         }
                         this.report = res.data
+                        this.initCheck(this.report.userId)
                     })
+                } else {
+                    this.afterInit()
                 }
             },
             //获取OJ系统
@@ -327,9 +321,11 @@
                 this.status = 5
             },
             save() {
+                this.saveButtonLoading = true
                 let report = JSON.stringify(this.report);
                 let oldReport = JSON.stringify(this.oldReport)
                 if (report == oldReport) {
+                    this.saveButtonLoading = false
                     return;
                 }
                 if (this.report.problemTypeId != null && this.report.problemTypeId.length > 0) {
@@ -338,6 +334,7 @@
                 this.report.userId = this.$store.state.user.userId
                 saveReport(this.report).then(res => {
                     if (res.code != 200) {
+                        this.saveButtonLoading = false
                         return this.$message.error(res.message);
                     }
                     this.report = res.data
@@ -345,22 +342,28 @@
                     this.oldReport = JSON.parse(JSON.stringify(res.data))
                     if (this.report.reportId != null) {
                         if (this.$route.query.reportId == null) {
+                            this.saveButtonLoading = false
                             this.toCreate(this.report.reportId)
                         }
                     }
                 })
+                this.saveButtonLoading = false
             },
             release() {
+                this.releaseButtonLoading = true
                 if (this.report.problemTypeId != null && this.report.problemTypeId.length > 0) {
                     this.report.problemTypeId = this.report.problemTypeId[1]
                 }
                 this.report.userId = this.$store.state.user.userId
                 releaseReport(this.report).then(res => {
                     if (res.code != 200) {
+                        this.releaseButtonLoading = false
                         return this.$message.error(res.message);
                     }
+                    this.releaseButtonLoading = false
                     this.$router.push('/reportList')
                 })
+                this.releaseButtonLoading = false
             },
             //保存之后重新进入页面
             toCreate(reportId) {
@@ -369,7 +372,42 @@
                     query: {reportId}
                 })
             },
-
+            toReport(reportId) {
+                this.$router.push({
+                    name: 'reportInfo',
+                    query: {reportId}
+                })
+            },
+            problemDescribeChange(value, render) {
+                this.report.problemDescribe = render;
+            },
+            inputChange(value, render) {
+                this.report.input = render;
+            },
+            outputChange(value, render) {
+                this.report.output = render;
+            },
+            inputExamplesChange(value, render) {
+                this.report.inputExamples = render;
+            },
+            outputExamplesChange(value, render) {
+                this.report.outputExamples = render;
+            },
+            analysisChange(value, render) {
+                this.report.analysis = render;
+            },
+            programChange(value, render) {
+                this.report.program = render;
+            },
+            testExamplesChange(value, render) {
+                this.report.testExamples = render;
+            },
+            resultPictureChange(value, render) {
+                this.report.resultPicture = render;
+            },
+            resultCommentChange(value, render) {
+                this.report.resultComment = render;
+            },
             // 将图片上传到服务器，返回地址替换到md中
             $imgAdd(pos, $file) {
                 var formdata = new FormData();

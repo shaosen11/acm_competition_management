@@ -176,7 +176,7 @@
     import {listCompetitionProblemTypeWithChildren} from '@/network/api/competition'
     import UserStatisticsInfo from "@/component/UserStatisticsInfo";
     import Comment from "@/views/report/components/Comment";
-    import Store from "@/views/blog/components/Store";
+    import Store from "@/component/Store";
     import HotReport from "@/component/HotReport";
 
     export default {

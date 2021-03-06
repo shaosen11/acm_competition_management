@@ -7,8 +7,11 @@
             </el-breadcrumb-item>
         </el-breadcrumb>
         <!--班级信息-->
-        <h3>{{ this.organization.year }}</h3>
-        <p>{{ this.organization.organizationName }}</p>
+        <h3>
+            <span>{{ this.organization.year }}</span>
+            <span>{{ this.organization.organizationName }}</span>
+        </h3>
+        <span>班级人数：</span><span>{{ this.organization.userCount }}</span>
         <el-divider></el-divider>
         <!--学生列表-->
         <el-row :gutter="20" style="margin-top: 30px">
@@ -68,6 +71,7 @@ export default {
                     return this.$message.error(res.message);
                 }
                 this.organization = res.data
+                console.log(this.organization)
             })
         },
         getList() {

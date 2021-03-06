@@ -74,6 +74,7 @@
                                    @click="updateUserStoreFolderDescription"
                                    circle/>
                     </p>
+                    <!--收藏夹内容-->
                     <el-row :gutter="10">
                         <el-col :span="24" v-for="userStore in this.userStore" :key="userStore"
                                 style="margin-top: 10px">
@@ -84,12 +85,14 @@
                                         <span class="userStoreName"
                                               @click="toBlog(userStore.blogId)">{{ userStore.blogName }}</span>
                                         <el-divider direction="vertical"></el-divider>
+                                        <span>by </span>
                                         <span class="userName" v-dompurify-html="userStore.userName"/>
                                     </span>
                                     <span v-if="userStore.reportFlag == 1">
                                         <el-tag type="danger">报告</el-tag>
                                         <span class="userStoreName">{{ userStore.reportName }}</span>
                                         <el-divider direction="vertical"></el-divider>
+                                        <span>by </span>
                                         <span class="userName" v-dompurify-html="userStore.userName"/>
                                     </span>
                                     <span style="float: right;">
@@ -204,7 +207,6 @@
                         return this.$message.error(res.message);
                     }
                     this.userStore = res.data
-                    console.log(this.userStore)
                 })
             },
             //跳转博客

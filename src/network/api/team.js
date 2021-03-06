@@ -1,15 +1,15 @@
 import {request} from '../request'
 
-//通过用户id获取队伍信息
-export function getTeamInfoByUserId(userId) {
-    return request({
-        url: '/team/getTeamInfoByUserId',
-        method: 'post',
-        data: {
-            userId
-        }
-    })
-}
+// //通过用户id获取队伍信息
+// export function getTeamInfoByUserId(userId) {
+//     return request({
+//         url: '/team/getTeamInfoByUserId',
+//         method: 'post',
+//         data: {
+//             userId
+//         }
+//     })
+// }
 
 //通过用户id获取队伍所有信息
 export function getTeamAllInfoByUserId(userId) {
@@ -113,14 +113,12 @@ export function outTeam(teamUserRelation) {
 }
 
 //删除队伍
-export function deleteTeam(team) {
+export function deleteTeam(teamId) {
     return request({
         url: '/team/delete',
         method: 'post',
         data:{
-            teamId: team.teamId,
-            name: team.name,
-            userId: team.userId
+            teamId
         }
     })
 }

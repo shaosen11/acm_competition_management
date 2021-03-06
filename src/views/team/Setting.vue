@@ -11,7 +11,7 @@
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item
                                 @click.native="deleteTeamDialogVisible = true"
-                                v-if="this.form.userId == this.$store.state.user.userId">删除队伍
+                                v-if="this.form.userId == this.$store.state.user.userId">解散队伍
                             </el-dropdown-item>
                             <el-dropdown-item
                                 v-else
@@ -182,7 +182,7 @@ export default {
         //删除队伍
         deleteTeam() {
             this.deleteTeamDialogButtonLoading = true
-            deleteTeam(this.team).then(res => {
+            deleteTeam(this.form.teamId).then(res => {
                 if (res.code != 200) {
                     this.deleteTeamDialogButtonLoading = true;
                     this.deleteTeamDialogVisible = false;

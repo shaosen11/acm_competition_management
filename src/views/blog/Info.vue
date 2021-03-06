@@ -118,7 +118,7 @@
     import {getUserExtByUserId} from "@/network/api/user";
     import UserStatisticsInfo from "@/component/UserStatisticsInfo";
     import Comment from "@/views/blog/components/Comment";
-    import Store from "@/views/blog/components/Store";
+    import Store from "@/component/Store";
     import HotBlog from "@/component/HotBlog";
 
     export default {

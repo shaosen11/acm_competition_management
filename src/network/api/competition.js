@@ -301,3 +301,14 @@ export function listChartByCompetitionId(competitionId) {
         }
     })
 }
+
+//获取比赛报名图表信息
+export function listOrganizationByCompetitionId(competitionId) {
+    return request({
+        url: '/competitionUserRelation/listOrganizationByCompetitionId',
+        method: 'post',
+        data: {
+            competitionId
+        }
+    })
+}

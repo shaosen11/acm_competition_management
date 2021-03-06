@@ -66,9 +66,8 @@
                     width="150"
                     align="center">
                     <template slot-scope="scope">
-                        <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{
-                                scope.row.userName
-                            }}
+                        <el-link type="primary" @click="toUserInfo(scope.row.userId)" :underline="false">
+                            <span>{{scope.row.userName }}</span>
                         </el-link>
                     </template>
                 </el-table-column>
@@ -78,8 +77,8 @@
                     width="200"
                     align="center">
                     <template slot-scope="scope">
-                        <el-link type="primary" @click="toOrganizationInfo(scope.row)">
-                            {{ scope.row.year }}{{ scope.row.organizationName }}
+                        <el-link type="primary" @click="toOrganizationInfo(scope.row)" :underline="false">
+                            <span>{{ scope.row.year }}{{ scope.row.organizationName }}</span>
                         </el-link>
                     </template>
                 </el-table-column>
@@ -89,9 +88,8 @@
                     width="200"
                     align="center">
                     <template slot-scope="scope">
-                        <el-link type="primary" @click="toTeamInfo(scope.row.teamName)">{{
-                                scope.row.teamName
-                            }}
+                        <el-link type="primary" @click="toTeamInfo(scope.row.teamName)" :underline="false">
+                            <span>{{scope.row.teamName }}</span>
                         </el-link>
                     </template>
                 </el-table-column>

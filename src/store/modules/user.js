@@ -10,6 +10,7 @@ const user = {
         isLogin: false,
         passwordFlag: '',
         identityFlag: '',
+        enableFlag: '',
     },
 
     mutations: {
@@ -33,6 +34,9 @@ const user = {
         },
         SET_IDENTITY_FLAG: (state, identityFlag) => {
             state.identityFlag = identityFlag
+        },
+        SET_ENABLE_FLAG:(state, enableFlag) => {
+            state.enableFlag = enableFlag
         }
     },
 
@@ -53,6 +57,7 @@ const user = {
                     commit('SET_ICON', data.icon);
                     commit('SET_PASSWORD_FLAG', data.passwordFlag);
                     commit('SET_IDENTITY_FLAG', data.identityFlag);
+                    commit('SET_ENABLE_FLAG', data.enableFlag);
                     //设置队伍信息
                     if (data.teamName != null) {
                         commit('SET_MY_TEAM_FLAG', true)
@@ -84,6 +89,7 @@ const user = {
             commit('SET_YEAR', '');
             commit('SET_PASSWORD_FLAG', '');
             commit('SET_IDENTITY_FLAG', '');
+            commit('SET_ENABLE_FLAG', '');
             removeToken();
         }
     }

@@ -67,6 +67,7 @@
                             <el-divider direction="vertical"></el-divider>
                             <el-tag v-if="item.blogId!=null">博客</el-tag>
                             <el-tag type="danger" v-if="item.reportId!=null">报告</el-tag>
+                            <el-tag v-if="item.showFlag==0" type="info" style="margin-left: 10px">仅发布者可见</el-tag>
                             <p class="content markdown-body" v-dompurify-html="item.subContent"></p>
                         </div>
                         <div class="data">
@@ -109,12 +110,11 @@
 </template>
 
 <script>
-    import ReportList from "./components/ReportList";
     import UserStatisticsInfo from "@/component/UserStatisticsInfo";
     import HotReport from "@/component/HotReport";
     import HotBlog from "@/component/HotBlog";
     import UserInfo from "@/component/UserInfo";
-    import { getUserExtByUserId} from '@/network/api/user';
+    import {getUserExtByUserId} from '@/network/api/user';
     import {getOrganizationByUserId} from '@/network/api/organization';
     import {getTeamAllInfoByUserId} from "@/network/api/team";
     import {getHotReportByUserId, listReportPage} from '@/network/api/report'
@@ -128,12 +128,15 @@
             HotReport,
             HotBlog,
             UserInfo,
-            ReportList,
         },
         data() {
             return {
-                team:{},
-                organization: {},
+                team: {},
+                organization: {
+                    year: '',
+                    name: '',
+                    userCount: ''
+                },
                 users: '',
                 activeTab: 'report',
                 userId: '',
@@ -143,7 +146,6 @@
                 query: {
                     userId: '',
                     status: 3,
-                    showFlag: 1,
                     pageNum: 1,
                     pageSize: 5,
                 },
@@ -180,7 +182,9 @@
                     if (res.code != 200) {
                         return this.$message.error(res.message);
                     }
-                    this.organization = res.data
+                    if (res.data != null) {
+                        this.organization = res.data
+                    }
                 })
             },
             getTeamAllInfoByUserId(userId) {
@@ -331,11 +335,11 @@
         font-weight: 500;
     }
 
-    .organizationName:hover{
+    .organizationName:hover {
         color: #409EFF;
     }
 
-    .teamName:hover{
+    .teamName:hover {
         color: #409EFF;
     }
 
@@ -344,7 +348,7 @@
         font-weight: 500;
     }
 
-    .teamName:hover{
+    .teamName:hover {
         color: #409EFF;
     }
 </style>

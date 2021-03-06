@@ -202,7 +202,7 @@
             },
             toUpdateBlog(blogId) {
                 this.$router.push({
-                    name: 'blogUpdate',
+                    name: 'blogCreate',
                     query: {blogId}
                 })
             },

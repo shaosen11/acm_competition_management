@@ -94,7 +94,7 @@ export default {
             }
             updateUserInfo(user).then(res => {
                 if (res.code != 200) {
-                    this.$message.success(res.message);
+                    this.$message.error(res.message);
                     this.updateUserInfoButtonLoading = false;
                     return false;
                 }
