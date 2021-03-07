@@ -594,7 +594,7 @@
             //跳转比赛报名分析页面
             toCompetitionAnalyzeInfo(competitionId){
                 this.$router.push({
-                    path: '/admin/competitionInfo',
+                    path: '/admin/CompetitionAnalysis',
                     query: {
                         competitionId
                     }

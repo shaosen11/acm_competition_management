@@ -79,11 +79,11 @@ const routers = [
                 }
             },
             {
-                path: 'competitionInfo',
-                name: 'competitionInfo',
+                path: 'competitionAnalysis',
+                name: 'competitionAnalysis',
                 meta: {title: '比赛列表', requireAuth: true, requireLogin: true},
                 components: {
-                    admin: () => import('@/views/admin/competition/CompetitionInfo'),
+                    admin: () => import('@/views/admin/competition/CompetitionAnalysis'),
                 }
             },
             {
@@ -180,6 +180,14 @@ const routers = [
                 meta: {title: '创建公告', requireAuth: true, requireLogin: true},
                 components: {
                     admin: () => import('@/views/admin/notice/Create'),
+                }
+            },
+            {
+                path: 'userLoginAnalysis',
+                name: 'userLoginAnalysis',
+                meta: {title: '用户登录日志', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/UserLoginAnalysis'),
                 }
             }
         ]

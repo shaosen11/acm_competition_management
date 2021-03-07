@@ -263,3 +263,23 @@ export function checkResetLink(userPasswordDto) {
     })
 }
 
+//获取用户登录数据
+export function getUserLoginStatisticsByTime(time) {
+    return request({
+        url: '/userLoginStatistics/getByTime',
+        method: 'post',
+        data: {
+            time
+        }
+    })
+}
+
+//检查重置连接
+export function getUserLoginLogByTime() {
+    return request({
+        url: '/userLoginLog/getByTime',
+        method: 'post',
+        data: {
+        }
+    })
+}

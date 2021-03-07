@@ -19,7 +19,10 @@ import VeHistogram from 'v-charts/lib/histogram';
 Vue.component(VeHistogram.name, VeHistogram);
 import VePie from 'v-charts/lib/pie';
 Vue.component(VePie.name, VePie);
+import VeLine from 'v-charts/lib/line.common'
+Vue.component(VeLine.name, VeLine)
 Vue.config.productionTip = false
+
 
 new Vue({
   router,

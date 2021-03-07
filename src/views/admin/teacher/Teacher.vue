@@ -62,7 +62,7 @@
                     align="center">
                 </el-table-column>
                 <el-table-column
-                    prop="loginTime"
+                    prop="lastLoginTime"
                     label="最近登录时间"
                     width="200"
                     align="center">

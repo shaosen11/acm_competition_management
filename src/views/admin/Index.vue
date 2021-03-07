@@ -56,6 +56,10 @@
                         <i class="iconfont el-icon-third-blog"></i>
                         <span slot="title">论坛管理</span>
                     </el-menu-item>
+                    <el-menu-item index="8" @click="toUserLoginAnalysis">
+                        <i class="iconfont el-icon-third-blog"></i>
+                        <span slot="title">用户登录日志</span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
             <el-container>
@@ -123,7 +127,10 @@ export default {
         },
         toNotice() {
             this.$router.push("/admin/notice")
-        }
+        },
+        toUserLoginAnalysis() {
+            this.$router.push("/admin/userLoginAnalysis")
+        },
     }
 }
 </script>
