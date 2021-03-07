@@ -108,15 +108,24 @@
                         <p>
                             <el-button
                                     size="mini"
-                                    @click="toOrganizationInfo(scope.row)"
-                                    round>查看详情
+                                    type="primary"
+                                    @click="toUpdateOrganization(scope.row)"
+                                    round>修改
                             </el-button>
                         </p>
                         <p>
                             <el-button
                                     size="mini"
                                     type="danger"
+                                    @click="deleteOrganization(scope.row.organizationId)"
                                     round>删除
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    @click="toOrganizationInfo(scope.row)"
+                                    round>查看详情
                             </el-button>
                         </p>
                     </template>
@@ -140,7 +149,7 @@
 </template>
 
 <script>
-import {getOrganizationList, getOrganizationYearList, updateOrganization} from '@/network/api/organization';
+import {getOrganizationList, getOrganizationYearList, updateOrganization, deleteOrganization} from '@/network/api/organization';
 
 
 const defaultOrganizationQuery = {
@@ -182,11 +191,6 @@ export default {
         init() {
             this.getList();
             this.getYearList();
-            this.$notify({
-                title: '警告',
-                message: '1、创建班级信息错误，直接删除再创建即可\n2、对于已经创建的班级，修改涉及大量缓存，不适宜修改',
-                type: 'warning'
-            });
         },
         //获取班級信息
         getList() {
@@ -231,6 +235,24 @@ export default {
             this.getList();
         },
         //跳转班级信息
+        toUpdateOrganization(organization) {
+            this.$router.push({
+                name: 'updateOrganization',
+                query: {
+                    organizationId: organization.organizationId,
+                }
+            })
+        },
+        deleteOrganization(organizationId) {
+            deleteOrganization(organizationId).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.$message.success(res.message);
+                this.getList()
+            })
+        },
+        //跳转班级信息
         toOrganizationInfo(organization) {
             this.$router.push({
                 name: 'organizationInfo',
@@ -255,26 +277,28 @@ export default {
         //处理是否显示
         handleVisitStatusChange(row) {
             const organization ={
-                id: row.id,
+                organizationId: row.organizationId,
                 visitFlag: row.visitFlag,
             }
             updateOrganization(organization).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
+                this.$message.success(res.message);
                 this.getList()
             })
         },
         //处理是否加入
         handleJoinStatusChange(row) {
             const organization ={
-                id: row.id,
+                organizationId: row.organizationId,
                 joinFlag: row.joinFlag,
             }
             updateOrganization(organization).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
+                this.$message.success(res.message);
                 this.getList()
             })
         },

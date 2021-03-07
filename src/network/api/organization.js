@@ -111,22 +111,17 @@ export function organizationUserCooperationBatchAgree(ids) {
     })
 }
 
-//更新班级信息
-export function updateOrganization(organization) {
+//批处理同意
+export function refuseOrganizationUserCooperation(id) {
     return request({
-        url: '/organization/update',
+        url: '/organizationUserCooperation/refuse',
         method: 'post',
         data: {
-            id: organization.id,
-            organizationId: organization.organizationId,
-            name: organization.name,
-            year: organization.year,
-            collegeId: organization.collegeId,
-            visitFlag: organization.visitFlag,
-            joinFlag: organization.joinFlag
+            id
         }
     })
 }
+
 
 //获取学院信息
 export function collegeList() {
@@ -159,6 +154,34 @@ export function createOrganization(organization) {
             collegeId: organization.collegeId,
             userId: organization.userId,
             userName: organization.userName
+        }
+    })
+}
+
+//更新班级信息
+export function updateOrganization(organization) {
+    return request({
+        url: '/organization/update',
+        method: 'post',
+        data: {
+            id: organization.id,
+            organizationId: organization.organizationId,
+            name: organization.name,
+            year: organization.year,
+            collegeId: organization.collegeId,
+            visitFlag: organization.visitFlag,
+            joinFlag: organization.joinFlag
+        }
+    })
+}
+
+//更新班级信息
+export function deleteOrganization(organizationId) {
+    return request({
+        url: '/organization/delete',
+        method: 'post',
+        data: {
+            organizationId
         }
     })
 }

@@ -152,9 +152,14 @@
         methods: {
             //初始化方法
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getUserExtByUserId(this.$store.state.user.userId);
                 this.getList();
                 this.getHotBlogByUserId(this.$store.state.user.userId);
+                loading.close();
             },
             //获取用户扩展信息
             getUserExtByUserId(userId) {

@@ -42,7 +42,6 @@
                 const loading = this.$loading({
                     lock: true,
                     text: '正在加载',
-                    spinner: 'el-icon-loading',
                 });
                 this.listChildrenCompetitionProblemType(this.$route.query.name)
                 loading.close();

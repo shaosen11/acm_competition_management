@@ -49,6 +49,7 @@
                     <template slot-scope="scope">
                         <el-button
                                 @click="toNoticeInfo(scope.row.noticeId)"
+                                size="mini"
                                 round>查看详情
                         </el-button>
                     </template>
@@ -62,6 +63,7 @@
                         <el-button
                                 @click="toUpdateNotice(scope.row.noticeId)"
                                 type="primary"
+                                size="mini"
                                 round>修改
                         </el-button>
                     </template>

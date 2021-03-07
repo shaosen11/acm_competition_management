@@ -110,8 +110,13 @@
         methods: {
             //初始化方法
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getList()
                 this.getBlogHotList()
+                loading.close()
             },
             //获取表单信息
             getList() {

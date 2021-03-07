@@ -1,6 +1,6 @@
 <template>
     <div class="app-container">
-        <el-row :gutter="20">
+        <el-row :gutter="20" v-loading.fullscreen.lock="fullscreenLoading">
             <el-col :span="6">
                 <!--用户信息-->
                 <user-statistics-info :user-ext="this.userExt"></user-statistics-info>
@@ -138,7 +138,7 @@
                     userCount: ''
                 },
                 users: '',
-                activeTab: 'report',
+                activeTab: 'blog',
                 userId: '',
                 userExt: {},
                 reportHotList: [],
@@ -166,16 +166,20 @@
         methods: {
             //初始化方法
             init(userId) {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.userId = userId;
-                this.isLoading = true;
                 this.getOrganization(userId);
                 this.getTeamAllInfoByUserId(userId);
                 this.getUserExtByUserId(userId);
                 this.getHotReportByUserId(userId);
                 this.getHotBlogByUserId(userId);
                 this.getList();
-                this.isLoading = false;
+                loading.close();
             },
+
             //获取班级信息
             getOrganization(userId) {
                 getOrganizationByUserId(userId).then(res => {
@@ -195,6 +199,17 @@
                     if (res.data.team != null) {
                         this.team = res.data.team;
                         this.users = res.data.users;
+                        if (this.users.length < 3) {
+                            let index = 3 - this.users.length;
+                            for (let i = 0; i < index; i++) {
+                                const user = {
+                                    userId: '',
+                                    userName: '',
+                                    icon: ''
+                                }
+                                this.users.push(user);
+                            }
+                        }
                     }
                 })
             },

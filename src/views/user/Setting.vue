@@ -8,9 +8,9 @@
                 <el-col :span="10">
                     <el-form :model="form"
                              label-width="100px">
-                        <el-form-item label="头像：" prop="logo">
-                            <single-upload v-model="form.userIcon"></single-upload>
-                        </el-form-item>
+<!--                        <el-form-item label="头像：" prop="logo">-->
+<!--                            <single-upload v-model="form.userIcon"></single-upload>-->
+<!--                        </el-form-item>-->
                         <el-form-item label="学号">
                             <el-input v-model="form.userId" :disabled="true"></el-input>
                         </el-form-item>

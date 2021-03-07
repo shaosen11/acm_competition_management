@@ -5,9 +5,9 @@
             <div slot="header" class="clearfix">
                 <el-page-header @back="toOrganizationList" content="申请列表"/>
                 <el-button
-                    style="float: right; padding: 3px 0"
-                    @click="handleBatchOperate"
-                    type="text">
+                        style="float: right; margin-top: -30px"
+                        @click="handleBatchOperate"
+                        type="text">
                     批量同意
                 </el-button>
             </div>
@@ -58,12 +58,22 @@
                     width="150"
                     align="center">
                     <template slot-scope="scope">
-                        <el-button
-                            size="mini"
-                            type="primary"
-                            @click="agreeJoin(scope.row)"
-                            round>同意申请
-                        </el-button>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    type="primary"
+                                    @click="agreeJoin(scope.row)"
+                                    round>同意申请
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click="refuseOrganizationUserCooperation(scope.row.id)"
+                                    round>拒绝
+                            </el-button>
+                        </p>
                     </template>
                 </el-table-column>
             </el-table>
@@ -85,7 +95,7 @@
 </template>
 
 <script>
-import {getOrganizationUserCooperationList, organizationUserCooperationBatchAgree} from '@/network/api/organization';
+import {getOrganizationUserCooperationList, organizationUserCooperationBatchAgree, refuseOrganizationUserCooperation} from '@/network/api/organization';
 
 export default {
     name: "ApplyList",
@@ -199,6 +209,15 @@ export default {
                 }
                 this.getList()
                 this.listLoading = false;
+            })
+        },
+        refuseOrganizationUserCooperation(id) {
+            refuseOrganizationUserCooperation(id).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.$message.success(res.message);
+                this.getList()
             })
         },
         toOrganizationList() {

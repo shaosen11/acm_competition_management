@@ -19,7 +19,9 @@ export default {
     },
     methods: {
         toUserInfo(userId) {
-            this.$router.push({name: 'userInfo', query: {userId: userId}});
+            if (userId!=""){
+                this.$router.push({name: 'userInfo', query: {userId: userId}});
+            }
         }
     }
 }

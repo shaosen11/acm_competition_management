@@ -7,6 +7,7 @@ export function listNoticeTypePage(noticeQueryParam) {
         url: '/notice/listByPage',
         method: 'post',
         data: {
+            showFlag: noticeQueryParam.showFlag,
             pageNum: noticeQueryParam.pageNum,
             pageSize: noticeQueryParam.pageSize,
         }

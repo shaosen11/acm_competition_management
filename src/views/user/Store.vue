@@ -162,7 +162,12 @@
         },
         methods: {
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getUserStoreFolder()
+                loading.close()
             },
             //获取收藏夹
             getUserStoreFolder() {

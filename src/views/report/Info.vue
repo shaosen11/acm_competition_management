@@ -11,11 +11,7 @@
                         </div>
                         <el-form :model="report" label-width="50px">
                             <el-form-item label="名称" prop="problemName">
-                                <el-input
-                                        v-model="report.problemName"
-                                        placeholder="请输入题目名称"
-                                        autocomplete="off"
-                                        :disabled="true"></el-input>
+                                <span>{{report.problemName}}</span>
                             </el-form-item>
                             <el-form-item label="OJ" prop="ojId">
                                 <el-select
@@ -31,11 +27,9 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item label="网址" prop="problemLink">
-                                <el-input
-                                        v-model="report.problemLink"
-                                        placeholder="请输传送门"
-                                        autocomplete="off"
-                                        :disabled="true"></el-input>
+                                <el-link type="primary" :underline="false">
+                                    <span @click="toUrl(report.problemLink)">{{report.problemLink|ellipsis}}</span>
+                                </el-link>
                             </el-form-item>
                             <el-form-item label="题型" prop="ojId">
                                 <div class="block">
@@ -48,20 +42,6 @@
                                             :disabled="true"></el-cascader>
                                 </div>
                             </el-form-item>
-                            <el-row :gutter="10" type="flex" justify="center">
-                                <el-button
-                                        v-if="this.status>1"
-                                        type="primary"
-                                        @click="lastStep"
-                                        round>上一步
-                                </el-button>
-                                <el-button
-                                        v-if="this.status<5"
-                                        type="primary"
-                                        @click="nextStep"
-                                        round>下一步
-                                </el-button>
-                            </el-row>
                         </el-form>
                     </el-card>
                     <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
@@ -213,8 +193,13 @@
         },
         methods: {
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getStatisticsByReportId(this.$route.query.reportId);
                 this.getHotReportByUserId(this.$store.state.user.userId);
+                loading.close()
             },
             //判断是否仅自己可见
             isPrivate() {
@@ -230,7 +215,7 @@
             //判断是否管理员限制浏览
             isAdminPrivate() {
                 if (this.report.adminShowFlag == 0) {
-                    if (this.report.userId == this.$store.state.user.userId){
+                    if (this.report.userId == this.$store.state.user.userId) {
                         this.$message.error("报告涉及违规内容，已限制浏览，请联系管理员");
                     } else {
                         this.$message.error("报告涉及违规内容，已限制浏览");
@@ -509,6 +494,18 @@
                     this.competitionProblemTypeList = res.data
                 })
             },
+            toUrl(url) {
+                window.open(url, "_blank");
+            }
+        },
+        filters: {
+            ellipsis(value) {
+                if (!value) return ''
+                if (value.length > 20) {
+                    return value.slice(0, 20) + '...'
+                }
+                return value
+            },
         }
     }
 </script>
@@ -540,4 +537,5 @@
     .store {
         color: #F56C6C;
     }
+
 </style>

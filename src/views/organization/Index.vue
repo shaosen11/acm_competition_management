@@ -46,7 +46,6 @@ export default {
         }
     },
     created() {
-        //初始化
         this.init()
     },
     methods: {
@@ -54,7 +53,6 @@ export default {
             const loading = this.$loading({
                 lock: true,
                 text: '正在加载',
-                spinner: 'el-icon-loading',
             });
             this.getOrganizationByYearAndName();
             this.getList();
@@ -70,8 +68,12 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
+                console.log(res.data)
+                if (res.data==null){
+                    this.$message.error("班级信息已被删除");
+                    return this.$router.push('/organizationList')
+                }
                 this.organization = res.data
-                console.log(this.organization)
             })
         },
         getList() {

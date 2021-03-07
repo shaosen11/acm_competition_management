@@ -136,8 +136,13 @@
         methods: {
             //初始化方法
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getList()
                 this.getBlogHotList()
+                loading.close()
             },
             //获取表单信息
             getList() {
@@ -157,7 +162,6 @@
                         return this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
-                    console.log(res.data)
                     this.total = res.data.total;
                     this.esAllQueryParam.pageNum = res.data.pageNum;
                     this.esAllQueryParam.pageSize = res.data.pageSize;

@@ -90,12 +90,18 @@
         methods: {
             //初始化方法
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getList();
                 this.getBlogHotList()
+                loading.close()
             },
             //获取比赛类型信息
             getList() {
                 this.listLoading = true;
+                this.noticeQuery.showFlag = 1;
                 listNoticeTypePage(this.noticeQuery).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
@@ -151,6 +157,28 @@
 </script>
 
 <style scoped>
+    .userName {
+        font-size: 16px;
+    }
+
+    .userName:hover {
+        color: #409eff;
+    }
+
+    .name {
+        font-size: 16px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .name:hover {
+        color: #409EFF;
+    }
+
     .data {
         color: #909399;
     }

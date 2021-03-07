@@ -55,6 +55,14 @@ const routers = [
                 }
             },
             {
+                path: 'updateOrganization',
+                name: 'updateOrganization',
+                meta: {title: '修改班级信息', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/organization/Update'),
+                }
+            },
+            {
                 path: 'team',
                 name: 'team',
                 meta: {title: '队伍管理', requireAuth: true, requireLogin: true},

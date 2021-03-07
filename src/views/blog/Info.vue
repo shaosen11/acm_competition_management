@@ -153,7 +153,12 @@
         },
         methods: {
             init() {
+                const loading = this.$loading({
+                    lock: true,
+                    text: '正在加载',
+                });
                 this.getStatisticsByBlogId(this.$route.query.blogId)
+                loading.close()
             },
             //判断是否仅自己可见
             isPrivate() {
