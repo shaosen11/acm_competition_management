@@ -1,15 +1,13 @@
-<template>
+<template> 
     <div>
         <el-upload
-            :action="ossUploadUrl"
-            :data="dataObj"
-            list-type="picture"
-            :multiple="false" :show-file-list="showFileList"
-            :file-list="fileList"
-            :before-upload="beforeUpload"
-            :on-remove="handleRemove"
-            :on-success="handleUploadSuccess"
-            :on-preview="handlePreview">
+                :action="minioUploadUrl"
+                list-type="picture"
+                :multiple="false" :show-file-list="showFileList"
+                :file-list="fileList"
+                :on-remove="handleRemove"
+                :on-success="handleUploadSuccess"
+                :on-preview="handlePreview">
             <el-button size="small" type="primary">点击上传</el-button>
             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过10MB</div>
         </el-upload>
@@ -19,95 +17,60 @@
     </div>
 </template>
 <script>
-import {policy} from '@/network/api/oss'
-
-export default {
-    name: 'SingleUpload',
-    props: {
-        value: String
-    },
-    computed: {
-        imageUrl() {
-            return this.value;
+    export default {
+        name: 'singleUpload',
+        props: {
+            value: String
         },
-        imageName() {
-            if (this.value != null && this.value !== '') {
-                return this.value.substr(this.value.lastIndexOf("/") + 1);
-            } else {
-                return null;
-            }
-        },
-        fileList() {
-            return [{
-                name: this.imageName,
-                url: this.imageUrl
-            }]
-        },
-        showFileList: {
-            get: function () {
-                return this.value !== null && this.value !== ''&& this.value!==undefined;
+        computed: {
+            imageUrl() {
+                return this.value;
             },
-            set: function (newValue) {
-            }
-        }
-    },
-    data() {
-        return {
-            dataObj: {
-                policy: '',
-                signature: '',
-                key: '',
-                ossaccessKeyId: '',
-                dir: '',
-                host: '',
-                // callback:'',
+            imageName() {
+                if (this.value != null && this.value !== '') {
+                    return this.value.substr(this.value.lastIndexOf("/") + 1);
+                } else {
+                    return null;
+                }
             },
-            dialogVisible: false,
-            ossUploadUrl:'http://shaosen-oss.oss-cn-guangzhou.aliyuncs.com',
-        };
-    },
-    methods: {
-        emitInput(val) {
-            this.$emit('input', val)
-        },
-        handleRemove(file, fileList) {
-            this.emitInput('');
-        },
-        handlePreview(file) {
-            this.dialogVisible = true;
-        },
-        beforeUpload(file) {
-            let _self = this;
-            return new Promise((resolve, reject) => {
-                policy().then(response => {
-                    console.log(response.data)
-                    _self.dataObj.policy = response.data.policy;
-                    _self.dataObj.signature = response.data.signature;
-                    _self.dataObj.ossaccessKeyId = response.data.accessKeyId;
-                    _self.dataObj.key = response.data.dir + '/${filename}';
-                    _self.dataObj.dir = response.data.dir;
-                    _self.dataObj.host = response.data.host;
-                    // _self.dataObj.callback = response.data.callback;
-                    resolve(true)
-                }).catch(err => {
-                    console.log(err)
-                    reject(false)
-                })
-            })
-        },
-        handleUploadSuccess(res, file) {
-            this.showFileList = true;
-            this.fileList.pop();
-            let url = this.dataObj.host + '/' + this.dataObj.dir + '/' + file.name;
-            if(!this.useOss){
-                //不使用oss直接获取图片路径
-                url = res.data.url;
+            fileList() {
+                return [{
+                    name: this.imageName,
+                    url: this.imageUrl
+                }]
+            },
+            showFileList: {
+                get: function () {
+                    return this.value !== null && this.value !== ''&& this.value!==undefined;
+                },
+                set: function (newValue) {
+                }
             }
-            this.fileList.push({name: file.name, url: url});
-            this.emitInput(this.fileList[0].url);
+        },
+        data() {
+            return {
+                dialogVisible: false,
+                minioUploadUrl:'http://47.115.59.65:7777/minio/upload',
+            };
+        },
+        methods: {
+            emitInput(val) {
+                this.$emit('iconUrl', val)
+            },
+            handleRemove(file, fileList) {
+                this.emitInput('');
+            },
+            handlePreview(file) {
+                this.dialogVisible = true;
+            },
+            handleUploadSuccess(res, file) {
+                this.showFileList = true;
+                this.fileList.pop();
+                this.fileList.push({name: file.name, url: res.data.url});
+                this.emitInput(this.fileList[0].url);
+            }
         }
     }
-}
 </script>
 <style>
 

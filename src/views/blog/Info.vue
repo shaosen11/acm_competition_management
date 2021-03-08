@@ -235,9 +235,6 @@
             },
             //插入浏览记录
             insertBlogUserView() {
-                if (this.$store.state.user.userId == "") {
-                    return;
-                }
                 const blogUserView = {
                     blogId: this.$route.query.blogId,
                     userId: this.$store.state.user.userId

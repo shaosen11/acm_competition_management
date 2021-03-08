@@ -12,13 +12,11 @@
                 </el-col>
             </el-row>
         </el-card>
-
-
     </div>
 </template>
 
 <script>
-    import {getUserLoginStatisticsByTime, getUserLoginLogByTime} from "@/network/api/user";
+    import {getUserLoginStatisticsByDate} from "@/network/api/user";
 
     export default {
         name: "UserLoginAnalysis",
@@ -35,25 +33,25 @@
         },
         methods: {
             init() {
-                this.getUserLoginStatisticsByTime()
-                this.getUserLoginLogByTime()
+                this.getUserLoginStatisticsByDate()
+                // this.getUserLoginLogByTime()
             },
-            getUserLoginStatisticsByTime() {
-                getUserLoginStatisticsByTime(this.getDate()).then(res => {
+            // getUserLoginStatisticsByTime() {
+            //     getUserLoginStatisticsByTime(this.getDate()).then(res => {
+            //         if (res.code !== 200) {
+            //             return this.$message.error(res.message);
+            //         }
+            //     })
+            // },
+            getUserLoginStatisticsByDate() {
+                getUserLoginStatisticsByDate(this.getDate()).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
-                })
-            },
-            getUserLoginLogByTime() {
-                getUserLoginLogByTime().then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    for (let i = 0; i < res.data.list.length; i++) {
+                    for (let i = 0; i < res.data.length; i++) {
                         this.chartData.rows.push({
-                            "时间": res.data.list[i].time,
-                            "登录人数": res.data.list[i].count,
+                            "时间": res.data[i].time,
+                            "登录人数": res.data[i].userLoginNumber,
                         })
                     }
                 })

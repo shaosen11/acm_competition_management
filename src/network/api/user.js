@@ -58,6 +58,7 @@ export function updateUserInfo(user) {
         method: 'post',
         data: {
             userId: user.userId,
+            icon: user.icon,
             name: user.name,
             email: user.email,
             gender: user.gender,
@@ -264,22 +265,22 @@ export function checkResetLink(userPasswordDto) {
 }
 
 //获取用户登录数据
-export function getUserLoginStatisticsByTime(time) {
+export function getUserLoginStatisticsByDate(date) {
     return request({
-        url: '/userLoginStatistics/getByTime',
+        url: '/userLoginStatistics/getByDate',
         method: 'post',
         data: {
-            time
+            date
         }
     })
 }
 
-//检查重置连接
-export function getUserLoginLogByTime() {
-    return request({
-        url: '/userLoginLog/getByTime',
-        method: 'post',
-        data: {
-        }
-    })
-}
+// //检查重置连接
+// export function getUserLoginLogByTime() {
+//     return request({
+//         url: '/userLoginLog/getByTime',
+//         method: 'post',
+//         data: {
+//         }
+//     })
+// }

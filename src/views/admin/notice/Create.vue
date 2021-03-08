@@ -96,12 +96,12 @@
                 formdata.append("file", $file);
                 //将下面上传接口替换为你自己的服务器接口
                 axios({
-                    url: "/common/upload",
+                    url: "http://47.115.59.65:7777/minio/upload",
                     method: "post",
                     data: formdata,
                     headers: {"Content-Type": "multipart/form-data"}
-                }).then(url => {
-                    this.$refs.md.$img2Url(pos, url);
+                }).then(res => {
+                    this.$refs.md.$img2Url(pos, res.data.data.url);
                 });
             },
         }

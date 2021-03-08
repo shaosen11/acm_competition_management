@@ -4,7 +4,7 @@ const routers = [
         name: 'admin',
         component: () => import('@/views/admin/Index'),
         meta: {title: '管理中心', requireAuth: true, requireLogin: true},
-        redirect: 'admin/notice',
+        redirect: 'admin/userLoginAnalysis',
         children: [
             {
                 path: 'student',
@@ -188,6 +188,14 @@ const routers = [
                 meta: {title: '用户登录日志', requireAuth: true, requireLogin: true},
                 components: {
                     admin: () => import('@/views/admin/UserLoginAnalysis'),
+                }
+            },
+            {
+                path: 'ESManagement',
+                name: 'ESManagement',
+                meta: {title: '用户登录日志', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/ESManagement'),
                 }
             }
         ]

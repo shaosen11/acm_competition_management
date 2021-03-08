@@ -51,3 +51,39 @@ export function searchHitEsReport(esReportQueryParam) {
         }
     })
 }
+
+//删除博客索引
+export function deleteEsBlogIndex() {
+    return request({
+        url: '/esBlog/deleteIndex',
+        method: 'post',
+        data: {}
+    })
+}
+
+//博客索引导入
+export function importEsBlogAll() {
+    return request({
+        url: '/esBlog/importAll',
+        method: 'post',
+        data: {}
+    })
+}
+
+//导入报告索引
+export function deleteEsReportIndex() {
+    return request({
+        url: '/esReport/deleteIndex',
+        method: 'post',
+        data: {}
+    })
+}
+
+//博客索引导入
+export function importEsReportAll() {
+    return request({
+        url: '/esReport/importAll',
+        method: 'post',
+        data: {}
+    })
+}
