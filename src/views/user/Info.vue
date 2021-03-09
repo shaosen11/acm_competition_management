@@ -4,6 +4,7 @@
             <el-col :span="6">
                 <!--用户信息-->
                 <user-statistics-info :user-ext="this.userExt"></user-statistics-info>
+                <individual-web-site :user-ext="this.userExt" style="margin-top: 10px"/>
                 <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                 <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
             </el-col>
@@ -114,6 +115,7 @@
     import HotReport from "@/component/HotReport";
     import HotBlog from "@/component/HotBlog";
     import UserInfo from "@/component/UserInfo";
+    import individualWebSite from "@/component/individualWebSite";
     import {getUserExtByUserId} from '@/network/api/user';
     import {getOrganizationByUserId} from '@/network/api/organization';
     import {getTeamAllInfoByUserId} from "@/network/api/team";
@@ -128,6 +130,7 @@
             HotReport,
             HotBlog,
             UserInfo,
+            individualWebSite
         },
         data() {
             return {

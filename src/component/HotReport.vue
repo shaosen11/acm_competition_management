@@ -1,6 +1,7 @@
 <template>
     <el-card>
         热门报告
+        <div class="onePxDivider"></div>
         <div v-for="(reportHot,index) in this.reportHotList" :key="reportHot" class="text item">
             <el-row style="margin: 15px auto;">
                 <el-col :span="2">

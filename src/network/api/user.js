@@ -62,7 +62,10 @@ export function updateUserInfo(user) {
             name: user.name,
             email: user.email,
             gender: user.gender,
-            enableFlag: user.enableFlag
+            enableFlag: user.enableFlag,
+            githubLink: user.githubLink,
+            giteeLink: user.giteeLink,
+            csdnLink: user.csdnLink
         }
     })
 }

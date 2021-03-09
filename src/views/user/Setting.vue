@@ -6,24 +6,33 @@
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">
-                    <el-form :model="form"
+                    <el-form :model="user"
                              label-width="100px">
                         <el-form-item label="头像：" prop="logo">
-                            <single-upload :value="form.userIcon" @iconUrl="iconUrl"></single-upload>
+                            <single-upload :value="user.userIcon" @iconUrl="iconUrl"></single-upload>
                         </el-form-item>
                         <el-form-item label="学号">
-                            <el-input v-model="form.userId" :disabled="true"></el-input>
+                            <el-input v-model="user.userId" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="姓名">
-                            <el-input v-model="form.username"></el-input>
+                            <el-input v-model="user.username"></el-input>
                         </el-form-item>
                         <el-form-item label="邮箱" prop="email">
-                            <el-input v-model="form.email" :disabled="true"></el-input>
+                            <el-input v-model="user.email" :disabled="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="github" prop="githubLink">
+                            <el-input v-model="user.githubLink"></el-input>
+                        </el-form-item>
+                        <el-form-item label="gitee" prop="giteeLink">
+                            <el-input v-model="user.giteeLink"></el-input>
+                        </el-form-item>
+                        <el-form-item label="csdn" prop="csdnLink">
+                            <el-input v-model="user.csdnLink"></el-input>
                         </el-form-item>
                         <el-form-item label="性别">
                             <template>
-                                <el-radio v-model="form.gender" label="1"><i class="el-icon-female"></i>男</el-radio>
-                                <el-radio v-model="form.gender" label="0"><i class="el-icon-male"></i>女</el-radio>
+                                <el-radio v-model="user.gender" label="1"><i class="el-icon-female"></i>男</el-radio>
+                                <el-radio v-model="user.gender" label="0"><i class="el-icon-male"></i>女</el-radio>
                             </template>
                         </el-form-item>
                         <el-form-item>
@@ -54,12 +63,15 @@
             return {
                 isLoading: false,
                 //表单数据
-                form: {
+                user: {
                     userId: '',
-                    username: '',
-                    userIcon: '',
+                    name: '',
+                    icon: '',
                     email: '',
                     gender: '',
+                    githubLink: '',
+                    giteeLink: '',
+                    csdnLink: '',
                 },
                 //修改用户信息按钮加载
                 updateUserInfoButtonLoading: false,
@@ -79,24 +91,13 @@
                     if (res.code != 200) {
                         return this.$message.error(res.message);
                     }
-                    this.form.userId = res.data.userId;
-                    this.form.username = res.data.name;
-                    this.form.userIcon = res.data.icon;
-                    this.form.email = res.data.email;
-                    this.form.gender = res.data.gender;
+                    this.user = res.data
                 })
             },
             //修改用户信息
             updateUserInfo() {
                 this.updateUserInfoButtonLoading = true;
-                const user = {
-                    userId: this.form.userId,
-                    name: this.form.username,
-                    icon: this.form.userIcon,
-                    email: this.form.email,
-                    gender: this.form.gender,
-                }
-                updateUserInfo(user).then(res => {
+                updateUserInfo(this.user).then(res => {
                     if (res.code != 200) {
                         this.$message.error(res.message);
                         this.updateUserInfoButtonLoading = false;
@@ -109,7 +110,7 @@
                 })
             },
             iconUrl(iconUrl) {
-                this.form.userIcon = iconUrl;
+                this.user.icon = iconUrl;
             },
         }
     }
