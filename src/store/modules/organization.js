@@ -19,7 +19,11 @@ const organization = {
     },
 
     actions: {
-
+        deleteOrganizationInfo({commit}){
+            commit('SET_MY_ORGANIZATION_FLAG', false);
+            commit('SET_ORGANIZATION_NAME', '');
+            commit('SET_YEAR', '');
+        },
     }
 }
 

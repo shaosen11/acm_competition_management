@@ -1,28 +1,29 @@
 <template>
     <div class="container">
-        <el-row :gutter="20">
-            <el-col :span="2" style="text-align:center;">
-                <el-avatar :size="40"
-                           :src="this.$store.state.user.icon"/>
-            </el-col>
-            <el-col :span="22">
-                <el-input
-                        v-model="comment"
-                        type="textarea"
-                        :rows="3"
-                        @focus="focusComment"
-                        placeholder="写下你的评论">
-                </el-input>
-            </el-col>
-        </el-row>
-        <transition name="el-zoom-in-top">
-            <div class="btn-control" v-if="this.showCommit">
-                <span class="cancel" @click="cancelFocusComment">取消</span>
-                <el-button class="btn" type="primary" round @click="submitComment">确定</el-button>
-            </div>
-        </transition>
+        <div v-if="this.$store.state.user.isLogin==1">
+            <el-row :gutter="20">
+                <el-col :span="2" style="text-align:center;">
+                    <el-avatar :size="40"
+                               :src="this.$store.state.user.icon"/>
+                </el-col>
+                <el-col :span="22">
+                    <el-input
+                            v-model="comment"
+                            type="textarea"
+                            :rows="3"
+                            @focus="focusComment"
+                            placeholder="写下你的评论">
+                    </el-input>
+                </el-col>
+            </el-row>
+            <transition name="el-zoom-in-top">
+                <div class="btn-control" v-if="this.showCommit">
+                    <span class="cancel" @click="cancelFocusComment">取消</span>
+                    <el-button class="btn" type="primary" round @click="submitComment">确定</el-button>
+                </div>
+            </transition>
+        </div>
         <el-divider></el-divider>
-
         <h3>全部评论</h3>
         <div class="comment" v-for="item in comments">
             <div class="info">
@@ -114,7 +115,7 @@
              */
             commitComment() {
                 let space = this.inputComment.indexOf(" ");
-                let comment = this.inputComment.substring(space+1)
+                let comment = this.inputComment.substring(space + 1)
                 const blogComment = {
                     parentId: this.showItemId,
                     blogId: this.blogId,

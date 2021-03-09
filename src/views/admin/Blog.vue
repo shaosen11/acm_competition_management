@@ -70,13 +70,13 @@
                 <el-table-column
                         prop="blogId"
                         label="博客Id"
-                        width="150"
+                        width="110"
                         align="center">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="博客名称"
-                        width="200"
+                        width="150"
                         align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toBlog(scope.row.blogId)" :underline="false">
@@ -93,7 +93,7 @@
                 <el-table-column
                         prop="userId"
                         label="学号"
-                        width="100"
+                        width="110"
                         align="center">
                 </el-table-column>
                 <el-table-column
@@ -110,7 +110,7 @@
                 <el-table-column
                         prop="operation"
                         label="数据"
-                        width="150"
+                        width="120"
                         align="center">
                     <template slot-scope="scope">
                         <p>浏览量：
@@ -123,6 +123,12 @@
                             {{scope.row.storeCounter}}
                         </p>
                     </template>
+                </el-table-column>
+                <el-table-column
+                        prop="examineTime"
+                        label="审核时长(毫秒)"
+                        width="150"
+                        align="center">
                 </el-table-column>
                 <el-table-column
                         prop="operation"
@@ -182,6 +188,7 @@
                         return this.$message.error(res.message);
                     }
                     this.tableData = res.data.list;
+                    console.log(this.tableData)
                     this.total = res.data.total;
                     this.blogQuery.pageNum = res.data.pageNum;
                     this.blogQuery.pageSize = res.data.pageSize;

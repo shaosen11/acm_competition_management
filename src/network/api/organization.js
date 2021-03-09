@@ -185,3 +185,15 @@ export function deleteOrganization(organizationId) {
         }
     })
 }
+
+//更新班级信息
+export function outOrganization(organization) {
+    return request({
+        url: '/organizationUserRelation/out',
+        method: 'post',
+        data: {
+            organizationId: organization.organizationId,
+            userId: organization.userId,
+        }
+    })
+}

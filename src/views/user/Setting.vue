@@ -9,7 +9,7 @@
                     <el-form :model="form"
                              label-width="100px">
                         <el-form-item label="头像：" prop="logo">
-                            <single-upload v-model="form.userIcon" @iconUrl="iconUrl"></single-upload>
+                            <single-upload :value="form.userIcon" @iconUrl="iconUrl"></single-upload>
                         </el-form-item>
                         <el-form-item label="学号">
                             <el-input v-model="form.userId" :disabled="true"></el-input>
@@ -17,8 +17,8 @@
                         <el-form-item label="姓名">
                             <el-input v-model="form.username"></el-input>
                         </el-form-item>
-                        <el-form-item label="邮箱">
-                            <el-input v-model="form.email"></el-input>
+                        <el-form-item label="邮箱" prop="email">
+                            <el-input v-model="form.email" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="性别">
                             <template>
@@ -52,6 +52,7 @@
         },
         data() {
             return {
+                isLoading: false,
                 //表单数据
                 form: {
                     userId: '',
@@ -75,8 +76,12 @@
             //获取用户信息
             getUserInfo(userId) {
                 getUserInfo(userId).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
                     this.form.userId = res.data.userId;
                     this.form.username = res.data.name;
+                    this.form.userIcon = res.data.icon;
                     this.form.email = res.data.email;
                     this.form.gender = res.data.gender;
                 })
@@ -90,9 +95,7 @@
                     icon: this.form.userIcon,
                     email: this.form.email,
                     gender: this.form.gender,
-                    password: this.form.password
                 }
-                console.log(user)
                 updateUserInfo(user).then(res => {
                     if (res.code != 200) {
                         this.$message.error(res.message);
@@ -101,12 +104,13 @@
                     }
                     this.$store.dispatch('SetUserAllInfo', this.$store.state.user.userId);
                     this.updateUserInfoButtonLoading = false;
-                    this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
+                    this.$message.success(res.message);
+                    this.getUserInfo(this.$store.state.user.userId);
                 })
             },
-            iconUrl(iconUrl){
+            iconUrl(iconUrl) {
                 this.form.userIcon = iconUrl;
-            }
+            },
         }
     }
 </script>

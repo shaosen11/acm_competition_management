@@ -71,13 +71,13 @@
                 <el-table-column
                         prop="reportId"
                         label="博客Id"
-                        width="150"
+                        width="110"
                         align="center">
                 </el-table-column>
                 <el-table-column
                         prop="name"
                         label="博客名称"
-                        width="200"
+                        width="150"
                         align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toReport(scope.row.reportId)" :underline="false">
@@ -111,7 +111,7 @@
                 <el-table-column
                         prop="operation"
                         label="数据"
-                        width="150"
+                        width="120"
                         align="center">
                     <template slot-scope="scope">
                         <p>浏览量：
@@ -124,6 +124,12 @@
                             {{scope.row.storeCounter}}
                         </p>
                     </template>
+                </el-table-column>
+                <el-table-column
+                        prop="examineTime"
+                        label="审核时长(毫秒)"
+                        width="150"
+                        align="center">
                 </el-table-column>
                 <el-table-column
                         prop="operation"
