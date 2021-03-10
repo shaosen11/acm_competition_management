@@ -76,7 +76,11 @@
             </el-menu-item>
             <el-menu-item index="6-2" @click="toOrganization">班级列表</el-menu-item>
         </el-submenu>
-        <el-menu-item index="7" @click="toSearch">
+        <el-menu-item index="7" @click="toClub">
+            <i class="iconfont el-icon-third-acm"></i>
+            俱乐部
+        </el-menu-item>
+        <el-menu-item index="8" @click="toSearch">
             <i class="iconfont el-icon-third-search"></i>
             搜索
         </el-menu-item>
@@ -195,6 +199,9 @@
             },
             toOrganization() {
                 this.$router.push('/organizationList')
+            },
+            toClub() {
+                this.$router.push('/clubInfo')
             },
             toSearch() {
                 this.$router.push('/search')

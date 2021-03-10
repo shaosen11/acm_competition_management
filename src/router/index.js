@@ -22,6 +22,7 @@ import organizationRouters from '@/router/organization'
 import reportRouters from '@/router/report'
 import teamRouters from '@/router/team'
 import userRouters from '@/router/user'
+import clubRouters from '@/router/club'
 
 const routes = [
     {
@@ -54,6 +55,7 @@ const routes = [
             ...reportRouters,
             ...teamRouters,
             ...userRouters,
+            ...clubRouters,
             ...adminRouters
         ]
     },

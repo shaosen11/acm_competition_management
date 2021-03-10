@@ -1,8 +1,7 @@
 import {request} from "../request";
 
-
 //获取公告分页
-export function listNoticeTypePage(noticeQueryParam) {
+export function listNoticePage(noticeQueryParam) {
     return request({
         url: '/notice/listByPage',
         method: 'post',
@@ -10,6 +9,17 @@ export function listNoticeTypePage(noticeQueryParam) {
             showFlag: noticeQueryParam.showFlag,
             pageNum: noticeQueryParam.pageNum,
             pageSize: noticeQueryParam.pageSize,
+        }
+    })
+}
+
+//获取公告分页
+export function listNotice(showFlag) {
+    return request({
+        url: '/notice/list',
+        method: 'post',
+        data: {
+            showFlag
         }
     })
 }
@@ -55,4 +65,3 @@ export function getByNoticeId(noticeId) {
         }
     })
 }
-

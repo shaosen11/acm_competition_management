@@ -31,7 +31,7 @@
     }
 
     .nav{
-        min-width: 1500px;
+        min-width: 1000px;
         width:100%;
         position:fixed;
         top:0;

@@ -47,9 +47,7 @@
         <el-card class="table-container">
             <div slot="header" class="clearfix">
                 <span>队伍列表</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateTeam"><i
-                        class="el-icon-plus"></i>创建队伍
-                </el-button>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateTeam">创建队伍</el-button>
             </div>
             <el-table
                     v-loading="listLoading"

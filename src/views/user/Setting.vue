@@ -5,7 +5,7 @@
                 <span>个人设置</span>
             </div>
             <el-row :gutter="10">
-                <el-col :span="10">
+                <el-col :span="12">
                     <el-form :model="user"
                              label-width="100px">
                         <el-form-item label="头像：" prop="logo">

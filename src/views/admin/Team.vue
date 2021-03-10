@@ -53,7 +53,7 @@
                     width="250"
                     align="center">
                     <template slot-scope="scope">
-                        <el-link type="primary" @click="toTeamInfo(scope.row.name)">{{ scope.row.name }}</el-link>
+                        <el-link type="primary" @click="toTeamInfo(scope.row.name)" :underline="false">{{ scope.row.name }}</el-link>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -62,7 +62,7 @@
                     width="170"
                     align="center">
                     <template slot-scope="scope">
-                        <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
+                        <el-link type="primary" @click="toUserInfo(scope.row.userId)" :underline="false">{{ scope.row.userName }}</el-link>
                     </template>
                 </el-table-column>
                 <el-table-column
