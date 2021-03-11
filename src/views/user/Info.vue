@@ -5,8 +5,8 @@
                 <!--用户信息-->
                 <user-statistics-info :user-ext="this.userExt"></user-statistics-info>
                 <individual-web-site :user-ext="this.userExt" style="margin-top: 10px"/>
-                <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                 <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
+                <hot-report :reportHotList="this.reportHotList" style="margin-top: 10px"/>
             </el-col>
             <el-col :span="18">
                 <el-row :gutter="20">
@@ -56,8 +56,8 @@
             <el-col :span="18" style="margin: 10px 0px">
                 <el-card>
                     <el-tabs v-model="activeTab" @tab-click="handleClick">
-                        <el-tab-pane label="报告" name="report"/>
                         <el-tab-pane label="博客" name="blog"/>
+                        <el-tab-pane label="报告" name="report"/>
                     </el-tabs>
                     <div v-for="item in this.tableData" :key="item" class="text item">
                         <div style="margin: 20px 0px;">

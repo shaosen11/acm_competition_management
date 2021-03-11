@@ -1,6 +1,18 @@
 import {request} from '../request'
 
-//获取公告分页
+
+//获取公告列表
+export function listClubActivity(showFlag) {
+    return request({
+        url: '/club/list',
+        method: 'post',
+        data: {
+            showFlag
+        }
+    })
+}
+
+//获取活动分页
 export function listActivityByPage(activityQueryParam) {
     return request({
         url: '/club/listByPage',
@@ -13,7 +25,7 @@ export function listActivityByPage(activityQueryParam) {
     })
 }
 
-//修改公告
+//修改活动
 export function updateActivity(activity) {
     return request({
         url: '/club/update',
@@ -31,7 +43,7 @@ export function updateActivity(activity) {
         }
     })
 }
-//发布公告
+//发布活动
 export function createActivity(activity) {
     return request({
         url: '/club/create',
@@ -49,13 +61,66 @@ export function createActivity(activity) {
     })
 }
 
-//获取公告内容
+//获取活动
 export function getByActivityId(activityId) {
     return request({
         url: '/club/getByActivityId',
         method: 'post',
         data: {
             activityId
+        }
+    })
+}
+
+//申请加入俱乐部
+export function applyJoinClue(userId) {
+    return request({
+        url: '/clubActivityUserCooperation/applyJoinClue',
+        method: 'post',
+        data: {
+            userId
+        }
+    })
+}
+
+//获取申请列表
+export function getApplyList(clubActivityUserCooperationQueryParam) {
+    return request({
+        url: '/clubActivityUserCooperation/getApplyList',
+        method: 'post',
+        data: {
+            pageNum: clubActivityUserCooperationQueryParam.pageNum,
+            pageSize: clubActivityUserCooperationQueryParam.pageSize,
+        }
+    })
+}
+
+//批量同意
+export function batchAgree(ids) {
+    return request({
+        url: '/clubActivityUserCooperation/batchAgree',
+        method: 'post',
+        data: {
+            ids
+        }
+    })
+}
+
+//批量同意
+export function getClubStatistics() {
+    return request({
+        url: '/clubStatistics/get',
+        method: 'get',
+    })
+}
+
+//退出俱乐部
+export function outClub(userId) {
+    return request({
+        url: '/clubActivityUserCooperation/outClub',
+        method: 'post',
+        data: {
+            userId
         }
     })
 }

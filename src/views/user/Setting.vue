@@ -15,7 +15,7 @@
                             <el-input v-model="user.userId" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="姓名">
-                            <el-input v-model="user.username"></el-input>
+                            <el-input v-model="user.name"></el-input>
                         </el-form-item>
                         <el-form-item label="邮箱" prop="email">
                             <el-input v-model="user.email" :disabled="true"></el-input>

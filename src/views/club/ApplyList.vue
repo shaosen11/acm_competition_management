@@ -2,9 +2,9 @@
     <div>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <el-page-header @back="toOrganizationList" content="申请列表"/>
+                <span>申请列表</span>
                 <el-button
-                        style="float: right; margin-top: -30px"
+                        style="float: right; padding: 3px 0"
                         @click="handleBatchOperate"
                         type="text">
                     批量同意
@@ -27,34 +27,22 @@
                 <el-table-column
                         prop="userName"
                         label="姓名"
-                        width="100"
+                        width="150"
                         align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toUserInfo(scope.row.userId)">{{ scope.row.userName }}</el-link>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="email"
-                        label="邮箱"
-                        width="200"
-                        align="center">
-                </el-table-column>
-                <el-table-column
-                        prop="year"
-                        label="年级"
-                        width="100"
-                        align="center">
-                </el-table-column>
-                <el-table-column
-                        prop="organizationName"
-                        label="申请班级"
+                        prop="time"
+                        label="学号"
                         width="200"
                         align="center">
                 </el-table-column>
                 <el-table-column
                         prop="operation"
                         label="操作"
-                        width="150"
+                        width="200"
                         align="center">
                     <template slot-scope="scope">
                         <p>
@@ -95,10 +83,9 @@
 
 <script>
     import {
-        getOrganizationUserCooperationList,
-        organizationUserCooperationBatchAgree,
-        refuseOrganizationUserCooperation
+        refuseOrganizationUserCooperation,
     } from '@/network/api/organization';
+    import {getApplyList, batchAgree} from '@/network/api/club';
 
     export default {
         name: "ApplyList",
@@ -133,7 +120,7 @@
                     pageNum: this.pageNum,
                     pageSize: this.pageSize
                 }
-                getOrganizationUserCooperationList(OrganizationUserCooperationQueryParam).then(res => {
+                getApplyList(OrganizationUserCooperationQueryParam).then(res => {
                     if (res.code !== 200) {
                         this.listLoading = false;
                         return this.$message.error(res.message);
@@ -184,35 +171,32 @@
             },
             //同意加入
             agreeJoin(row) {
-                this.listLoading = true;
-                let ids = row.id;
-                organizationUserCooperationBatchAgree(ids).then(res => {
+                let ids = row.userId;
+                batchAgree(ids).then(res => {
                     if (res.code !== 200) {
-                        this.listLoading = false;
                         return this.$message.error(res.message);
                     }
                     this.getList()
-                    this.listLoading = true;
                 })
             },
             //批量同意
             handleBatchOperate() {
-                this.listLoading = true;
                 let ids = '';
                 for (let i = 0; i < this.multipleSelection.length; i++) {
                     if (i != 0) {
                         ids += ',';
                     }
-                    ids += this.multipleSelection[i].id;
+                    ids += this.multipleSelection[i].userId;
                 }
-                organizationUserCooperationBatchAgree(ids).then(res => {
-                    if (res.code !== 200) {
-                        this.listLoading = false;
-                        return this.$message.error(res.message);
-                    }
-                    this.getList()
-                    this.listLoading = false;
-                })
+                if (ids != '') {
+                    batchAgree(ids).then(res => {
+                        if (res.code !== 200) {
+                            this.listLoading = false;
+                            return this.$message.error(res.message);
+                        }
+                        this.getList()
+                    })
+                }
             },
             refuseOrganizationUserCooperation(id) {
                 refuseOrganizationUserCooperation(id).then(res => {

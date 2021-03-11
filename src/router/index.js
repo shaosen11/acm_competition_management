@@ -35,7 +35,7 @@ const routes = [
             name: 'home',
             component: () => import('@/views/home/Home'),
             meta: {title: '首页'}
-            },
+        },
             {
                 path: 'notice',
                 name: 'notice',
@@ -114,6 +114,14 @@ router.beforeEach((to, from, next) => {
         })
         document.title = "登录"
         next('/login')
+    }
+    if (to.meta.requireClub && store.state.club.clubFlag != 2) {
+        Message({
+            message: "请用俱乐部管理员账号登录",
+            type: 'clubInfo',
+        })
+        document.title = "首页"
+        next('/home')
     }
     if (to.meta.requireAuth && store.state.user.identityFlag != 1) {
         Message({

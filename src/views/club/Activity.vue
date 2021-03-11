@@ -159,18 +159,15 @@
                     this.getList()
                 })
             },
-            //创建公告
             toCreateActivity() {
                 this.$router.push("/club/createActivity")
             },
-            //创建公告
             toUpdateActivity(activityId) {
                 this.$router.push({
                     path: '/club/createActivity',
                     query: {activityId}
                 })
             },
-            //公告详情
             toActivityInfo(activityId) {
                 this.$router.push({
                     path: '/activityInfo',

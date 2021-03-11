@@ -11,5 +11,6 @@ const getters = {
     myOrganizationFlag: state => state.organization.myOrganizationFlag,
     organizationName: state => state.organization.organizationName,
     year: state => state.organization.year,
+    clubFlag: state => state.club.clubFlag,
 }
 export default getters

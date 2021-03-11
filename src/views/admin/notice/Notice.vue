@@ -87,7 +87,7 @@
 </template>
 
 <script>
-    import {listNoticeTypePage, updateNotice} from '@/network/api/notice';
+    import {listNoticePage, updateNotice} from '@/network/api/notice';
 
     export default {
         name: "Notice",
@@ -120,7 +120,7 @@
             //获取比赛类型信息
             getList() {
                 this.listLoading = true;
-                listNoticeTypePage(this.noticeQuery).then(res => {
+                listNoticePage(this.noticeQuery).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }

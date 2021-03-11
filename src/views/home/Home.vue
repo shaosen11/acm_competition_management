@@ -1,55 +1,67 @@
 <template>
     <div class="app-container">
         <el-row :gutter="20" style="margin-top: 30px">
-            <el-col :span="18">
-                <h3>公告</h3>
-                <el-carousel :interval="4000" type="card" height="200px">
-                    <el-carousel-item v-for="item in this.noticeList" :key="item">
-                        <div @click="toNoticeInfo(item.noticeId)">
-                            <el-card>
-                                <span class="title">
-                                     <i class="iconfont el-icon-third-notification" style="margin-right: 5px"></i>{{ item.name }}
-                                </span>
-                                <p class="content markdown-body" v-dompurify-html="item.content"></p>
-                                <div class="data">
-                                    <i class="iconfont el-icon-third-time-circle" style="margin-right: 5px"></i>
-                                    {{ item.time }}
-                                </div>
-                            </el-card>
-                        </div>
-                    </el-carousel-item>
-                </el-carousel>
-            </el-col>
-            <el-col :span="6">
-                <el-card>
-                    热门博客(24小时更新一次)
-                    <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
-                        <el-row style="margin: 15px auto;">
-                            <el-col :span="2">
-                                <span>{{ index+1 }}</span>
-                            </el-col>
-                            <el-col :span="20">
-                                <div class="name" @click="toBlog(blogHot.blogId)">{{ blogHot.name }}</div>
-                                <el-col :span="16">
-                                    <div class="userName" @click="toUserInfo(blogHot.userId)">{{ blogHot.userName }}
-                                    </div>
-                                </el-col>
-                                <el-col :span="8">
-                                    <i class="iconfont el-icon-third-fire"></i>
-                                    {{ blogHot.score}}
-                                </el-col>
-                            </el-col>
-                        </el-row>
+        <el-col :span="18">
+            <el-card>
+                <div slot="header" class="clearfix">
+                    <span>公告列表</span>
+                </div>
+                <div v-for="item in this.tableData" :key="item" class="text item">
+                    <span class="title" @click="toNoticeInfo(item.noticeId)">
+                         <i class="iconfont el-icon-third-notification" style="margin-right: 5px"></i>{{ item.name }}
+                    </span>
+                    <p class="content markdown-body" v-dompurify-html="item.content"></p>
+                    <div class="data">
+                        <i class="iconfont el-icon-third-time-circle" style="margin-right: 5px"></i>
+                        {{ item.time }}
                     </div>
-                </el-card>
-            </el-col>
-        </el-row>
+                    <div class="divider"></div>
+                </div>
+                <div class="pagination-container" style="float: right;">
+                    <el-pagination
+                            background
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="noticeQuery.pageNum"
+                            :page-sizes="[5,10,15]"
+                            :page-size="noticeQuery.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total"
+                            :hide-on-single-page="isHide">
+                    </el-pagination>
+                </div>
+            </el-card>
+        </el-col>
+        <el-col :span="6">
+            <el-card>
+                热门博客(24小时更新一次)
+                <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
+                    <el-row style="margin: 15px auto;">
+                        <el-col :span="2">
+                            <span>{{ index+1 }}</span>
+                        </el-col>
+                        <el-col :span="20">
+                            <div class="name" @click="toBlog(blogHot.blogId)">{{ blogHot.name }}</div>
+                            <el-col :span="16">
+                                <div class="userName" @click="toUserInfo(blogHot.userId)">{{ blogHot.userName }}
+                                </div>
+                            </el-col>
+                            <el-col :span="8">
+                                <i class="iconfont el-icon-third-fire"></i>
+                                {{ blogHot.score}}
+                            </el-col>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
 
     </div>
 </template>
 
 <script>
-    import {listNotice} from '@/network/api/notice';
+    import {listNoticePage} from '@/network/api/notice';
     import {listBlogHot} from '@/network/api/blog'
 
     export default {
@@ -58,9 +70,17 @@
             return {
                 //队伍查询条件
                 noticeQuery: {
-                    showFlag: 1,
+                    pageNum: 1,
+                    pageSize: 5,
                 },
-                noticeList: [],
+                //表单信息
+                tableData: [],
+                //表单总数
+                total: null,
+                //是否正在加载
+                listLoading: false,
+                //是否分页隐藏
+                isHide: true,
                 blogHotList: []
             }
 
@@ -75,17 +95,39 @@
                     lock: true,
                     text: '正在加载',
                 });
-                this.getNoticeList();
+                this.getList();
                 this.getBlogHotList()
                 loading.close()
             },
-            getNoticeList() {
-                listNotice(this.noticeQuery.showFlag).then(res => {
+            //获取比赛类型信息
+            getList() {
+                this.listLoading = true;
+                this.noticeQuery.showFlag = 1;
+                listNoticePage(this.noticeQuery).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
-                    this.noticeList = res.data
+                    this.tableData = res.data.list;
+                    this.total = res.data.total;
+                    this.totalPage = res.data.totalPage;
+                    this.noticeQuery.pageNum = res.data.pageNum;
+                    this.noticeQuery.pageSize = res.data.pageSize;
+                    if (this.total > this.noticeQuery.pageSize) {
+                        this.isHide = false;
+                    }
+                    this.listLoading = false;
                 })
+            },
+            //处理页面大小变化
+            handleSizeChange(val) {
+                this.noticeQuery.pageNum = 1;
+                this.noticeQuery.pageSize = val;
+                this.getList();
+            },
+            //处理当前页面数量变化
+            handleCurrentChange(val) {
+                this.noticeQuery.pageNum = val;
+                this.getList();
             },
             //公告详情
             toNoticeInfo(noticeId) {
@@ -142,7 +184,7 @@
         color: #909399;
     }
 
-    .title {
+    .title{
         font-size: 20px;
     }
 
@@ -163,4 +205,19 @@
         margin: 15px auto;
     }
 
+    .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 200px;
+        margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n+1) {
+        background-color: #d3dce6;
+    }
 </style>

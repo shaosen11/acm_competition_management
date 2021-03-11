@@ -4,11 +4,19 @@
             <el-aside width="200px">
                 <el-menu
                         class="el-menu-vertical-demo">
-                    <el-menu-item index="1" @click="toActivity">
+                    <el-menu-item index="1" @click="toClub">
+                        <i class="iconfont el-icon-third-acm"></i>
+                        <span slot="title">俱乐部首页</span>
+                    </el-menu-item>
+                    <el-menu-item index="2" @click="toActivity">
                         <i class="iconfont el-icon-third-activity"></i>
                         <span slot="title">活动管理</span>
                     </el-menu-item>
-                    <el-menu-item index="2">
+                    <el-menu-item index="2" @click="toCreateActivity">
+                        <i class="iconfont el-icon-third-create"></i>
+                        <span slot="title">创建活动</span>
+                    </el-menu-item>
+                    <el-menu-item index="3" @click="toApplyList">
                         <i class="iconfont el-icon-third-setting"></i>
                         <span slot="title">审批加入</span>
                     </el-menu-item>
@@ -30,26 +38,17 @@
         name: "Management",
         methods: {
             toClub() {
-                this.$router.push('/club')
+                this.$router.push('/clubInfo')
             },
             toActivity(){
                 this.$router.push('/club')
             },
-            toUserInfo() {
-                this.$router.push({name: 'userInfo', query: {userId: this.$store.state.user.userId}})
+            toApplyList(){
+                this.$router.push('/club/applyList')
             },
-            //跳转个人设置
-            toSetting() {
-                this.$router.push('/user/setting');
+            toCreateActivity() {
+                this.$router.push("/club/createActivity")
             },
-            //跳转安全设置
-            toPassword() {
-                this.$router.push('/user/password');
-            },
-            //跳转个人收藏
-            toStore() {
-                this.$router.push('/user/store');
-            }
         }
     }
 </script>

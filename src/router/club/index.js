@@ -3,7 +3,7 @@ const routers = [
         path: '/clubInfo',
         name: 'clubInfo',
         component: () => import('@/views/club/Club'),
-        meta: {title: '比赛列表'}
+        meta: {title: '俱乐部'}
     },
     {
         path: '/activityInfo',
@@ -15,13 +15,13 @@ const routers = [
         path: 'club',
         name: 'club',
         component: () => import('@/views/club/Index'),
-        meta: {title: '管理页面', requireLogin: true},
+        meta: {title: '管理页面', requireLogin: true, requireClub: true},
         redirect: 'club/activity',
         children: [
             {
                 path: 'activity',
                 name: 'activity',
-                meta: {title: '活动管理', requireLogin: true},
+                meta: {title: '活动管理', requireLogin: true, requireClub: true},
                 components: {
                     club: () => import('@/views/club/Activity')
                 }
@@ -29,9 +29,17 @@ const routers = [
             {
                 path: 'createActivity',
                 name: 'createActivity',
-                meta: {title: '创建活动', requireLogin: true},
+                meta: {title: '创建活动', requireLogin: true, requireClub: true},
                 components: {
                     club: () => import('@/views/club/CreateActivity')
+                }
+            },
+            {
+                path: 'applyList',
+                name: 'applyList',
+                meta: {title: '申请列表', requireLogin: true},
+                components: {
+                    club: () => import('@/views/club/ApplyList')
                 }
             },
         ]

@@ -58,6 +58,7 @@ const user = {
                     commit('SET_PASSWORD_FLAG', data.passwordFlag);
                     commit('SET_IDENTITY_FLAG', data.identityFlag);
                     commit('SET_ENABLE_FLAG', data.enableFlag);
+                    commit('SET_CLUB_FLAG', data.clubFlag);
                     //设置队伍信息
                     if (data.teamName != null) {
                         commit('SET_MY_TEAM_FLAG', true)
@@ -90,6 +91,7 @@ const user = {
             commit('SET_PASSWORD_FLAG', '');
             commit('SET_IDENTITY_FLAG', '');
             commit('SET_ENABLE_FLAG', '');
+            commit('SET_CLUB_FLAG', '');
             removeToken();
         }
     }
