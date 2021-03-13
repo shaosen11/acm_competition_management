@@ -337,7 +337,8 @@
                         this.saveButtonLoading = false
                         return this.$message.error(res.message);
                     }
-                    this.report = res.data
+                    this.report = res.data;
+                    this.$message.success("保存成功");
                     //拷贝对象
                     this.oldReport = JSON.parse(JSON.stringify(res.data))
                     if (this.report.reportId != null) {

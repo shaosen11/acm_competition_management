@@ -15,6 +15,7 @@
                         <h2>{{ this.blog.name }}</h2>
                         <span>
                             <i class="iconfont el-icon-third-time-circle"></i>
+                            <span>编辑于 </span>
                             {{ this.blog.time }}
                             <el-divider direction="vertical"></el-divider>
                             <span>by </span>

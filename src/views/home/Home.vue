@@ -10,10 +10,14 @@
                     <span class="title" @click="toNoticeInfo(item.noticeId)">
                          <i class="iconfont el-icon-third-notification" style="margin-right: 5px"></i>{{ item.name }}
                     </span>
-                    <p class="content markdown-body" v-dompurify-html="item.content"></p>
+<!--                    <p class="content markdown-body" v-dompurify-html="item.content"></p>-->
                     <div class="data">
                         <i class="iconfont el-icon-third-time-circle" style="margin-right: 5px"></i>
+                        <span>编辑于 </span>
                         {{ item.time }}
+                        <el-divider direction="vertical"></el-divider>
+                        <span>by </span>
+                        {{ item.userId }}
                     </div>
                     <div class="divider"></div>
                 </div>
@@ -181,6 +185,7 @@
     }
 
     .data {
+        margin-top: 10px;
         color: #909399;
     }
 

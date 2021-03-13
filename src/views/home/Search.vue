@@ -30,6 +30,7 @@
                             <p class="content markdown-body" v-dompurify-html="item.subContent"></p>
                         </div>
                         <div class="data">
+                            <span>编辑于 </span>
                             {{ item.time }}
                             <el-divider direction="vertical"></el-divider>
                             <span>by </span>

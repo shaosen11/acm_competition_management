@@ -14,7 +14,7 @@
                 <el-card>
                     <el-tabs v-model="activeTab" @tab-click="handleClick">
                         <el-tab-pane label="已发布" name="release"/>
-                        <el-tab-pane label="所有博客" name="all"/>
+                        <el-tab-pane label="所有报告" name="all"/>
                         <el-tab-pane label="草稿箱" name="draft"/>
                         <el-tab-pane label="审核中" name="examine"/>
                         <el-tab-pane label="仅自己可见" name="private"/>

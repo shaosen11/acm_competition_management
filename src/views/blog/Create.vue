@@ -99,7 +99,8 @@
                         this.saveButtonLoading = false
                         return this.$message.error(res.message);
                     }
-                    this.blog = res.data
+                    this.blog = res.data;
+                    this.$message.success("保存成功");
                     //拷贝对象
                     this.oldBlog = JSON.parse(JSON.stringify(res.data))
                     if (this.blog.blogId != null) {

@@ -10,7 +10,7 @@
                     <el-input v-model="notice.name" placeholder="请输入标题"></el-input>
                 </el-col>
                 <el-col :span="4">
-                    <el-button type="info" @click="update" v-if="this.updateFlag === true">保存</el-button>
+                    <el-button type="primary" @click="update" v-if="this.updateFlag === true">保存</el-button>
                     <el-button type="primary" @click="create" v-else>
                         发布
                     </el-button>
