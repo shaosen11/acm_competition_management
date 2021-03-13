@@ -1,5 +1,5 @@
 <template>
-    <div class="app-container">
+    <div class="mini-app-container">
         <el-card class="table-container">
             <h2>{{this.notice.name}}</h2>
             <span>

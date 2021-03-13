@@ -124,3 +124,50 @@ export function outClub(userId) {
         }
     })
 }
+
+//报名活动
+export function insertClubActivityUserRelation(clubActivityUserRelation) {
+    return request({
+        url: '/clubActivityUserRelation/insert',
+        method: 'post',
+        data: {
+            userId: clubActivityUserRelation.userId,
+            activityId: clubActivityUserRelation.activityId,
+        }
+    })
+}
+
+//获取活动报名图片
+export function listChartByActivityId(activityId) {
+    return request({
+        url: '/clubActivityUserRelation/listChartByActivityId',
+        method: 'post',
+        data: {
+            activityId
+        }
+    })
+}
+
+//获取活动报名图片
+export function listOrganizationByActivityId(activityId) {
+    return request({
+        url: '/clubActivityUserRelation/listOrganizationByActivityId',
+        method: 'post',
+        data: {
+            activityId
+        }
+    })
+}
+
+//获取活动报名略
+export function listClubActivityUserRelationDto(clubActivityUserRelationQueryParam) {
+    return request({
+        url: '/clubActivityUserRelation/listClubActivityUserRelationDto',
+        method: 'post',
+        data: {
+            activityId: clubActivityUserRelationQueryParam.activityId,
+            pageNum: clubActivityUserRelationQueryParam.pageNum,
+            pageSize: clubActivityUserRelationQueryParam.pageSize,
+        }
+    })
+}

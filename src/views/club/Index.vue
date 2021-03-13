@@ -12,11 +12,11 @@
                         <i class="iconfont el-icon-third-activity"></i>
                         <span slot="title">活动管理</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="toCreateActivity">
+                    <el-menu-item index="3" @click="toCreateActivity">
                         <i class="iconfont el-icon-third-create"></i>
                         <span slot="title">创建活动</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="toApplyList">
+                    <el-menu-item index="4" @click="toApplyList">
                         <i class="iconfont el-icon-third-setting"></i>
                         <span slot="title">审批加入</span>
                     </el-menu-item>

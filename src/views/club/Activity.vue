@@ -47,11 +47,21 @@
                         width="200"
                         align="center">
                     <template slot-scope="scope">
-                        <el-button
-                                size="mini"
-                                @click="toActivityInfo(scope.row.activityId)"
-                                round>查看详情
-                        </el-button>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    type="primary"
+                                    @click="toActivityInfo(scope.row.activityId)"
+                                    round>查看详情
+                            </el-button>
+                        </p>
+                        <p>
+                            <el-button
+                                    size="mini"
+                                    @click="toActivityUserRelationAnalysis(scope.row.activityId)"
+                                    round>查看报名数据
+                            </el-button>
+                        </p>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -171,6 +181,12 @@
             toActivityInfo(activityId) {
                 this.$router.push({
                     path: '/activityInfo',
+                    query: {activityId}
+                })
+            },
+            toActivityUserRelationAnalysis(activityId) {
+                this.$router.push({
+                    path: '/club/activityUserRelationAnalysis',
                     query: {activityId}
                 })
             },

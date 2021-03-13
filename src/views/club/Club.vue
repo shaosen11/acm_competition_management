@@ -94,6 +94,9 @@
                 })
             },
             applyJoinClue() {
+                if (this.$store.state.user.userId==""){
+                    return this.$message.info("请先登录");
+                }
                 applyJoinClue(this.$store.state.user.userId).then(res => {
                     if (res.code !== 200) {
                         return this.$message.error(res.message);

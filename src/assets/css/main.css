@@ -8,6 +8,16 @@
     margin: 0px auto;
 }
 
+.small-app-container {
+    width: 75%;
+    margin: 0px auto;
+}
+
+.mini-app-container {
+    width: 65%;
+    margin: 0px auto;
+}
+
 .index-container {
     width: 1000px;
 }

@@ -1,9 +1,12 @@
 <template>
-    <div class="app-container">
+    <div class="mini-app-container">
         <el-card class="table-container">
             <h2>
                 <i class="iconfont el-icon-third-activity"></i>
                 {{this.activity.name}}
+                <el-button style="float: right;" type="primary" size="small" @click="insertClubActivityUserRelation">
+                    报名
+                </el-button>
             </h2>
             <p>
                 <i class="iconfont el-icon-third-location"></i>
@@ -20,7 +23,7 @@
 </template>
 
 <script>
-    import {getByActivityId} from '@/network/api/club'
+    import {getByActivityId, insertClubActivityUserRelation} from '@/network/api/club'
 
     export default {
         name: "ActivityInfo",
@@ -42,7 +45,18 @@
                         return this.$message.error(res.message);
                     }
                     this.activity = res.data
-                    console.log(this.activity)
+                })
+            },
+            insertClubActivityUserRelation() {
+                const clubActivityUserRelation = {
+                    userId: this.$store.state.user.userId,
+                    activityId: this.$route.query.activityId,
+                }
+                insertClubActivityUserRelation(clubActivityUserRelation).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.$message.success(res.message);
                 })
             }
         }

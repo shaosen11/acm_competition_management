@@ -65,3 +65,14 @@ export function getByNoticeId(noticeId) {
         }
     })
 }
+
+//获取公告内容
+export function deleteByNoticeId(noticeId) {
+    return request({
+        url: '/notice/delete',
+        method: 'post',
+        data: {
+            noticeId
+        }
+    })
+}

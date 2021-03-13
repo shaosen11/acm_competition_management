@@ -35,6 +35,14 @@ const routers = [
                 }
             },
             {
+                path: 'activityUserRelationAnalysis',
+                name: 'activityUserRelationAnalysis',
+                meta: {title: '报名数据分析', requireLogin: true, requireClub: true},
+                components: {
+                    club: () => import('@/views/club/ActivityUserRelationAnalysis')
+                }
+            },
+            {
                 path: 'applyList',
                 name: 'applyList',
                 meta: {title: '申请列表', requireLogin: true},

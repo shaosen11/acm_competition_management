@@ -66,6 +66,12 @@
                                 size="mini"
                                 round>修改
                         </el-button>
+                        <el-button
+                                @click="deleteNotice(scope.row.noticeId)"
+                                type="danger"
+                                size="mini"
+                                round>删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -87,7 +93,7 @@
 </template>
 
 <script>
-    import {listNoticePage, updateNotice} from '@/network/api/notice';
+    import {listNoticePage, updateNotice, deleteByNoticeId} from '@/network/api/notice';
 
     export default {
         name: "Notice",
@@ -177,6 +183,15 @@
                     query: {noticeId}
                 })
             },
+            //删除公告
+            deleteNotice(noticeId){
+                deleteByNoticeId(noticeId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.getList()
+                })
+            }
         }
     }
 </script>
