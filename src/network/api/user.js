@@ -65,7 +65,8 @@ export function updateUserInfo(user) {
             enableFlag: user.enableFlag,
             githubLink: user.githubLink,
             giteeLink: user.giteeLink,
-            csdnLink: user.csdnLink
+            csdnLink: user.csdnLink,
+            clubFlag: user.clubFlag
         }
     })
 }

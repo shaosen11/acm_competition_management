@@ -108,6 +108,7 @@
                         <div v-if="scope.row.clubFlag==1">
                             <el-button
                                     size="mini"
+                                    @click="setAdmin(scope.row.userId)"
                                     round>设为管理员
                             </el-button>
                         </div>
@@ -115,6 +116,7 @@
                             <el-button
                                     size="mini"
                                     type="primary"
+                                    @click="setCommon(scope.row.userId)"
                                     round>设为普通用户
                             </el-button>
                         </div>
@@ -139,7 +141,7 @@
 </template>
 
 <script>
-    import {listClubUser} from '@/network/api/user';
+    import {listClubUser, updateUserInfo} from '@/network/api/user';
     import {getOrganizationYearList} from '@/network/api/organization';
 
     export default {
@@ -259,6 +261,28 @@
                 this.userQuery.clubFlag = '';
                 this.getList();
             },
+            setAdmin(userId){
+                const user= {
+                    userId: userId,
+                    clubFlag: 2
+                }
+                this.updateUser(user);
+            },
+            setCommon(userId){
+                const user= {
+                    userId: userId,
+                    clubFlag: 1
+                }
+                this.updateUser(user);
+            },
+            updateUser(user){
+                updateUserInfo(user).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.getList()
+                })
+            }
         }
     }
 </script>

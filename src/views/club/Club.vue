@@ -16,7 +16,7 @@
                     <el-dropdown-item @click.native="toClubIndex" v-if="this.$store.state.club.clubFlag==2">
                         管理页面
                     </el-dropdown-item>
-                    <el-dropdown-item @click.native="applyJoinClue">
+                    <el-dropdown-item @click.native="applyJoinClue" v-if="this.$store.state.club.clubFlag==''||this.$store.state.club.clubFlag==null">
                         申请加入
                     </el-dropdown-item>
                     <el-dropdown-item @click.native="outClub"
