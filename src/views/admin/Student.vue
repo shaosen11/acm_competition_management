@@ -158,7 +158,6 @@ export default {
     },
     data() {
         return {
-            //队伍查询条件
             userQuery: {
                 userId: null,
                 name: null,
@@ -271,7 +270,7 @@ export default {
 </script>
 
 <style scoped>
-.table-container, .pagination-container {
-    margin: 15px auto;
-}
+    .table-container, .pagination-container {
+        margin: 15px auto;
+    }
 </style>

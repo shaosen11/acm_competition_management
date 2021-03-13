@@ -43,6 +43,14 @@ const routers = [
                 }
             },
             {
+                path: 'clubUser',
+                name: 'clubUser',
+                meta: {title: '会员列表', requireLogin: true, requireClub: true},
+                components: {
+                    club: () => import('@/views/club/ClubUser')
+                }
+            },
+            {
                 path: 'applyList',
                 name: 'applyList',
                 meta: {title: '申请列表', requireLogin: true},

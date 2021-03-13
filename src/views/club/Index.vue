@@ -16,7 +16,11 @@
                         <i class="iconfont el-icon-third-create"></i>
                         <span slot="title">创建活动</span>
                     </el-menu-item>
-                    <el-menu-item index="4" @click="toApplyList">
+                    <el-menu-item index="4" @click="toClubUser">
+                        <i class="iconfont el-icon-third-usergorup"></i>
+                        <span slot="title">会员列表</span>
+                    </el-menu-item>
+                    <el-menu-item index="5" @click="toApplyList">
                         <i class="iconfont el-icon-third-setting"></i>
                         <span slot="title">审批加入</span>
                     </el-menu-item>
@@ -45,6 +49,9 @@
             },
             toApplyList(){
                 this.$router.push('/club/applyList')
+            },
+            toClubUser(){
+                this.$router.push('/club/clubUser')
             },
             toCreateActivity() {
                 this.$router.push("/club/createActivity")

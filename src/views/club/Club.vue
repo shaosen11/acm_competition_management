@@ -13,7 +13,7 @@
                             操作<i class="el-icon-arrow-down el-icon--right"></i>
                           </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item @click.native="toClubIndex">
+                    <el-dropdown-item @click.native="toClubIndex" v-if="this.$store.state.club.clubFlag==2">
                         管理页面
                     </el-dropdown-item>
                     <el-dropdown-item @click.native="applyJoinClue">

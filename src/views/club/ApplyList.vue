@@ -35,7 +35,7 @@
                 </el-table-column>
                 <el-table-column
                         prop="time"
-                        label="学号"
+                        label="申请时间"
                         width="200"
                         align="center">
                 </el-table-column>
