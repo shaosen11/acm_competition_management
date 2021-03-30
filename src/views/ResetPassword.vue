@@ -127,6 +127,6 @@ export default {
 .box-card {
     width: 480px;
     margin: auto;
-    transform: translateY(100%);
+    transform: translateY(75%);
 }
 </style>

@@ -10,7 +10,6 @@
                     <span class="title" @click="toNoticeInfo(item.noticeId)">
                          <i class="iconfont el-icon-third-notification" style="margin-right: 5px"></i>{{ item.name }}
                     </span>
-<!--                    <p class="content markdown-body" v-dompurify-html="item.content"></p>-->
                     <div class="data">
                         <i class="iconfont el-icon-third-time-circle" style="margin-right: 5px"></i>
                         <span>编辑于 </span>

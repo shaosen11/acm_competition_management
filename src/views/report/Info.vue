@@ -13,6 +13,11 @@
                             <el-form-item label="名称" prop="problemName">
                                 <span>{{report.problemName}}</span>
                             </el-form-item>
+                            <el-form-item label="网址" prop="problemLink">
+                                <el-link type="primary" :underline="false">
+                                    <span @click="toUrl(report.problemLink)">{{report.problemLink|ellipsis}}</span>
+                                </el-link>
+                            </el-form-item>
                             <el-form-item label="OJ" prop="ojId">
                                 <el-select
                                         v-model="report.ojId"
@@ -25,11 +30,6 @@
                                             :value="item.value">
                                     </el-option>
                                 </el-select>
-                            </el-form-item>
-                            <el-form-item label="网址" prop="problemLink">
-                                <el-link type="primary" :underline="false">
-                                    <span @click="toUrl(report.problemLink)">{{report.problemLink|ellipsis}}</span>
-                                </el-link>
                             </el-form-item>
                             <el-form-item label="题型" prop="ojId">
                                 <div class="block">
