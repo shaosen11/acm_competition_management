@@ -50,7 +50,7 @@
                     <el-card>
                         <h2>{{ this.report.name }}</h2>
                         <span>
-                            <i class="iconfont el-icon-third-time-circle"></i>
+                            <i class="iconfont el-icon-third-edit" style="margin-right: 5px"/>
                             <span>编辑于 </span>
                             {{ this.report.time }}
                             <el-divider direction="vertical"></el-divider>

@@ -37,6 +37,7 @@ export function updateOnlineJudgeSystem(onlineJudgeSystem) {
         }
     })
 }
+
 //创建OJ
 export function createOnlineJudgeSystem(onlineJudgeSystem) {
     return request({
@@ -47,6 +48,18 @@ export function createOnlineJudgeSystem(onlineJudgeSystem) {
             description: onlineJudgeSystem.description,
             showFlag: onlineJudgeSystem.showFlag,
             url: onlineJudgeSystem.url,
+            userId: onlineJudgeSystem.userId,
+        }
+    })
+}
+
+//删除OJ
+export function deleteOnlineJudgeSystem(onlineJudgeSystem) {
+    return request({
+        url: '/onlineJudgeSystem/delete',
+        method: 'post',
+        data: {
+            id: onlineJudgeSystem.id,
             userId: onlineJudgeSystem.userId,
         }
     })

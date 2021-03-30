@@ -34,6 +34,7 @@
                             <el-tag v-if="item.garbageFlag==1" type="danger" style="margin-left: 10px">回收站</el-tag>
                         </div>
                         <div class="data">
+                            <i class="iconfont el-icon-third-edit"/>
                             {{ item.time }}
                             <el-divider direction="vertical"></el-divider>
                             <span style="margin-left: 10px">
