@@ -58,13 +58,19 @@
                 <el-table-column
                         prop="name"
                         label="队伍名称"
-                        width="250"
+                        width="200"
                         align="center">
                     <template slot-scope="scope">
                         <el-link type="primary" @click="toTeamInfo(scope.row.name)" :underline="false">
                             <span>{{ scope.row.name }}</span>
                         </el-link>
                     </template>
+                </el-table-column>
+                <el-table-column
+                    prop="englishName"
+                    label="英文名称"
+                    width="200"
+                    align="center">
                 </el-table-column>
                 <el-table-column
                         prop="userName"
@@ -80,27 +86,21 @@
                 <el-table-column
                         prop="motto"
                         label="座右铭"
-                        width="250"
+                        width="200"
                         align="center">
                 </el-table-column>
                 <el-table-column
                         prop="userCount"
                         label="当前人数"
-                        width="200"
+                        width="150"
                         align="center">
                 </el-table-column>
                 <el-table-column
                         prop="operation"
                         label="操作"
-                        width="300"
+                        width="200"
                         align="center">
                     <template slot-scope="scope">
-                        <!--                        <el-button-->
-                        <!--                            v-if="judgeApplyTeam(scope.row)"-->
-                        <!--                            size="mini"-->
-                        <!--                            :disabled="judgeApplyTeam(scope.row)"-->
-                        <!--                            round>正在申请-->
-                        <!--                        </el-button>-->
                         <el-button
                                 size="mini"
                                 type="primary"

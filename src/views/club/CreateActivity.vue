@@ -41,7 +41,7 @@
                         </el-form-item>
                         <el-form-item>
                             <el-button
-                                    v-if="this.$route.query.activityId==''"
+                                    v-if="this.$route.query.activityId==null"
                                     type="primary"
                                     @click="create"
                                     :loading="this.isLoading"

@@ -296,6 +296,19 @@ export function listClubUser(userQuery) {
     })
 }
 
+//获取个人数据
+export function getUserDailyByTime(userDaily) {
+    return request({
+        url: '/userDaliy/getByTime',
+        method: 'post',
+        data: {
+            userId: userDaily.userId,
+            startTime: userDaily.startTime,
+            endTime: userDaily.endTime,
+        }
+    })
+}
+
 // //检查重置连接
 // export function getUserLoginLogByTime() {
 //     return request({

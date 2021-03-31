@@ -12,11 +12,15 @@
                         <i class="iconfont el-icon-third-setting"></i>
                         <span slot="title">个人设置</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="toStore">
+                    <el-menu-item index="3" @click="toUserDaily">
+                        <i class="iconfont el-icon-third-barchart"></i>
+                        <span slot="title">个人数据</span>
+                    </el-menu-item>
+                    <el-menu-item index="4" @click="toStore">
                         <i class="iconfont el-icon-third-heart"></i>
                         <span slot="title">个人收藏</span>
                     </el-menu-item>
-                    <el-menu-item index="4" @click="toPassword">
+                    <el-menu-item index="5" @click="toPassword">
                         <i class="iconfont el-icon-third-security"></i>
                         <span slot="title">安全设置</span>
                     </el-menu-item>
@@ -44,6 +48,9 @@ export default {
         //跳转个人设置
         toSetting() {
             this.$router.push('/user/setting');
+        },
+        toUserDaily() {
+            this.$router.push('/user/userDaily');
         },
         //跳转安全设置
         toPassword() {

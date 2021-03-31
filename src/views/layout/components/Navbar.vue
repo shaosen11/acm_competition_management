@@ -97,6 +97,9 @@
                         <el-dropdown-item icon="iconfont el-icon-third-setting" @click.native="toUserSetting">
                             个人设置
                         </el-dropdown-item>
+                        <el-dropdown-item icon="iconfont el-icon-third-barchart" @click.native="toUserDaily">
+                            个人数据
+                        </el-dropdown-item>
                         <el-dropdown-item icon="iconfont el-icon-third-heart" @click.native="toUserStore">
                             个人收藏
                         </el-dropdown-item>
@@ -211,6 +214,9 @@
             },
             toUserSetting() {
                 this.$router.push('/user/setting')
+            },
+            toUserDaily() {
+                this.$router.push('/user/userDaily');
             },
             toUserStore() {
                 this.$router.push('/user/store');

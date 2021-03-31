@@ -37,6 +37,14 @@ const routers = [
                 }
             },
             {
+                path: 'userDaily',
+                name: 'userDaily',
+                meta: {title: '数据中心', requireLogin: true},
+                components: {
+                    user: () => import('@/views/user/UserDaily')
+                }
+            },
+            {
                 path: 'createStore',
                 name: 'createStore',
                 meta: {title: '创建收藏夹', requireLogin: true},

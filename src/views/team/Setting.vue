@@ -11,7 +11,7 @@
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item
                                 @click.native="deleteTeamDialogVisible = true"
-                                v-if="this.form.userId == this.$store.state.user.userId">解散队伍
+                                v-if="this.team.userId == this.$store.state.user.userId">解散队伍
                             </el-dropdown-item>
                             <el-dropdown-item
                                 v-else
@@ -24,18 +24,29 @@
             <el-row>
                 <el-col :span="10">
                     <el-form
-                        :model="form"
+                        ref="teamForm"
+                        :rules="rules"
+                        :model="newTeam"
                         label-width="80px"
                         v-loading="isLoading"
                         element-loading-text="努力加载中...">
-                        <el-form-item label="队伍名称">
-                            <el-input v-model="form.teamName" :disabled="true"></el-input>
+                        <el-form-item label="队伍名称" prop="name">
+                            <el-input
+                                v-model="newTeam.name"
+                                placeholder="队伍名称"
+                                autocomplete="off"/>
+                        </el-form-item>
+                        <el-form-item label="英文名称" prop="englishName">
+                            <el-input
+                                v-model="newTeam.englishName"
+                                placeholder="英文名称"
+                                autocomplete="off"/>
                         </el-form-item>
                         <el-form-item label="队长">
-                            <el-input v-model="form.userName" :disabled="true"></el-input>
+                            <el-input v-model="newTeam.userName" :disabled="true"></el-input>
                         </el-form-item>
                         <el-form-item label="座右铭">
-                            <el-input v-model="form.teamMotto"></el-input>
+                            <el-input v-model="newTeam.motto"></el-input>
                         </el-form-item>
                         <el-form-item>
                             <el-button
@@ -84,19 +95,46 @@
 </template>
 
 <script>
-import {deleteTeam, getTeamByName, outTeam, updateTeam} from "@/network/api/team";
+import {deleteTeam, getTeamByName, getTeamByEnglishName, outTeam, updateTeam} from "@/network/api/team";
 
 export default {
     name: "Setting",
     data() {
+        const validateName = (rule, value, callback) => {
+            this.validateName(this.newTeam.name).then(res => {
+                if (res) {
+                    callback(new Error('名称已存在!'))
+                } else {
+                    callback()
+                }
+            })
+        };
+        const validateEnglishName = (rule, value, callback) => {
+            this.validateEnglishName(this.newTeam.englishName).then(res => {
+                if (res) {
+                    callback(new Error('英文名称已存在!'))
+                } else {
+                    callback()
+                }
+            })
+        };
         return {
             //表单数据
-            form: {
+            team: {
                 teamId: '',
-                teamName: '',
+                name: '',
+                englishName: '',
                 userId: '',
                 userName: '',
-                teamMotto: ''
+                motto: ''
+            },
+            newTeam: {
+                teamId: '',
+                name: '',
+                englishName: '',
+                userId: '',
+                userName: '',
+                motto: ''
             },
             // 是否正在加载
             isLoading: false,
@@ -106,6 +144,17 @@ export default {
             outTeamDialogButtonLoading: false,
             deleteTeamDialogVisible: false,
             deleteTeamDialogButtonLoading: false,
+            /*校验规则*/
+            rules: {
+                name: [
+                    {required: true, message: '请输入队伍名称', trigger: 'blur'},
+                    {required: true, validator: validateName, trigger: 'blur'},
+                ],
+                englishName: [
+                    {required: true, message: '请输入英文名称', trigger: 'blur'},
+                    {required: true, validator: validateEnglishName, trigger: 'blur'},
+                ],
+            }
         }
     },
     created() {
@@ -124,32 +173,37 @@ export default {
                     this.isLoading = false
                     return this.$message.error(res.message);
                 }
-                this.form.teamId = res.data.teamId;
-                this.form.teamName = res.data.name;
-                this.form.userId = res.data.userId;
-                this.form.userName = res.data.userName;
-                this.form.teamMotto = res.data.motto;
+                this.team = res.data;
+                this.newTeam = JSON.parse(JSON.stringify(this.team));
                 this.isLoading = false
             })
         },
         //修改队伍信息
         updateTeamInfo() {
             this.updateTeamInfoButtonLoading = true
-            const team = {
-                teamId: this.form.teamId,
-                name: this.form.teamName,
-                userName: this.form.userName,
-                motto: this.form.teamMotto
-            };
-            updateTeam(team).then(res => {
-                if (res.code != 200) {
+            this.$refs.teamForm.validate(async (valid) => {
+                if (!valid) {
                     this.updateTeamInfoButtonLoading = false;
-                    return this.$message.error(res.message);
+                    return this.$message.error("修改失败");
+                }
+                const res = await updateTeam(this.newTeam);
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return this.updateTeamInfoButtonLoading = false;
                 }
                 this.$message.success(res.message);
                 this.updateTeamInfoButtonLoading = false;
-                this.init();
+                this.getTeamByName();
             })
+            // updateTeam(this.team).then(res => {
+            //     if (res.code != 200) {
+            //         this.updateTeamInfoButtonLoading = false;
+            //         return this.$message.error(res.message);
+            //     }
+            //     this.$message.success(res.message);
+            //     this.updateTeamInfoButtonLoading = false;
+            //     this.getTeamByName();
+            // })
         },
         //退出队伍
         outTeam() {
@@ -202,6 +256,37 @@ export default {
                 })
                 .catch(_ => {
                 });
+        },
+        //异步验证用户邮箱
+        async validateName(name) {
+            return await getTeamByName(name).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                if (res.data != null && res.data.teamId != null) {
+                    if (res.data.name == this.team.name) {
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
+            })
+        },
+        async validateEnglishName(englishName) {
+            return await getTeamByEnglishName(englishName).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                if (res.data != null && res.data.teamId != null) {
+                    if (res.data.englishName == this.team.englishName) {
+                        return false;
+                    }
+                    return true;
+                }
+                return false;
+            })
         },
     }
 }

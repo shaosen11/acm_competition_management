@@ -87,3 +87,11 @@ export function importEsReportAll() {
         data: {}
     })
 }
+
+//博客索引导入
+export function beforeSearch() {
+    return request({
+        url: '/esAll/beforeSearch',
+        method: 'get',
+    })
+}

@@ -11,19 +11,19 @@
                     <el-input
                         v-model="form.userId"
                         placeholder="请输入账号"
-                        autocomplete="off"></el-input>
+                        autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
                     <el-input
                         v-model="form.name"
                         placeholder="请输入用户名"
-                        autocomplete="off"></el-input>
+                        autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
                     <el-input
                         v-model="form.email"
                         placeholder="请输入邮箱"
-                        autocomplete="off"></el-input>
+                        autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                     <el-input

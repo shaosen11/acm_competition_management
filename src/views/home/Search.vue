@@ -95,7 +95,7 @@
 
 <script>
     import {listBlogHot} from '@/network/api/blog'
-    import {searchEsAll, searchHitEsAll} from '@/network/api/es'
+    import {searchEsAll, searchHitEsAll, beforeSearch} from '@/network/api/es'
 
     const defaultEsBlogQueryParam = {
         keyword: '',
@@ -133,6 +133,7 @@
         },
         created() {
             this.init();
+            this.beforeSearch();
         },
         methods: {
             //初始化方法
@@ -144,6 +145,13 @@
                 this.getList()
                 this.getBlogHotList()
                 loading.close()
+            },
+            beforeSearch(){
+                beforeSearch().then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error("系统出bug了，请重新刷新");
+                    }
+                })
             },
             //获取表单信息
             getList() {

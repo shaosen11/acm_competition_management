@@ -228,7 +228,7 @@ export default {
                 title: '操作提示',
                 message: h('i', {style: 'color: teal'}, '当点击保存之后，等待系统重新跳转至本页面，请勿重新点击'),
                 offset: 50,
-                duration: 5000
+                duration: 3000
             });
             this.$notify.info({
                 title: '操作提示',

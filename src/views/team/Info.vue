@@ -24,8 +24,11 @@
                         <!--个人信息-->
                         <el-row :gutter="10" type="flex" justify="center">
                             <el-col :span="20">
-                                <el-form-item label="名称">
+                                <el-form-item label="队伍名称">
                                     <span>{{ this.team.name }}</span>
+                                </el-form-item>
+                                <el-form-item label="英文名称">
+                                    <span>{{ this.team.englishName }}</span>
                                 </el-form-item>
                                 <el-form-item label="队长">
                                     <span>{{ this.team.userName }}</span>
@@ -35,8 +38,6 @@
                                 </el-form-item>
                             </el-col>
                         </el-row>
-
-
                         <!--队伍信息-->
                         <el-row type="flex" justify="center">
                             <el-col :span="20">

@@ -7,10 +7,10 @@
                     <el-menu-item index="1" @click="toInfo">
                         <span slot="title">队伍首页</span>
                     </el-menu-item>
-                    <el-menu-item index="1" @click="toSetting">
+                    <el-menu-item index="2" @click="toSetting">
                         <span slot="title">队伍设置</span>
                     </el-menu-item>
-                    <el-menu-item index="2" @click="toApplyList">
+                    <el-menu-item index="3" @click="toApplyList">
                         <span slot="title">申请列表</span>
                     </el-menu-item>
                 </el-menu>
