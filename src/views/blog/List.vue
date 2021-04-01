@@ -7,7 +7,8 @@
         </el-breadcrumb>
         <el-row :gutter="10" style="margin-top: 30px">
             <el-col :span="6">
-                <UserInfo :user-ext="this.userExt"/>
+                <UserInfo :user-ext="userExt"
+                          :follow-show-flag="followShowFlag"/>
                 <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
             </el-col>
             <el-col :span="18">
@@ -144,7 +145,8 @@
                 //是否分页隐藏
                 isHide: true,
                 userExt: {},
-                blogHotList: []
+                blogHotList: [],
+                followShowFlag: false
             }
         },
         created() {

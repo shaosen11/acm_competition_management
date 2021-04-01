@@ -30,11 +30,17 @@
                         <span>题目信息</span>
                     </div>
                     <el-form ref="registerForm" :model="report" label-width="50px">
-                        <el-form-item label="名称" prop="problemName">
+                        <el-form-item label="原文" prop="link">
+                            <el-input
+                                v-model="report.link"
+                                placeholder="可输入原文地址"
+                                autocomplete="off"/>
+                        </el-form-item>
+                        <el-form-item label="题目" prop="problemName">
                             <el-input
                                 v-model="report.problemName"
                                 placeholder="请输入题目名称"
-                                autocomplete="off"></el-input>
+                                autocomplete="off"/>
                         </el-form-item>
                         <el-form-item label="OJ" prop="ojId">
                             <el-select

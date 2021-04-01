@@ -29,17 +29,25 @@ const routers = [
                 }
             },
             {
-                path: 'store',
-                name: 'store',
+                path: 'userStore',
+                name: 'userStore',
                 meta: {title: '个人收藏', requireLogin: true},
                 components: {
-                    user: () => import('@/views/user/Store')
+                    user: () => import('@/views/user/UserStore')
+                }
+            },
+            {
+                path: 'userFollow',
+                name: 'userFollow',
+                meta: {title: '个人关注', requireLogin: true},
+                components: {
+                    user: () => import('@/views/user/UserFollow')
                 }
             },
             {
                 path: 'userDaily',
                 name: 'userDaily',
-                meta: {title: '数据中心', requireLogin: true},
+                meta: {title: '个人数据统计', requireLogin: true},
                 components: {
                     user: () => import('@/views/user/UserDaily')
                 }

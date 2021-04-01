@@ -299,7 +299,7 @@ export function listClubUser(userQuery) {
 //获取个人数据
 export function getUserDailyByTime(userDaily) {
     return request({
-        url: '/userDaliy/getByTime',
+        url: '/userDaily/getByTime',
         method: 'post',
         data: {
             userId: userDaily.userId,
@@ -308,6 +308,57 @@ export function getUserDailyByTime(userDaily) {
         }
     })
 }
+
+
+//关注
+export function follow(userFollow) {
+    return request({
+        url: '/userFollow/follow',
+        method: 'post',
+        data: {
+            userId: userFollow.userId,
+            followUserId: userFollow.followUserId,
+        }
+    })
+}
+
+//取消关注
+export function cancelFollow(userFollow) {
+    return request({
+        url: '/userFollow/cancelFollow',
+        method: 'post',
+        data: {
+            userId: userFollow.userId,
+            followUserId: userFollow.followUserId,
+        }
+    })
+}
+
+//查询关注
+export function getByUserIdAndFollowUserId(userFollow) {
+    return request({
+        url: '/userFollow/getByUserIdAndFollowUserId',
+        method: 'post',
+        data: {
+            userId: userFollow.userId,
+            followUserId: userFollow.followUserId,
+        }
+    })
+}
+
+//查询关注
+export function listFollowUserPage(userQuery) {
+    return request({
+        url: '/userFollow/listFollowUserPage',
+        method: 'post',
+        data: {
+            userId: userQuery.userId,
+            pageNum: userQuery.pageNum,
+            pageSize: userQuery.pageSize,
+        }
+    })
+}
+
 
 // //检查重置连接
 // export function getUserLoginLogByTime() {

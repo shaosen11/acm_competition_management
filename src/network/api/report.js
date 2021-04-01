@@ -109,6 +109,7 @@ export function saveReport(report) {
             resultPictureMd: report.resultPictureMd,
             resultComment: report.resultComment,
             resultCommentMd: report.resultCommentMd,
+            link: report.link
         }
     })
 }
@@ -158,6 +159,7 @@ export function releaseReport(report) {
             resultPictureMd: report.resultPictureMd,
             resultComment: report.resultComment,
             resultCommentMd: report.resultCommentMd,
+            link: report.link
         }
     })
 }

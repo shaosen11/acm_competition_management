@@ -5,23 +5,27 @@
                 <el-menu
                     class="el-menu-vertical-demo">
                     <el-menu-item index="1" @click="toUserInfo">
-                        <i class="iconfont el-icon-third-user"></i>
+                        <i class="iconfont el-icon-third-user"/>
                         <span slot="title">个人中心</span>
                     </el-menu-item>
                     <el-menu-item index="2" @click="toSetting">
-                        <i class="iconfont el-icon-third-setting"></i>
+                        <i class="iconfont el-icon-third-setting"/>
                         <span slot="title">个人设置</span>
                     </el-menu-item>
                     <el-menu-item index="3" @click="toUserDaily">
-                        <i class="iconfont el-icon-third-barchart"></i>
+                        <i class="iconfont el-icon-third-barchart"/>
                         <span slot="title">个人数据</span>
                     </el-menu-item>
-                    <el-menu-item index="4" @click="toStore">
-                        <i class="iconfont el-icon-third-heart"></i>
+                    <el-menu-item index="4" @click="toUserStore">
+                        <i class="iconfont el-icon-third-follow"/>
                         <span slot="title">个人收藏</span>
                     </el-menu-item>
-                    <el-menu-item index="5" @click="toPassword">
-                        <i class="iconfont el-icon-third-security"></i>
+                    <el-menu-item index="5" @click="toUserFollow">
+                        <i class="iconfont el-icon-third-heart"/>
+                        <span slot="title">个人关注</span>
+                    </el-menu-item>
+                    <el-menu-item index="6" @click="toPassword">
+                        <i class="iconfont el-icon-third-security"/>
                         <span slot="title">安全设置</span>
                     </el-menu-item>
                 </el-menu>
@@ -57,8 +61,12 @@ export default {
             this.$router.push('/user/password');
         },
         //跳转个人收藏
-        toStore() {
-            this.$router.push('/user/store');
+        toUserStore() {
+            this.$router.push('/user/userStore');
+        },
+        //跳转个人关注
+        toUserFollow() {
+            this.$router.push('/user/userFollow');
         }
     }
 }

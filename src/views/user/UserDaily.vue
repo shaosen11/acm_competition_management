@@ -4,6 +4,54 @@
             <div slot="header" class="clearfix">
                 <span>个人数据统计</span>
             </div>
+            <el-row :gutter="20" style="margin: 10px auto">
+                <el-col :span="6">
+                    <el-card shadow="hover">
+                        <h2>
+                            <i class="iconfont el-icon-third-file-text" style="font-size: 20px"/>
+                            {{ this.userExt.reportCounter }}
+                        </h2>
+                    </el-card>
+                </el-col>
+                <el-col :span="6">
+                    <el-card shadow="hover">
+                        <h2>
+                            <i class="iconfont el-icon-third-blog" style="font-size: 20px"/>
+                            {{ this.userExt.blogCounter }}
+                        </h2>
+                    </el-card>
+                </el-col>
+                <el-col :span="12">
+                    <el-card shadow="hover" style="margin: 3px auto">
+                        <el-row :gutter="20">
+                            <el-col :span="6">
+                                <h4>
+                                    <i class="iconfont el-icon-third-follow"/>
+                                    {{ this.userExt.followCounter }}
+                                </h4>
+                            </el-col>
+                            <el-col :span="6">
+                                <h4>
+                                    <i class="iconfont el-icon-third-eye"/>
+                                    {{ this.userExt.visitCounter }}
+                                </h4>
+                            </el-col>
+                            <el-col :span="6">
+                                <h4>
+                                    <i class="iconfont el-icon-third-like"/>
+                                    {{ this.userExt.clickCounter }}
+                                </h4>
+                            </el-col>
+                            <el-col :span="6">
+                                <h4>
+                                    <i class="iconfont el-icon-third-heart"/>
+                                    {{ this.userExt.storeCounter }}
+                                </h4>
+                            </el-col>
+                        </el-row>
+                    </el-card>
+                </el-col>
+            </el-row>
             <div style="text-align:center; margin-bottom: 10px">
                 <el-date-picker
                     v-model="time"
@@ -18,12 +66,61 @@
                 </el-date-picker>
             </div>
             <ve-line :data="lineData"/>
+            <el-table
+                v-loading="listLoading"
+                element-loading-text="努力加载中..."
+                :data="tableData"
+                stripe
+                style="width: 100%">
+                <el-table-column
+                    prop="time"
+                    label="日期"
+                    width="150"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="reportCount"
+                    label="报告数量"
+                    width="150"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="blogCount"
+                    label="博客数量"
+                    width="150"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="follow"
+                    label="关注数量"
+                    width="150"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="visit"
+                    label="浏览数量"
+                    width="150"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="click"
+                    label="点赞数量"
+                    width="150"
+                    align="center">
+                </el-table-column>
+                <el-table-column
+                    prop="store"
+                    label="收藏数量"
+                    width="150"
+                    align="center">
+                </el-table-column>
+            </el-table>
         </el-card>
     </div>
 </template>
 
 <script>
-import {getUserDailyByTime} from '@/network/api/user'
+import {getUserDailyByTime, getUserExtByUserId} from '@/network/api/user'
 
 export default {
     name: "UserDaily",
@@ -36,6 +133,12 @@ export default {
             time: [],
             startTime: {},
             endTime: {},
+            userExt: {},
+            //队伍查询条件
+            //表单信息
+            tableData: [],
+            //是否正在加载
+            listLoading: false,
             pickerOptions: {
                 shortcuts: [{
                     text: '最近一周',
@@ -63,6 +166,7 @@ export default {
     methods: {
         init() {
             this.getUserDailyByTime(null);
+            this.getUserExtByUserId(this.$store.state.user.userId)
             this.tipNotify();
         },
         tipNotify() {
@@ -77,7 +181,7 @@ export default {
         getUserDailyByTime(time) {
             if (time == null) {
                 const start = new Date();
-                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 6);
                 this.startTime = start;
                 const end = new Date();
                 this.endTime = end;
@@ -98,8 +202,10 @@ export default {
                 if (res.code != 200) {
                     return this.$message.error(res.message);
                 }
+                this.tableData = []
                 this.lineData.rows = [];
                 for (let i = 0; i < res.data.length; i++) {
+                    this.tableData.push(res.data[res.data.length - i -1])
                     this.lineData.rows.push(
                         {
                             "日期": res.data[i].time,
@@ -117,13 +223,23 @@ export default {
         update() {
             this.getUserDailyByTime(this.time)
         },
+        //获取用户扩展信息
+        getUserExtByUserId(userId) {
+            getUserExtByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.userExt = res.data
+            })
+        },
     }
 }
 </script>
 
 <style scoped>
 .box-card {
-    width: 1000px;
+    width: 1100px;
     margin: auto;
 }
 </style>

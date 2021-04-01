@@ -7,7 +7,8 @@
         </el-breadcrumb>
         <el-row :gutter="10" style="margin-top: 30px">
             <el-col :span="6">
-                <UserInfo :user-ext="this.userExt"/>
+                <UserInfo :user-ext="this.userExt"
+                          :follow-show-flag="followShowFlag"/>
                 <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
             </el-col>
             <el-col :span="18">
@@ -102,7 +103,7 @@
 </template>
 
 <script>
-    import {getUserExtByUserId} from "@/network/api/user";
+    import {getUserExtByUserId,} from "@/network/api/user";
     import UserInfo from "@/component/UserStatisticsInfo";
     import HotReport from "@/component/HotReport";
     import {listReportPage, updateReport, deleteReport, getHotReportByUserId} from "@/network/api/report";
@@ -143,7 +144,8 @@
                 //是否分页隐藏
                 isHide: true,
                 userExt: {},
-                reportHotList: []
+                reportHotList: [],
+                followShowFlag: false
             }
         },
         created() {

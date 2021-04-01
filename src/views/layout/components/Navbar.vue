@@ -219,7 +219,7 @@
                 this.$router.push('/user/userDaily');
             },
             toUserStore() {
-                this.$router.push('/user/store');
+                this.$router.push('/user/userStore');
             },
             toAdmin() {
                 this.$router.push('/admin')

@@ -3,7 +3,12 @@
         <el-row :gutter="20" v-loading.fullscreen.lock="fullscreenLoading">
             <el-col :span="6">
                 <!--用户信息-->
-                <user-statistics-info :user-ext="this.userExt"></user-statistics-info>
+                <user-statistics-info
+                    :user-ext="userExt"
+                    :follow-flag="followFlag"
+                    :follow-show-flag="followShowFlag"
+                    @follow="follow"
+                    @cancelFollow="cancelFollow"/>
                 <individual-web-site :user-ext="this.userExt" style="margin-top: 10px"/>
                 <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
                 <hot-report :reportHotList="this.reportHotList" style="margin-top: 10px"/>
@@ -116,7 +121,7 @@
     import HotBlog from "@/component/HotBlog";
     import UserInfo from "@/component/UserInfo";
     import individualWebSite from "@/component/individualWebSite";
-    import {getUserExtByUserId} from '@/network/api/user';
+    import {cancelFollow, follow, getByUserIdAndFollowUserId, getUserExtByUserId} from '@/network/api/user';
     import {getOrganizationByUserId} from '@/network/api/organization';
     import {getTeamAllInfoByUserId} from "@/network/api/team";
     import {getHotReportByUserId, listReportPage} from '@/network/api/report'
@@ -160,6 +165,8 @@
                 listLoading: false,
                 //是否分页隐藏
                 isHide: true,
+                followFlag: false,
+                followShowFlag: true
             }
         },
         created() {
@@ -180,6 +187,8 @@
                 this.getHotReportByUserId(userId);
                 this.getHotBlogByUserId(userId);
                 this.getList();
+                this.getByUserIdAndFollowUserId();
+                this.initFollowFlag();
                 loading.close();
             },
 
@@ -341,6 +350,41 @@
                         year: this.organization.year,
                         name: this.organization.name
                     }
+                })
+            },
+            initFollowFlag(){
+                if (this.$store.state.user.userId==this.$route.query.userId){
+                    this.followShowFlag = false;
+                }
+            },
+            getByUserIdAndFollowUserId() {
+                const userFollow = {
+                    followUserId: this.$route.query.userId,
+                    userId: this.$store.state.user.userId,
+                }
+                getByUserIdAndFollowUserId(userFollow).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.followFlag = res.data
+                })
+            },
+            follow(userFollow) {
+                follow(userFollow).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.$message.success(res.message);
+                    this.followFlag = true
+                })
+            },
+            cancelFollow(userFollow) {
+                cancelFollow(userFollow).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.$message.success(res.message);
+                    this.followFlag = false
                 })
             },
         }
