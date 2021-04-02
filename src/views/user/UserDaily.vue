@@ -130,6 +130,10 @@ export default {
                 columns: ["日期", "点赞数量", "关注数量", "浏览数量", "收藏数量", "博客数量", "报告数量"],
                 rows: []
             },
+            chartSettings: {
+                min: [0],
+                max: [50]
+            },
             time: [],
             startTime: {},
             endTime: {},

@@ -359,6 +359,32 @@ export function listFollowUserPage(userQuery) {
     })
 }
 
+//查询关注
+export function listUserPage(userQuery) {
+    return request({
+        url: '/userFollow/listUserPage',
+        method: 'post',
+        data: {
+            userId: userQuery.userId,
+            pageNum: userQuery.pageNum,
+            pageSize: userQuery.pageSize,
+        }
+    })
+}
+
+
+//获取能力雷达图
+export function getUserRadarByUserId(userId) {
+    return request({
+        url: '/userRadar/getByUserId',
+        method: 'post',
+        data: {
+            userId
+        }
+    })
+}
+
+
 
 // //检查重置连接
 // export function getUserLoginLogByTime() {

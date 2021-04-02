@@ -28,7 +28,7 @@
         <h3>全部评论</h3>
         <div class="comment" v-for="item in comments">
             <div class="info">
-                <img class="avatar" :src="item.fromUserIcon" width="36" height="36"/>
+                <el-avatar :size="36" :src="item.fromUserIcon"></el-avatar>
                 <div class="right">
                     <div class="name">{{item.fromUserName}}</div>
                     <div class="date">{{item.time}}</div>

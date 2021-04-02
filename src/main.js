@@ -21,6 +21,11 @@ import VePie from 'v-charts/lib/pie';
 Vue.component(VePie.name, VePie);
 import VeLine from 'v-charts/lib/line.common'
 Vue.component(VeLine.name, VeLine)
+import VeRadar from 'v-charts/lib/radar.common'
+Vue.component(VeRadar.name, VeRadar)
+// 引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 
 

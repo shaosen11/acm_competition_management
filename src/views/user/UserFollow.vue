@@ -1,9 +1,10 @@
 <template>
     <div>
         <el-card class="box-card">
-            <div slot="header" class="clearfix">
-                <span>关注列表</span>
-            </div>
+            <el-tabs v-model="activeTab" @tab-click="handleClick">
+                <el-tab-pane label="关注我的" name="follow"/>
+                <el-tab-pane label="我关注的" name="user"/>
+            </el-tabs>
             <el-table
                 v-loading="listLoading"
                 element-loading-text="努力加载中..."
@@ -74,13 +75,12 @@
 </template>
 
 <script>
-import {listFollowUserPage} from "@/network/api/user";
+import {listFollowUserPage, listUserPage} from "@/network/api/user";
 
 export default {
     name: "UserFollow",
     data() {
         return {
-            //队伍查询条件
             userQuery: {
                 userId: this.$store.state.user.userId,
                 pageNum: 1,
@@ -94,6 +94,7 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
+            activeTab: 'follow'
         }
     },
     created() {
@@ -102,25 +103,57 @@ export default {
     methods: {
         //初始化方法
         init() {
-            this.getList();
+            this.getList()
+        },
+        getList() {
+            if (this.activeTab == 'follow') {
+                this.listFollowUserPage();
+            }
+            if (this.activeTab == 'user') {
+                this.listUserPage();
+            }
+        },
+        //切换tab
+        handleClick(tab) {
+            if (tab.name == 'follow') {
+                this.listFollowUserPage();
+            }
+            if (tab.name == 'user') {
+                this.listUserPage();
+            }
+        },
+        listUserPage() {
+            this.listLoading = true;
+            listUserPage(this.userQuery).then(res => {
+                this.listLoading = false;
+                if (res.code !== 200) {
+                    this.$message.error(res.message);
+                }
+                this.handleResult(res)
+            })
         },
         //获取表单信息
-        getList() {
+        listFollowUserPage() {
             this.listLoading = true;
             listFollowUserPage(this.userQuery).then(res => {
                 this.listLoading = false;
                 if (res.code !== 200) {
                     this.$message.error(res.message);
                 }
-                this.tableData = res.data.list;
-                this.total = res.data.total;
-                this.totalPage = res.data.totalPage;
-                this.userQuery.pageNum = res.data.pageNum;
-                this.userQuery.pageSize = res.data.pageSize;
-                if (this.total > this.userQuery.pageSize) {
-                    this.isHide = false;
-                }
+                this.handleResult(res)
             })
+        },
+        handleResult(res) {
+            this.tableData = res.data.list;
+            this.total = res.data.total;
+            this.userQuery.pageNum = res.data.pageNum;
+            this.userQuery.pageSize = res.data.pageSize;
+            if (this.total > this.pageSize) {
+                this.isHide = false;
+            } else {
+                this.isHide = true;
+            }
+            this.listLoading = false;
         },
         //处理页面大小变化
         handleSizeChange(val) {
@@ -169,5 +202,8 @@ export default {
 .box-card {
     width: 1000px;
     margin: auto;
+}
+.table-container, .pagination-container {
+    margin: 15px auto;
 }
 </style>
