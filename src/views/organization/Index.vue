@@ -127,15 +127,6 @@
                     this.organizationCheckFlag = true;
                 }
             },
-            //跳转申请列表
-            toApplicationList() {
-                this.$router.push({
-                    name: 'ApplicationList', query: {
-                        year: this.$route.query.year,
-                        name: this.$route.query.name
-                    }
-                });
-            },
         },
         filters: {
             ellipsis(value) {

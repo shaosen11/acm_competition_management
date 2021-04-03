@@ -12,10 +12,14 @@
                 <HotReport
                     :reportHotList="this.reportHotList"
                     style="margin-top: 10px"/>
-                <UserRadar
-                    :user-radar="userRadar"
-                    ref="userRadar"
-                    style="margin-top: 10px"/>
+                <el-card style="margin-top: 10px">
+                    能力图
+                    <div class="onePxDivider"></div>
+                    <UserRadar
+                            :user-radar="userRadar"
+                            ref="userRadar"/>
+                </el-card>
+
             </el-col>
             <el-col :span="18">
                 <el-card>
@@ -120,7 +124,7 @@ const defaultReportQuery = {
     showFlag: '',
     garbageFlag: '',
     pageNum: 1,
-    pageSize: 5,
+    pageSize: 10,
 };
 
 export default {
@@ -141,7 +145,7 @@ export default {
                 showFlag: '',
                 garbageFlag: '',
                 pageNum: 1,
-                pageSize: 5,
+                pageSize: 10,
             },
             //表单信息
             tableData: [],
@@ -154,19 +158,6 @@ export default {
             userExt: {},
             reportHotList: [],
             followShowFlag: false,
-            // userRadar: {
-            //     columns: [
-            //         "problemTypeOne",
-            //         "problemTypeTwo",
-            //         "problemTypeThree",
-            //         "problemTypeFour",
-            //         "problemTypeFive",
-            //         "problemTypeSix",
-            //         "problemTypeSeven",
-            //         "problemTypeEight",
-            //     ],
-            //     rows: [],
-            // },
             userRadar:[]
 
         }

@@ -114,7 +114,7 @@
         showFlag: '',
         garbageFlag: '',
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 10,
     };
 
     export default {
@@ -134,7 +134,7 @@
                     showFlag: '',
                     garbageFlag: '',
                     pageNum: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                 },
                 //表单信息
                 tableData: [],

@@ -2,10 +2,14 @@
     <div class="mini-app-container">
         <el-card class="table-container">
             <h2>{{this.notice.name}}</h2>
-            <span>
-                <i class="iconfont el-icon-third-time-circle"></i>
+            <div class="data">
+                <i class="iconfont el-icon-third-time-circle" style="margin-right: 5px"></i>
+                <span>编辑于 </span>
                 {{ this.notice.time }}
-            </span>
+                <el-divider direction="vertical"></el-divider>
+                <span>by </span>
+                {{ this.notice.userId }}
+            </div>
             <el-divider></el-divider>
             <div class="blog-content markdown-body" v-dompurify-html="this.notice.content"></div>
         </el-card>
@@ -42,4 +46,8 @@
 </script>
 
 <style scoped>
+    .data {
+        margin-top: 10px;
+        color: #909399;
+    }
 </style>

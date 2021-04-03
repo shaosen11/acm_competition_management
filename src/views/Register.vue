@@ -7,10 +7,10 @@
             <!--rules绑定date的rules-->
             <el-form ref="registerForm" :rules="rules" :model="form" label-width="80px">
                 <!--prop绑定rules的属性-->
-                <el-form-item label="账号" prop="userId">
+                <el-form-item label="学号" prop="userId">
                     <el-input
                         v-model="form.userId"
-                        placeholder="请输入账号"
+                        placeholder="请输入学号"
                         autocomplete="off"/>
                 </el-form-item>
                 <el-form-item label="姓名" prop="name">
@@ -75,7 +75,7 @@ export default {
         var validateUserId = (rule, value, callback) => {
             this.validateUserId(this.form.userId).then(res => {
                 if (res) {
-                    callback(new Error('账号已存在!'))
+                    callback(new Error('学号已存在!'))
                 } else {
                     callback()
                 }
@@ -103,7 +103,7 @@ export default {
             /*校验规则*/
             rules: {
                 userId: [
-                    {required: true, message: '请输入账号', trigger: 'blur'},
+                    {required: true, message: '请输入学号', trigger: 'blur'},
                     {min: 3, max: 16, message: '长度在3到16之间', trigger: 'blur'},
                     {required: true, validator: validateUserId, trigger: 'blur'},
                 ],
