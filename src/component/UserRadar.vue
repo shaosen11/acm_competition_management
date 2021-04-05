@@ -13,15 +13,9 @@
         mounted() {
             this.init()
         },
-        methods: {
-            init() {
-                this.myChartOne = echarts.init(this.$refs.userRadar)
-                this.myChartOne.setOption(this.options)
-            },
-        },
-        computed: {
-            options() {
-                let option = {
+        data() {
+            return {
+                options: {
                     radar: {
                         shape: 'circle',
                         name: {
@@ -85,21 +79,33 @@
                     series: [{
                         type: 'radar',
                         areaStyle: {normal: {}},
-                        data: [{
-                            value: this.userRadar,
-                            itemStyle: {
-                                normal: {
-                                    color: '#5B8FF9',
-                                },
-                            },
-                        }]
+                        data: []
                     }
                     ]
-                };
-                return option;
+                },
+                color:[
+                    '#5B8FF9', '#5AD8A6', '#5AD8A6'
+                ]
             }
-
-        }
+        },
+        methods: {
+            init() {
+                console.log(this.userRadar)
+                for (let i = 0; i < this.userRadar.length; i++) {
+                    const data = {
+                        value: this.userRadar[i],
+                        itemStyle: {
+                            normal: {
+                                color: this.color[i]
+                            }
+                        }
+                    }
+                    this.options.series[0].data.push(data)
+                }
+                this.myChartOne = echarts.init(this.$refs.userRadar)
+                this.myChartOne.setOption(this.options)
+            },
+        },
     }
 </script>
 

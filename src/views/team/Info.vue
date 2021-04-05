@@ -31,7 +31,7 @@
                                         :size="36"
                                         :src="user.icon"
                                         icon="el-icon-user-solid"/>
-                                <div class="name">{{ user.userName }}</div>
+                                <div class="name" @click="toUserInfo(user.userId)">{{ user.userName }}</div>
                                 <el-divider direction="vertical"></el-divider>
                                 <span class="organization" @click="toOrganizationInfo(user)">
                                     {{ user.year + user.organizationName|ellipsis }}
@@ -53,7 +53,6 @@
     import UserInfo from "@/component/UserInfo";
     import UserRadar from "@/component/UserRadar";
     import {getTeamAllInfoByTeamName} from "@/network/api/team";
-    import {getUserRadarByUserId} from "@/network/api/user";
 
     export default {
         name: "Info",
@@ -102,7 +101,7 @@
                     "problemTypeSeven",
                     "problemTypeEight",
                 ],
-                userRadar: [],
+                userRadar: [[],[],[]],
             }
         },
         created() {
@@ -138,31 +137,36 @@
                             this.users[i].problemTypeSeven,
                             this.users[i].problemTypeEight,
                         ]
-                        this.userRadar.push(rows);
+                        this.userRadar[i].push(rows);
                     }
                     this.isLoading = false;
                 })
             },
-            getUserRadarByUserId(userId) {
-                getUserRadarByUserId(userId).then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.userRadar.push({
-                        problemTypeOne: res.data.problemTypeOne,
-                        problemTypeTwo: res.data.problemTypeTwo,
-                        problemTypeThree: res.data.problemTypeThree,
-                        problemTypeFour: res.data.problemTypeFour,
-                        problemTypeFive: res.data.problemTypeFive,
-                        problemTypeSix: res.data.problemTypeSix,
-                        problemTypeSeven: res.data.problemTypeSeven,
-                        problemTypeEight: res.data.problemTypeEight,
-                    });
-                })
-            },
+            // getUserRadarByUserId(userId) {
+            //     getUserRadarByUserId(userId).then(res => {
+            //         if (res.code !== 200) {
+            //             return this.$message.error(res.message);
+            //         }
+            //         this.userRadar.push({
+            //             problemTypeOne: res.data.problemTypeOne,
+            //             problemTypeTwo: res.data.problemTypeTwo,
+            //             problemTypeThree: res.data.problemTypeThree,
+            //             problemTypeFour: res.data.problemTypeFour,
+            //             problemTypeFive: res.data.problemTypeFive,
+            //             problemTypeSix: res.data.problemTypeSix,
+            //             problemTypeSeven: res.data.problemTypeSeven,
+            //             problemTypeEight: res.data.problemTypeEight,
+            //         });
+            //     })
+            // },
             //跳转申请列表
             toSetting() {
                 this.$router.push('/team/setting');
+            },
+            toUserInfo(userId) {
+                if (userId != "") {
+                    this.$router.push({name: 'userInfo', query: {userId: userId}});
+                }
             },
             //跳转班级信息
             toOrganizationInfo(user) {
@@ -198,15 +202,15 @@
             font-weight: 500;
         }
 
-        .name:hover{
+        .name:hover {
             color: #409EFF;
         }
 
-        .organization{
+        .organization {
             font-size: 16px;
         }
 
-        .organization:hover{
+        .organization:hover {
             color: #409EFF;
         }
     }

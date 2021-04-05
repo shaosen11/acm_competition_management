@@ -37,7 +37,7 @@
         </el-col>
         <el-col :span="6">
             <el-card>
-                热门博客(24小时更新一次)
+                热门博客
                 <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
                     <el-row style="margin: 15px auto;">
                         <el-col :span="2">
@@ -74,7 +74,7 @@
                 //队伍查询条件
                 noticeQuery: {
                     pageNum: 1,
-                    pageSize: 5,
+                    pageSize: 10,
                 },
                 //表单信息
                 tableData: [],

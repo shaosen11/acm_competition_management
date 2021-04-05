@@ -332,7 +332,7 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-                this.userRadar.push(
+                const rows = [
                     res.data.problemTypeOne,
                     res.data.problemTypeTwo,
                     res.data.problemTypeThree,
@@ -341,7 +341,8 @@ export default {
                     res.data.problemTypeSix,
                     res.data.problemTypeSeven,
                     res.data.problemTypeEight,
-                );
+                ]
+                this.userRadar.push(rows);
                 this.$refs.userRadar.init();
             })
         }

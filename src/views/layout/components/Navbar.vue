@@ -22,7 +22,7 @@
                 比赛题型
             </el-menu-item>
         </el-submenu>
-        <el-submenu index="3" @click="toReport">
+        <el-submenu index="3">
             <template slot="title">
                 <i class="iconfont el-icon-third-file-text"></i>
                 解题报告
@@ -56,13 +56,13 @@
                     @click="toMyTeam"
                     v-if="this.teamFlag">我的队伍
             </el-menu-item>
+            <el-menu-item index="5-2" @click="toTeamList">队伍列表</el-menu-item>
             <el-menu-item
                     v-if="!this.teamFlag"
-                    index="5-2"
+                    index="5-3"
                     @click="toCreateTeam"
                     v-else>创建队伍
             </el-menu-item>
-            <el-menu-item index="5-3" @click="toTeamList">队伍列表</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
             <template slot="title">

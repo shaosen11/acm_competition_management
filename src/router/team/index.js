@@ -3,7 +3,7 @@ const routers = [
         path: '/teamInfo',
         name: 'teamInfo',
         component: () => import('@/views/team/Info'),
-        meta: {title: '我的队伍', requireLogin: true}
+        meta: {title: '我的队伍'}
     },
     {
         path: '/teamList',
