@@ -332,17 +332,8 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-                const rows = [
-                    res.data.problemTypeOne,
-                    res.data.problemTypeTwo,
-                    res.data.problemTypeThree,
-                    res.data.problemTypeFour,
-                    res.data.problemTypeFive,
-                    res.data.problemTypeSix,
-                    res.data.problemTypeSeven,
-                    res.data.problemTypeEight,
-                ]
-                this.userRadar.push(rows);
+                res.data.name = this.userExt.userName
+                this.userRadar.push(res.data);
                 this.$refs.userRadar.init();
             })
         }

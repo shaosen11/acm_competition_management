@@ -169,9 +169,14 @@ export default {
     },
     methods: {
         init() {
+            const loading = this.$loading({
+                lock: true,
+                text: '正在加载',
+            });
             this.getUserDailyByTime(null);
             this.getUserExtByUserId(this.$store.state.user.userId)
             this.tipNotify();
+            loading.close();
         },
         tipNotify() {
             const h = this.$createElement;

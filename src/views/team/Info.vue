@@ -127,17 +127,7 @@
                         if (this.users[i].userId == this.$store.state.user.userId) {
                             this.teamUserFlag = true;
                         }
-                        const rows = [
-                            this.users[i].problemTypeOne,
-                            this.users[i].problemTypeTwo,
-                            this.users[i].problemTypeThree,
-                            this.users[i].problemTypeFour,
-                            this.users[i].problemTypeFive,
-                            this.users[i].problemTypeSix,
-                            this.users[i].problemTypeSeven,
-                            this.users[i].problemTypeEight,
-                        ]
-                        this.userRadar[i].push(rows);
+                        this.userRadar[i].push(this.users[i]);
                     }
                     this.isLoading = false;
                 })

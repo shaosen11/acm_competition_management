@@ -103,7 +103,12 @@ export default {
     methods: {
         //初始化方法
         init() {
-            this.getList()
+            const loading = this.$loading({
+                lock: true,
+                text: '正在加载',
+            });
+            this.getList();
+            loading.close();
         },
         getList() {
             if (this.activeTab == 'follow') {
