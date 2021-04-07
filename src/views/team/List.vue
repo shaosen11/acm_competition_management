@@ -62,9 +62,11 @@
                             <div style="text-align: center">
                                 <el-button
                                     @click="applyJoinTeam(team.teamId)"
+                                    :disabled="team.userCount>=3"
                                     type="primary"
                                     size="mini"
-                                    round>申请加入</el-button>
+                                    round>申请加入
+                                </el-button>
                             </div>
                         </el-col>
                     </el-row>
