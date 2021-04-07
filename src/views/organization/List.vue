@@ -79,7 +79,7 @@
                 <el-table-column
                     prop="operation"
                     label="操作"
-                    width="270"
+                    width="250"
                     align="center">
                     <template slot-scope="scope">
                         <el-button
