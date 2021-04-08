@@ -342,9 +342,6 @@ export default {
         },
         //插入浏览记录
         insertReportUserView() {
-            if (this.$store.state.user.userId == "") {
-                return;
-            }
             const reportUserView = {
                 reportId: this.$route.query.reportId,
                 userId: this.$store.state.user.userId
