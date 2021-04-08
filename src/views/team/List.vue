@@ -82,7 +82,7 @@
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="teamQuery.pageNum"
-                :page-sizes="[3,6]"
+                :page-sizes="[3,6,9]"
                 :page-size="teamQuery.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total"

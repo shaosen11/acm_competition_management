@@ -76,7 +76,18 @@ export default {
             }
         }
     },
+    created() {
+        this.init()
+    },
     methods: {
+        init(){
+            const h = this.$createElement;
+            this.$notify.warning({
+                title: '安全提醒',
+                message: h('i', {style: 'color: teal'}, '请设置与常用密码无关密码，保证其他密码安全性。'),
+                offset: 70
+            });
+        },
         //修改密码
         updatePassword() {
             this.updatePasswordButtonLoading = true

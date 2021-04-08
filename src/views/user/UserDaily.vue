@@ -25,25 +25,25 @@
                     <el-card shadow="hover" style="margin: 3px auto">
                         <el-row :gutter="20">
                             <el-col :span="6">
-                                <h4>
+                                <h4 class="follow-card">
                                     <i class="iconfont el-icon-third-follow"/>
                                     {{ this.userExt.followCounter }}
                                 </h4>
                             </el-col>
                             <el-col :span="6">
-                                <h4>
+                                <h4 class="view-card">
                                     <i class="iconfont el-icon-third-eye"/>
                                     {{ this.userExt.visitCounter }}
                                 </h4>
                             </el-col>
                             <el-col :span="6">
-                                <h4>
+                                <h4 class="click-card">
                                     <i class="iconfont el-icon-third-like"/>
                                     {{ this.userExt.clickCounter }}
                                 </h4>
                             </el-col>
                             <el-col :span="6">
-                                <h4>
+                                <h4 class="store-card">
                                     <i class="iconfont el-icon-third-heart"/>
                                     {{ this.userExt.storeCounter }}
                                 </h4>
@@ -257,5 +257,17 @@ export default {
 
 .blog-card{
     color: #409EFF;
+}
+.follow-card{
+    color: #9987ce;
+}
+.view-card{
+    color: #5AD8A6;
+}
+.click-card{
+    color: #409EFF;
+}
+.store-card{
+    color: #F56C6C;
 }
 </style>

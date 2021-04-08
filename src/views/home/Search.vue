@@ -6,7 +6,7 @@
                 prefix-icon="iconfont el-icon-third-search"
                 v-model="keyword"
                 :fetch-suggestions="querySearchAsync"
-                placeholder="请输入内容"
+                placeholder="请输入关键字"
                 @select="handleSelect"
                 clearable>
             </el-autocomplete>
@@ -27,7 +27,7 @@
                             <el-divider direction="vertical"></el-divider>
                             <el-tag v-if="item.blogId!=null">博客</el-tag>
                             <el-tag type="danger" v-if="item.reportId!=null">报告</el-tag>
-                            <p class="content markdown-body" v-dompurify-html="item.subContent"></p>
+<!--                            <p class="content markdown-body" v-dompurify-html="item.subContent"></p>-->
                         </div>
                         <div class="data">
                             <span>编辑于 </span>
@@ -133,7 +133,6 @@ export default {
     },
     created() {
         this.init();
-        this.beforeSearch();
     },
     methods: {
         //初始化方法
@@ -143,15 +142,15 @@ export default {
                 text: '正在加载',
             });
             this.beforeSearch();
+            this.getList();
             this.getBlogHotList()
             loading.close()
         },
         beforeSearch() {
             beforeSearch().then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error("系统出bug了，请重新刷新");
+                if (res.code != 200) {
+                    return this.$message.error("系统出bug了，请重新刷新页面");
                 }
-                this.getList()
             })
         },
         //获取表单信息
