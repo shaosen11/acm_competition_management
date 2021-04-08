@@ -6,7 +6,7 @@
             </div>
             <el-row :gutter="20" style="margin: 10px auto">
                 <el-col :span="6">
-                    <el-card shadow="hover">
+                    <el-card shadow="hover" class="report-card">
                         <h2>
                             <i class="iconfont el-icon-third-file-text" style="font-size: 20px"/>
                             {{ this.userExt.reportCounter }}
@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="6">
                     <el-card shadow="hover">
-                        <h2>
+                        <h2 class="blog-card">
                             <i class="iconfont el-icon-third-blog" style="font-size: 20px"/>
                             {{ this.userExt.blogCounter }}
                         </h2>
@@ -250,5 +250,12 @@ export default {
 .box-card {
     width: 1100px;
     margin: auto;
+}
+.report-card {
+    color: #f56c6c;
+}
+
+.blog-card{
+    color: #409EFF;
 }
 </style>

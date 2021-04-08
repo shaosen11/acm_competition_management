@@ -142,7 +142,7 @@ export default {
                 lock: true,
                 text: '正在加载',
             });
-            this.getList()
+            this.beforeSearch();
             this.getBlogHotList()
             loading.close()
         },
@@ -151,6 +151,7 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error("系统出bug了，请重新刷新");
                 }
+                this.getList()
             })
         },
         //获取表单信息
