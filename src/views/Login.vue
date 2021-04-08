@@ -27,7 +27,7 @@
                                v-loading.fullscreen.lock="isLoading"
                                round>登陆
                     </el-button>
-                    <el-button type="info" @click="toRegister" round>注册</el-button>
+                    <el-button @click="toRegister" round>注册</el-button>
                 </el-row>
 
             </el-form>
