@@ -27,7 +27,7 @@
                             <el-divider direction="vertical"></el-divider>
                             <el-tag v-if="item.blogId!=null">博客</el-tag>
                             <el-tag type="danger" v-if="item.reportId!=null">报告</el-tag>
-<!--                            <p class="content markdown-body" v-dompurify-html="item.subContent"></p>-->
+                            <!--                            <p class="content markdown-body" v-dompurify-html="item.subContent"></p>-->
                         </div>
                         <div class="data">
                             <span>编辑于 </span>
@@ -166,7 +166,7 @@ export default {
                 esAllQueryParam.keyword = this.keyword
             }
             searchEsAll(esAllQueryParam).then(res => {
-                if (res.code !== 200) {
+                if (res.code != null && res.code != 200) {
                     this.listLoading = false;
                     return this.$message.error(res.message);
                 }

@@ -25,6 +25,7 @@
 
 <script>
     import {releaseBlog, getContentByBlogId, saveBlog} from '@/network/api/blog'
+    import {upload} from "@/network/api/minio";
 
     export default {
         name: "Create",
@@ -141,15 +142,12 @@
             $imgAdd(pos, $file) {
                 var formdata = new FormData();
                 formdata.append("file", $file);
-                //将下面上传接口替换为你自己的服务器接口
-                axios({
-                    url: "http://47.115.59.65:7777/minio/upload",
-                    method: "post",
-                    data: formdata,
-                    headers: {"Content-Type": "multipart/form-data"}
-                }).then(res => {
-                    this.$refs.md.$img2Url(pos, res.data.data.url);
-                });
+                upload(formdata).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                    return this.$refs.md.$img2Url(pos, res.data.url);
+                })
             },
 
         }

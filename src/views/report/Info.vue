@@ -54,7 +54,15 @@
                             </el-form-item>
                         </el-form>
                     </el-card>
+                    <!--热门报告-->
                     <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
+                    <el-card style="margin-top: 10px">
+                        能力图
+                        <div class="onePxDivider"></div>
+                        <UserRadar
+                            :user-radar="userRadar"
+                            ref="userRadar"/>
+                    </el-card>
                 </el-col>
                 <el-col :span="18">
                     <el-card>
@@ -177,13 +185,15 @@ import {
     follow,
     cancelFollow,
     getByUserIdAndFollowUserId,
-    getUserExtByUserId
+    getUserExtByUserId,
+    getUserRadarByUserId
 } from '@/network/api/user'
 import {listCompetitionProblemTypeWithChildren} from '@/network/api/competition'
 import UserStatisticsInfo from "@/component/UserStatisticsInfo";
 import Comment from "@/views/report/components/Comment";
 import Store from "@/component/Store";
 import HotReport from "@/component/HotReport";
+import UserRadar from "@/component/UserRadar";
 
 export default {
     name: "Info",
@@ -191,7 +201,8 @@ export default {
         UserStatisticsInfo,
         Comment,
         Store,
-        HotReport
+        HotReport,
+        UserRadar
     },
     data() {
         return {
@@ -248,7 +259,8 @@ export default {
                 /* 2.2.1 */
                 subfield: false, // 单双栏模式
                 preview: false, // 预览
-            }
+            },
+            userRadar:[]
         }
     },
     created() {
@@ -294,10 +306,11 @@ export default {
             this.getUserStoreByReportIdAndUserId();
             this.insertReportUserView();
             this.isGarbage();
-            this.getReportCommentByReportId(this.report.reportId)
-            this.listOnlineJudgeSystem()
-            this.listCompetitionProblemTypeWithChildren()
+            this.getReportCommentByReportId(this.report.reportId);
+            this.listOnlineJudgeSystem();
+            this.listCompetitionProblemTypeWithChildren();
             this.getByUserIdAndFollowUserId();
+            this.getUserRadarByUserId(this.report.userId);
         },
         isDraft() {
             if (this.report.status == 1) {
@@ -588,6 +601,16 @@ export default {
                 this.followFlag = false
             })
         },
+        getUserRadarByUserId(userId) {
+            getUserRadarByUserId(userId).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                res.data.name = this.userExt.userName
+                this.userRadar.push(res.data);
+                this.$refs.userRadar.init();
+            })
+        }
     },
     filters: {
         ellipsis(value) {

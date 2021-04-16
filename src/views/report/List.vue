@@ -19,7 +19,6 @@
                             :user-radar="userRadar"
                             ref="userRadar"/>
                 </el-card>
-
             </el-col>
             <el-col :span="18">
                 <el-card>

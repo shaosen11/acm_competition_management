@@ -17,11 +17,11 @@
                         <span slot="title">个人数据</span>
                     </el-menu-item>
                     <el-menu-item index="4" @click="toUserStore">
-                        <i class="iconfont el-icon-third-follow"/>
+                        <i class="iconfont el-icon-third-heart"/>
                         <span slot="title">个人收藏</span>
                     </el-menu-item>
                     <el-menu-item index="5" @click="toUserFollow">
-                        <i class="iconfont el-icon-third-heart"/>
+                        <i class="iconfont el-icon-third-follow"/>
                         <span slot="title">个人关注</span>
                     </el-menu-item>
                     <el-menu-item index="6" @click="toPassword">

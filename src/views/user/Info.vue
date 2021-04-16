@@ -12,6 +12,13 @@
                 <individual-web-site :user-ext="this.userExt" style="margin-top: 10px"/>
                 <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
                 <hot-report :reportHotList="this.reportHotList" style="margin-top: 10px"/>
+                <el-card style="margin-top: 10px">
+                    能力图
+                    <div class="onePxDivider"></div>
+                    <UserRadar
+                        :user-radar="userRadar"
+                        ref="userRadar"/>
+                </el-card>
             </el-col>
             <el-col :span="18">
                 <el-row :gutter="20">
@@ -121,7 +128,8 @@
     import HotBlog from "@/component/HotBlog";
     import UserInfo from "@/component/UserInfo";
     import individualWebSite from "@/component/individualWebSite";
-    import {cancelFollow, follow, getByUserIdAndFollowUserId, getUserExtByUserId} from '@/network/api/user';
+    import UserRadar from "@/component/UserRadar";
+    import {cancelFollow, follow, getByUserIdAndFollowUserId, getUserExtByUserId,getUserRadarByUserId} from '@/network/api/user';
     import {getOrganizationByUserId} from '@/network/api/organization';
     import {getTeamAllInfoByUserId} from "@/network/api/team";
     import {getHotReportByUserId, listReportPage} from '@/network/api/report'
@@ -135,7 +143,8 @@
             HotReport,
             HotBlog,
             UserInfo,
-            individualWebSite
+            individualWebSite,
+            UserRadar
         },
         data() {
             return {
@@ -166,7 +175,8 @@
                 //是否分页隐藏
                 isHide: true,
                 followFlag: false,
-                followShowFlag: true
+                followShowFlag: true,
+                userRadar:[]
             }
         },
         created() {
@@ -184,6 +194,7 @@
                 this.getOrganization(userId);
                 this.getTeamAllInfoByUserId(userId);
                 this.getUserExtByUserId(userId);
+                this.getUserRadarByUserId(this.$store.state.user.userId);
                 this.getHotReportByUserId(userId);
                 this.getHotBlogByUserId(userId);
                 this.getList();
@@ -387,6 +398,16 @@
                     this.followFlag = false
                 })
             },
+            getUserRadarByUserId(userId) {
+                getUserRadarByUserId(userId).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    res.data.name = this.userExt.userName
+                    this.userRadar.push(res.data);
+                    this.$refs.userRadar.init();
+                })
+            }
         }
     }
 </script>
