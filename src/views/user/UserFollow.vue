@@ -210,7 +210,7 @@ export default {
     width: 1000px;
     margin: auto;
 }
-.table-container, .pagination-container {
+.pagination-container {
     margin: 15px auto;
 }
 </style>

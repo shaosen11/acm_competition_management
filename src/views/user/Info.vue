@@ -29,11 +29,11 @@
                             <i class="iconfont el-icon-third-organization">
                                 <span @click="toOrganizationInfo">
                                     <span class="organizationName">
-                                         {{organization.year}}{{organization.name}}
+                                         {{ organization.year }}{{ organization.name }}
                                     </span>
                                     <span v-if="organization.userCount!=null">
                                          <el-divider direction="vertical"></el-divider>
-                                        <span>班级人数：{{organization.userCount}}</span>
+                                        <span>班级人数：{{ organization.userCount }}</span>
                                     </span>
                                 </span>
                             </i>
@@ -46,11 +46,11 @@
                             <i class="iconfont el-icon-third-team">
                         <span>
                             <span class="teamName" @click="toTeamInfo(team.name)">
-                                {{team.name}}
+                                {{ team.name }}
                             </span>
                             <span v-if="team.userCount!=null">
                                 <el-divider direction="vertical"></el-divider>
-                                <span>队伍人数：{{team.userCount}}</span>
+                                <span>队伍人数：{{ team.userCount }}</span>
                             </span>
                         </span>
                             </i>
@@ -70,8 +70,13 @@
                     <el-tabs v-model="activeTab" @tab-click="handleClick">
                         <el-tab-pane label="报告" name="report"/>
                         <el-tab-pane label="博客" name="blog"/>
+                        <el-tab-pane label="关注的人" name="user"/>
+                        <el-tab-pane label="粉丝" name="follow"/>
                     </el-tabs>
-                    <div v-for="item in this.tableData" :key="item" class="text item">
+                    <div
+                        v-if="reportOrBlogTabFlag==true&&userOrFollowTabFlag==false"
+                        v-for="item in this.tableData"
+                        :key="item">
                         <div style="margin: 20px 0px;">
                             <span class="title"
                                   @click="beforeTo(item)">
@@ -101,17 +106,66 @@
                         </div>
                         <el-divider/>
                     </div>
+                    <el-table
+                        v-if="reportOrBlogTabFlag==false&&userOrFollowTabFlag==true"
+                        v-loading="listLoading"
+                        element-loading-text="努力加载中..."
+                        :data="tableData"
+                        stripe
+                        style="width: 100%">
+                        <el-table-column
+                            label="头像"
+                            width="100"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-avatar :src="scope.row.icon"></el-avatar>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="userName"
+                            label="姓名"
+                            width="150"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-link type="primary" @click="toUserInfo(scope.row.userId)" :underline="false">
+                                    <span>{{ scope.row.userName }}</span>
+                                </el-link>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="organization"
+                            label="班级"
+                            width="300"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-link type="primary" @click="toOrganizationInfo(scope.row)" :underline="false">
+                                    <span>{{ scope.row.year }}{{ scope.row.organizationName }}</span>
+                                </el-link>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="teamName"
+                            label="队伍名称"
+                            width="300"
+                            align="center">
+                            <template slot-scope="scope">
+                                <el-link type="primary" @click="toTeamInfo(scope.row.teamName)" :underline="false">
+                                    <span>{{ scope.row.teamName }}</span>
+                                </el-link>
+                            </template>
+                        </el-table-column>
+                    </el-table>
                     <div class="pagination-container" style="float: right; margin-bottom: 15px">
                         <el-pagination
-                                background
-                                @size-change="handleSizeChange"
-                                @current-change="handleCurrentChange"
-                                :current-page="query.pageNum"
-                                :page-sizes="[5,10,15]"
-                                :page-size="query.pageSize"
-                                layout="total, sizes, prev, pager, next, jumper"
-                                :total="total"
-                                :hide-on-single-page="isHide">
+                            background
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="query.pageNum"
+                            :page-sizes="[5,10,15]"
+                            :page-size="query.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="total"
+                            :hide-on-single-page="isHide">
                         </el-pagination>
                     </div>
                 </el-card>
@@ -123,315 +177,421 @@
 </template>
 
 <script>
-    import UserStatisticsInfo from "@/component/UserStatisticsInfo";
-    import HotReport from "@/component/HotReport";
-    import HotBlog from "@/component/HotBlog";
-    import UserInfo from "@/component/UserInfo";
-    import individualWebSite from "@/component/individualWebSite";
-    import UserRadar from "@/component/UserRadar";
-    import {cancelFollow, follow, getByUserIdAndFollowUserId, getUserExtByUserId,getUserRadarByUserId} from '@/network/api/user';
-    import {getOrganizationByUserId} from '@/network/api/organization';
-    import {getTeamAllInfoByUserId} from "@/network/api/team";
-    import {getHotReportByUserId, listReportPage} from '@/network/api/report'
-    import {listBlogPage, getHotBlogByUserId} from "@/network/api/blog";
+import UserStatisticsInfo from "@/component/UserStatisticsInfo";
+import HotReport from "@/component/HotReport";
+import HotBlog from "@/component/HotBlog";
+import UserInfo from "@/component/UserInfo";
+import individualWebSite from "@/component/individualWebSite";
+import UserRadar from "@/component/UserRadar";
+import {
+    cancelFollow,
+    follow,
+    getByUserIdAndFollowUserId,
+    getUserExtByUserId,
+    getUserRadarByUserId,
+    listFollowUserPage,
+    listUserPage
+} from '@/network/api/user';
+import {getOrganizationByUserId} from '@/network/api/organization';
+import {getTeamAllInfoByUserId} from "@/network/api/team";
+import {getHotReportByUserId, listReportPage} from '@/network/api/report'
+import {listBlogPage, getHotBlogByUserId} from "@/network/api/blog";
 
 
-    export default {
-        name: "Info",
-        components: {
-            UserStatisticsInfo,
-            HotReport,
-            HotBlog,
-            UserInfo,
-            individualWebSite,
-            UserRadar
-        },
-        data() {
-            return {
-                team: {},
-                organization: {
-                    year: '',
-                    name: '',
-                    userCount: ''
-                },
-                users: '',
-                activeTab: 'report',
+export default {
+    name: "Info",
+    components: {
+        UserStatisticsInfo,
+        HotReport,
+        HotBlog,
+        UserInfo,
+        individualWebSite,
+        UserRadar
+    },
+    data() {
+        return {
+            team: {},
+            organization: {
+                year: '',
+                name: '',
+                userCount: ''
+            },
+            users: '',
+            activeTab: 'report',
+            oldTab: 'report',
+            userId: '',
+            userExt: {},
+            reportHotList: [],
+            blogHotList: [],
+            query: {
                 userId: '',
-                userExt: {},
-                reportHotList: [],
-                blogHotList: [],
-                query: {
-                    userId: '',
-                    status: 3,
-                    pageNum: 1,
-                    pageSize: 10,
-                },
-                //表单信息
-                tableData: [],
-                //表单总数
-                total: null,
-                //是否正在加载
-                listLoading: false,
-                //是否分页隐藏
-                isHide: true,
-                followFlag: false,
-                followShowFlag: true,
-                userRadar:[]
-            }
-        },
-        created() {
-            //初始化
-            this.init(this.$route.query.userId)
-        },
-        methods: {
-            //初始化方法
-            init(userId) {
-                const loading = this.$loading({
-                    lock: true,
-                    text: '正在加载',
-                });
-                this.userId = userId;
-                this.getOrganization(userId);
-                this.getTeamAllInfoByUserId(userId);
-                this.getUserExtByUserId(userId);
-                this.getUserRadarByUserId(userId);
-                this.getHotReportByUserId(userId);
-                this.getHotBlogByUserId(userId);
-                this.getList();
-                this.getByUserIdAndFollowUserId();
-                this.initFollowFlag();
-                loading.close();
+                status: 3,
+                pageNum: 1,
+                pageSize: 10,
             },
-
-            //获取班级信息
-            getOrganization(userId) {
-                getOrganizationByUserId(userId).then(res => {
-                    if (res.code != 200) {
-                        return this.$message.error(res.message);
-                    }
-                    if (res.data != null) {
-                        this.organization = res.data
-                    }
-                })
-            },
-            getTeamAllInfoByUserId(userId) {
-                getTeamAllInfoByUserId(userId).then(res => {
-                    if (res.code != 200) {
-                        return this.$message.error(res.message);
-                    }
-                    if (res.data.team != null) {
-                        this.team = res.data.team;
-                        this.users = res.data.users;
-                        if (this.users.length < 3) {
-                            let index = 3 - this.users.length;
-                            for (let i = 0; i < index; i++) {
-                                const user = {
-                                    userId: '',
-                                    userName: '',
-                                    icon: ''
-                                }
-                                this.users.push(user);
+            //表单信息
+            tableData: [],
+            //表单总数
+            total: null,
+            //表单页面数量
+            totalPage: null,
+            //是否正在加载
+            listLoading: false,
+            //是否分页隐藏
+            isHide: true,
+            followFlag: false,
+            followShowFlag: true,
+            userRadar: [],
+            reportOrBlogTabFlag: true,
+            userOrFollowTabFlag: false
+        }
+    },
+    created() {
+        //初始化
+        this.init(this.$route.query.userId)
+    },
+    methods: {
+        //初始化方法
+        init(userId) {
+            const loading = this.$loading({
+                lock: true,
+                text: '正在加载',
+            });
+            this.userId = userId;
+            this.getOrganization(userId);
+            this.getTeamAllInfoByUserId(userId);
+            this.getUserExtByUserId(userId);
+            this.getUserRadarByUserId(userId);
+            this.getHotReportByUserId(userId);
+            this.getHotBlogByUserId(userId);
+            this.getList();
+            this.getByUserIdAndFollowUserId();
+            this.initFollowFlag();
+            loading.close();
+        },
+        //获取班级信息
+        getOrganization(userId) {
+            getOrganizationByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                if (res.data != null) {
+                    this.organization = res.data
+                }
+            })
+        },
+        getTeamAllInfoByUserId(userId) {
+            getTeamAllInfoByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                if (res.data.team != null) {
+                    this.team = res.data.team;
+                    this.users = res.data.users;
+                    if (this.users.length < 3) {
+                        let index = 3 - this.users.length;
+                        for (let i = 0; i < index; i++) {
+                            const user = {
+                                userId: '',
+                                userName: '',
+                                icon: ''
                             }
+                            this.users.push(user);
                         }
                     }
-                })
-            },
-            //个人设置中心
-            toUserSetting() {
-                this.$router.push('/user/setting')
-            },
-            toTeamInfo(teamName) {
-                this.$router.push({name: 'teamInfo', query: {teamName}})
-            },
-            //获取用户扩展信息
-            getUserExtByUserId(userId) {
-                getUserExtByUserId(userId).then(res => {
-                    if (res.code != 200) {
-                        this.$message.error(res.message);
-                        return false;
-                    }
-                    this.userExt = res.data
-                })
-            },
-            getHotReportByUserId(userId) {
-                getHotReportByUserId(userId).then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.reportHotList = res.data
-                })
-            },
-            getHotBlogByUserId(userId) {
-                getHotBlogByUserId(userId).then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.blogHotList = res.data
-                })
-            },
-            //处理页面大小变化
-            handleSizeChange(val) {
+                }
+            })
+        },
+        //个人设置中心
+        toUserSetting() {
+            this.$router.push('/user/setting')
+        },
+        //团队中心
+        toTeamInfo(teamName) {
+            this.$router.push({name: 'teamInfo', query: {teamName}})
+        },
+        //获取用户扩展信息
+        getUserExtByUserId(userId) {
+            getUserExtByUserId(userId).then(res => {
+                if (res.code != 200) {
+                    this.$message.error(res.message);
+                    return false;
+                }
+                this.userExt = res.data
+            })
+        },
+        //获取用户人报告
+        getHotReportByUserId(userId) {
+            getHotReportByUserId(userId).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.reportHotList = res.data
+            })
+        },
+        //获取用热门博客
+        getHotBlogByUserId(userId) {
+            getHotBlogByUserId(userId).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.blogHotList = res.data
+            })
+        },
+        //处理页面大小变化
+        handleSizeChange(val) {
+            this.query.pageNum = 1;
+            this.query.pageSize = val;
+            this.getList()
+        },
+        //处理当前页面数量变化
+        handleCurrentChange(val) {
+            this.query.pageNum = val;
+            this.getList()
+        },
+        beforeToTab(tab) {
+            if (this.oldTab != tab) {
                 this.query.pageNum = 1;
-                this.query.pageSize = val;
-                this.getList()
-            },
-            //处理当前页面数量变化
-            handleCurrentChange(val) {
-                this.query.pageNum = val;
-                this.getList()
-            },
-            getList() {
-                if (this.activeTab == 'report') {
-                    this.getReportList();
-                }
-                if (this.activeTab == 'blog') {
-                    this.getBlogList();
-                }
-            },
-            //切换tab
-            handleClick(tab) {
-                if (tab.name == 'report') {
-                    this.getReportList()
-                }
-                if (tab.name == 'blog') {
-                    this.getBlogList()
-                }
-            },
-            getBlogList() {
-                this.listLoading = true;
-                this.query.userId = this.userId;
-                listBlogPage(this.query).then(res => {
-                    if (res.code !== 200) {
-                        this.listLoading = false;
-                        return this.$message.error(res.message);
-                    }
-                    this.handleResult(res)
-                })
-            },
-            getReportList() {
-                this.listLoading = true;
-                this.query.userId = this.userId;
-                listReportPage(this.query).then(res => {
-                    if (res.code !== 200) {
-                        this.listLoading = false;
-                        return this.$message.error(res.message);
-                    }
-                    this.handleResult(res)
-                })
-            },
-            handleResult(res) {
-                this.tableData = res.data.list;
-                this.total = res.data.total;
-                this.query.pageNum = res.data.pageNum;
-                this.query.pageSize = res.data.pageSize;
-                if (this.total > this.pageSize) {
-                    this.isHide = false;
-                } else {
-                    this.isHide = true;
-                }
-                this.listLoading = false;
-            },
-            beforeTo(item) {
-                if (item.blogId != null) {
-                    this.toBlog(item.blogId)
-                } else if (item.reportId != null) {
-                    this.toReport(item.reportId)
-                }
-            },
-            toReport(reportId) {
-                this.$router.push({
-                    name: 'reportInfo',
-                    query: {reportId}
-                })
-            },
-            toBlog(blogId) {
-                this.$router.push({
-                    name: 'blogInfo',
-                    query: {blogId}
-                })
-            },
-            toUserInfo(userId) {
-                this.$router.push({name: 'userInfo', query: {userId}})
-            },
-            //跳转班级信息
-            toOrganizationInfo() {
-                this.$router.push({
-                    name: 'organizationInfo',
-                    query: {
-                        year: this.organization.year,
-                        name: this.organization.name
-                    }
-                })
-            },
-            initFollowFlag(){
-                if (this.$store.state.user.userId==this.$route.query.userId){
-                    this.followShowFlag = false;
-                }
-            },
-            getByUserIdAndFollowUserId() {
-                const userFollow = {
-                    followUserId: this.$route.query.userId,
-                    userId: this.$store.state.user.userId,
-                }
-                getByUserIdAndFollowUserId(userFollow).then(res => {
-                    if (res.code != 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.followFlag = res.data
-                })
-            },
-            follow(userFollow) {
-                follow(userFollow).then(res => {
-                    if (res.code != 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.$message.success(res.message);
-                    this.followFlag = true
-                })
-            },
-            cancelFollow(userFollow) {
-                cancelFollow(userFollow).then(res => {
-                    if (res.code != 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.$message.success(res.message);
-                    this.followFlag = false
-                })
-            },
-            getUserRadarByUserId(userId) {
-                getUserRadarByUserId(userId).then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    res.data.name = this.userExt.userName
-                    this.userRadar.push(res.data);
-                    this.$refs.userRadar.init();
-                })
+                this.query.pageSize = 10;
             }
+        },
+        //报告或者博客表单
+        toReportOrBlogTab() {
+            this.reportOrBlogTabFlag = true;
+            this.userOrFollowTabFlag = false;
+        },
+        //关注表单
+        toUserOrFollowTab() {
+            this.reportOrBlogTabFlag = false;
+            this.userOrFollowTabFlag = true;
+        },
+        //获取表单数据
+        getList() {
+            this.beforeToTab(this.activeTab)
+            if (this.activeTab == 'report') {
+                this.oldTab = 'report';
+                this.toReportOrBlogTab();
+                this.getReportList();
+            }
+            if (this.activeTab == 'blog') {
+                this.oldTab = 'blog';
+                this.toReportOrBlogTab();
+                this.getBlogList();
+            }
+            if (this.activeTab == 'user') {
+                this.oldTab = 'user';
+                this.toUserOrFollowTab();
+                this.getUserList();
+            }
+            if (this.activeTab == 'follow') {
+                this.oldTab = 'follow';
+                this.toUserOrFollowTab();
+                this.getFollowUserList();
+            }
+        },
+        //切换tab
+        handleClick(tab) {
+            this.beforeToTab(tab.name)
+            if (tab.name == 'report') {
+                this.oldTab = 'report';
+                this.toReportOrBlogTab();
+                this.getReportList();
+            }
+            if (tab.name == 'blog') {
+                this.oldTab = 'blog';
+                this.toReportOrBlogTab();
+                this.getBlogList();
+            }
+            if (this.activeTab == 'user') {
+                this.oldTab = 'user';
+                this.toUserOrFollowTab();
+                this.getUserList();
+            }
+            if (this.activeTab == 'follow') {
+                this.oldTab = 'follow';
+                this.toUserOrFollowTab();
+                this.getFollowUserList();
+            }
+        },
+        //获取用户博客列表
+        getBlogList() {
+            this.listLoading = true;
+            this.query.userId = this.userId;
+            listBlogPage(this.query).then(res => {
+                if (res.code !== 200) {
+                    this.listLoading = false;
+                    return this.$message.error(res.message);
+                }
+                this.handleResult(res)
+            })
+        },
+        //获取用户报告列表
+        getReportList() {
+            this.listLoading = true;
+            this.query.userId = this.userId;
+            listReportPage(this.query).then(res => {
+                if (res.code !== 200) {
+                    this.listLoading = false;
+                    return this.$message.error(res.message);
+                }
+                this.handleResult(res)
+            })
+        },
+        //获取关注列表
+        getUserList() {
+            this.listLoading = true;
+            listUserPage(this.query).then(res => {
+                this.listLoading = false;
+                if (res.code !== 200) {
+                    this.$message.error(res.message);
+                }
+                this.handleResult(res)
+            })
+        },
+        //获取关注列表
+        getFollowUserList() {
+            this.listLoading = true;
+            listFollowUserPage(this.query).then(res => {
+                this.listLoading = false;
+                if (res.code !== 200) {
+                    this.$message.error(res.message);
+                }
+                this.handleResult(res)
+            })
+        },
+        //统一处理结果
+        handleResult(res) {
+            console.log(res.data)
+            this.tableData = res.data.list;
+            this.total = res.data.total;
+            this.totalPage = res.data.totalPage
+            this.query.pageNum = res.data.pageNum;
+            this.query.pageSize = res.data.pageSize;
+            if (this.query.pageNum > this.totalPage) {
+                this.query.pageNum = 1;
+                this.query.pageSize = 10;
+                this.getList();
+            }
+            if (this.total > this.pageSize) {
+                this.isHide = false;
+            } else {
+                this.isHide = true;
+            }
+            this.listLoading = false;
+        },
+        //跳转之前判断
+        beforeTo(item) {
+            if (item.blogId != null) {
+                this.toBlog(item.blogId)
+            } else if (item.reportId != null) {
+                this.toReport(item.reportId)
+            }
+        },
+        //去报告页面
+        toReport(reportId) {
+            this.$router.push({
+                name: 'reportInfo',
+                query: {reportId}
+            })
+        },
+        //去博客页面
+        toBlog(blogId) {
+            this.$router.push({
+                name: 'blogInfo',
+                query: {blogId}
+            })
+        },
+        //去用户页面
+        toUserInfo(userId) {
+            this.$router.push({name: 'userInfo', query: {userId}})
+        },
+        //跳转班级信息
+        toOrganizationInfo() {
+            this.$router.push({
+                name: 'organizationInfo',
+                query: {
+                    year: this.organization.year,
+                    name: this.organization.name
+                }
+            })
+        },
+        initFollowFlag() {
+            if (this.$store.state.user.userId == this.$route.query.userId) {
+                this.followShowFlag = false;
+            }
+        },
+        //获取是否关注
+        getByUserIdAndFollowUserId() {
+            const userFollow = {
+                followUserId: this.$route.query.userId,
+                userId: this.$store.state.user.userId,
+            }
+            getByUserIdAndFollowUserId(userFollow).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                this.followFlag = res.data
+            })
+        },
+        //关注
+        follow(userFollow) {
+            follow(userFollow).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                this.$message.success(res.message);
+                this.followFlag = true
+            })
+        },
+        //取消关注
+        cancelFollow(userFollow) {
+            cancelFollow(userFollow).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+                this.$message.success(res.message);
+                this.followFlag = false
+            })
+        },
+        //获取用户能力图
+        getUserRadarByUserId(userId) {
+            getUserRadarByUserId(userId).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                res.data.name = this.userExt.userName
+                this.userRadar.push(res.data);
+                this.$refs.userRadar.init();
+            })
         }
     }
+}
 </script>
 
 <style scoped>
-    .organizationName {
-        font-size: 16px;
-        font-weight: 500;
-    }
+.organizationName {
+    font-size: 16px;
+    font-weight: 500;
+}
 
-    .organizationName:hover {
-        color: #409EFF;
-    }
+.organizationName:hover {
+    color: #409EFF;
+}
 
-    .teamName:hover {
-        color: #409EFF;
-    }
+.teamName:hover {
+    color: #409EFF;
+}
 
-    .teamName {
-        font-size: 16px;
-        font-weight: 500;
-    }
+.teamName {
+    font-size: 16px;
+    font-weight: 500;
+}
 
-    .teamName:hover {
-        color: #409EFF;
-    }
+.teamName:hover {
+    color: #409EFF;
+}
+
+.pagination-container {
+    margin: 15px auto;
+}
 </style>
