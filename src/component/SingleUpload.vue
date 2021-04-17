@@ -9,7 +9,7 @@
             :file-list="fileList"
             :on-preview="handlePreview">
             <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB，请尽量选择正方形图片</div>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/jpeg/png文件，且不超过1MB，请尽量选择正方形图片</div>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible" width="30%">
             <img width="100%" :src="fileList[0].url">

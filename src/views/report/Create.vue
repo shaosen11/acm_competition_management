@@ -94,6 +94,7 @@
                     <mavon-editor
                         v-model="report.problemDescribeMd"
                         ref="problemDescribeMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd"
                         @change="problemDescribeChange"
                         style="min-height: 550px; margin-top: 10px"/>
@@ -103,6 +104,7 @@
                     <mavon-editor
                         v-model="report.inputMd"
                         ref="inputMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd1"
                         @change="inputChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -110,6 +112,7 @@
                     <mavon-editor
                         v-model="report.outputMd"
                         ref="outputMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd2"
                         @change="outputChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -119,6 +122,7 @@
                     <mavon-editor
                         v-model="report.inputExamplesMd"
                         ref="inputExamplesMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd3"
                         @change="inputExamplesChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -126,6 +130,7 @@
                     <mavon-editor
                         v-model="report.outputExamplesMd"
                         ref="outputExamplesMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd4"
                         @change="outputExamplesChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -135,6 +140,7 @@
                     <mavon-editor
                         v-model="report.analysisMd"
                         ref="analysisMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd5"
                         @change="analysisChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -142,6 +148,7 @@
                     <mavon-editor
                         v-model="report.programMd"
                         ref="programMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd6"
                         @change="programChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -151,6 +158,7 @@
                     <mavon-editor
                         v-model="report.testExamplesMd"
                         ref="testExamplesMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd7"
                         @change="testExamplesChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -158,6 +166,7 @@
                     <mavon-editor
                         v-model="report.resultPictureMd"
                         ref="resultPictureMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd8"
                         @change="resultPictureChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -165,6 +174,7 @@
                     <mavon-editor
                         v-model="report.resultCommentMd"
                         ref="resultCommentMd"
+                        @imgDel="$imgDel"
                         @imgAdd="$imgAdd9"
                         @change="resultCommentChange"
                         style="min-height: 300px; margin-top: 10px"/>
@@ -177,7 +187,7 @@
 <script>
 import {listOnlineJudgeSystem, saveReport, getReportByReportId, releaseReport} from '@/network/api/report'
 import {listCompetitionProblemTypeWithChildren} from '@/network/api/competition'
-import {upload} from '@/network/api/minio'
+import {deleteImage, upload} from '@/network/api/minio'
 
 export default {
     name: "Create",
@@ -416,7 +426,14 @@ export default {
         resultCommentChange(value, render) {
             this.report.resultComment = render;
         },
-        async $imgAdd(pos, $file) {
+        $imgDel(pos) {
+            deleteImage(pos[0]).then(res => {
+                if (res.code != 200) {
+                    return this.$message.error(res.message);
+                }
+            })
+        },
+        $imgAdd(pos, $file) {
             var formdata = new FormData();
             formdata.append("file", $file);
             upload(formdata).then(res => {

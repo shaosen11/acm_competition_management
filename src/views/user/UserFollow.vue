@@ -12,10 +12,12 @@
                 stripe
                 style="width: 100%">
                 <el-table-column
-                    prop="userId"
-                    label="账号"
+                    label="头像"
                     width="150"
                     align="center">
+                    <template slot-scope="scope">
+                        <el-avatar :src="scope.row.icon"></el-avatar>
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="userName"

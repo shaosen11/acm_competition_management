@@ -194,7 +194,7 @@
                 this.getOrganization(userId);
                 this.getTeamAllInfoByUserId(userId);
                 this.getUserExtByUserId(userId);
-                this.getUserRadarByUserId(this.$store.state.user.userId);
+                this.getUserRadarByUserId(userId);
                 this.getHotReportByUserId(userId);
                 this.getHotBlogByUserId(userId);
                 this.getList();

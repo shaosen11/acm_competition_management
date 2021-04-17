@@ -17,6 +17,7 @@
         <mavon-editor
                 v-model="blog.markdown"
                 ref="md"
+                @imgDel="$imgDel"
                 @imgAdd="$imgAdd"
                 @change="change"
                 style="min-height: 600px; margin-top: 10px"/>
@@ -25,7 +26,7 @@
 
 <script>
     import {releaseBlog, getContentByBlogId, saveBlog} from '@/network/api/blog'
-    import {upload} from "@/network/api/minio";
+    import {upload, deleteImage} from "@/network/api/minio";
 
     export default {
         name: "Create",
@@ -140,7 +141,7 @@
             },
             // 将图片上传到服务器，返回地址替换到md中
             $imgAdd(pos, $file) {
-                var formdata = new FormData();
+                let formdata = new FormData();
                 formdata.append("file", $file);
                 upload(formdata).then(res => {
                     if (res.code != 200) {
@@ -149,6 +150,13 @@
                     return this.$refs.md.$img2Url(pos, res.data.url);
                 })
             },
+            $imgDel(pos) {
+                deleteImage(pos[0]).then(res => {
+                    if (res.code != 200) {
+                        return this.$message.error(res.message);
+                    }
+                })
+            }
 
         }
     }

@@ -11,12 +11,12 @@ export function upload(file){
     })
 }
 
-export function deleteImage(shortName) {
+export function deleteImage(url) {
     return request({
         url: '/minio/delete',
         method: 'post',
         data: {
-            shortName
+            url
         }
     })
 }
