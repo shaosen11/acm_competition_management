@@ -92,11 +92,14 @@ export default {
             tableData: [],
             //表单总数
             total: null,
+            //表单页面数量
+            totalPage: null,
             //是否正在加载
             listLoading: false,
             //是否分页隐藏
             isHide: true,
-            activeTab: 'follow'
+            activeTab: 'follow',
+            oldTab: 'follow',
         }
     },
     created() {
@@ -112,20 +115,33 @@ export default {
             this.getList();
             loading.close();
         },
+        //切换tab
+        beforeToTab(tab) {
+            if (this.oldTab != tab) {
+                this.userQuery.pageNum = 1;
+                this.userQuery.pageSize = 10;
+            }
+        },
         getList() {
+            this.beforeToTab(this.activeTab)
             if (this.activeTab == 'follow') {
+                this.oldTab = 'follow'
                 this.listFollowUserPage();
             }
             if (this.activeTab == 'user') {
+                this.oldTab = 'user'
                 this.listUserPage();
             }
         },
         //切换tab
         handleClick(tab) {
+            this.beforeToTab(tab.name)
             if (tab.name == 'follow') {
+                this.oldTab = 'follow'
                 this.listFollowUserPage();
             }
             if (tab.name == 'user') {
+                this.oldTab = 'user'
                 this.listUserPage();
             }
         },
@@ -153,8 +169,14 @@ export default {
         handleResult(res) {
             this.tableData = res.data.list;
             this.total = res.data.total;
+            this.totalPage = res.data.totalPage
             this.userQuery.pageNum = res.data.pageNum;
             this.userQuery.pageSize = res.data.pageSize;
+            if (this.totalPage != 0 && this.userQuery.pageNum > this.totalPage) {
+                this.userQuery.pageNum = 1;
+                this.userQuery.pageSize = 10;
+                this.getList();
+            }
             if (this.total > this.pageSize) {
                 this.isHide = false;
             } else {

@@ -10,8 +10,8 @@
                     @follow="follow"
                     @cancelFollow="cancelFollow"/>
                 <individual-web-site :user-ext="this.userExt" style="margin-top: 10px"/>
-                <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
-                <hot-report :reportHotList="this.reportHotList" style="margin-top: 10px"/>
+                <hot-blog v-if="this.blogHotList!=''" :blogHotList="this.blogHotList" style="margin-top: 10px"/>
+                <hot-report v-if="this.reportHotList!=''" :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                 <el-card style="margin-top: 10px">
                     能力图
                     <div class="onePxDivider"></div>
@@ -349,6 +349,7 @@ export default {
             this.query.pageNum = val;
             this.getList()
         },
+        //切换tab
         beforeToTab(tab) {
             if (this.oldTab != tab) {
                 this.query.pageNum = 1;
@@ -461,13 +462,12 @@ export default {
         },
         //统一处理结果
         handleResult(res) {
-            console.log(res.data)
             this.tableData = res.data.list;
             this.total = res.data.total;
-            this.totalPage = res.data.totalPage
+            this.totalPage = res.data.totalPage;
             this.query.pageNum = res.data.pageNum;
             this.query.pageSize = res.data.pageSize;
-            if (this.query.pageNum > this.totalPage) {
+            if (this.totalPage != 0 && this.query.pageNum > this.totalPage) {
                 this.query.pageNum = 1;
                 this.query.pageSize = 10;
                 this.getList();

@@ -11,7 +11,7 @@
                         @follow="follow"
                         @cancelFollow="cancelFollow"/>
                     <!--热门博客-->
-                    <hot-blog :blogHotList="this.blogHotList" style="margin-top: 10px"/>
+                    <hot-blog v-if="this.blogHotList!=''" :blogHotList="this.blogHotList" style="margin-top: 10px"/>
                 </el-col>
                 <!--博客内容-->
                 <el-col :span="18">

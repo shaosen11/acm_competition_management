@@ -55,7 +55,7 @@
                         </el-form>
                     </el-card>
                     <!--热门报告-->
-                    <HotReport :reportHotList="this.reportHotList" style="margin-top: 10px"/>
+                    <HotReport v-if="this.reportHotList!=''" :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                     <el-card style="margin-top: 10px">
                         能力图
                         <div class="onePxDivider"></div>
