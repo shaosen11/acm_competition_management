@@ -22,7 +22,7 @@
                 <el-card style="width: 800px">
                     <div>
                         <span class="name" v-if="this.userStoreFolderNameEditFlag == false">
-                            {{ this.userStoreFolderItem.name }}
+                            <b>{{ this.userStoreFolderItem.name }}</b>
                             <i class="iconfont el-icon-third-edit icon"
                                @click="userStoreFolderNameEditFlagTrue"/>
                         </span>
@@ -90,7 +90,8 @@
                                     </span>
                                     <span v-if="userStore.reportFlag == 1">
                                         <el-tag type="danger">报告</el-tag>
-                                        <span class="userStoreName">{{ userStore.reportName }}</span>
+                                        <span class="userStoreName"
+                                              @click="toReport(userStore.reportId)">{{ userStore.reportName }}</span>
                                         <el-divider direction="vertical"></el-divider>
                                         <span>by </span>
                                         <span class="userName" v-dompurify-html="userStore.userName"/>
@@ -230,6 +231,13 @@
                 this.$router.push({
                     name: 'blogInfo',
                     query: {blogId}
+                })
+            },
+            //跳转博客
+            toReport(reportId) {
+                this.$router.push({
+                    name: 'reportInfo',
+                    query: {reportId}
                 })
             },
             //取消收藏

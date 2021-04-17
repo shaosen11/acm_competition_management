@@ -170,9 +170,7 @@
                         <el-col :span="20">
                             <el-card>
                                 <div>
-                                    <span class="name">
-                                        {{ this.userStoreFolderItem.name }}
-                                    </span>
+                                    <b>{{ this.userStoreFolderItem.name }}</b>
                                 </div>
                                 <p class="description">
                                     {{ this.userStoreFolderItem.description }}
@@ -193,7 +191,8 @@
                                                 </span>
                                                 <span v-if="userStore.reportFlag == 1">
                                                     <el-tag type="danger">报告</el-tag>
-                                                    <span class="userStoreName">{{ userStore.reportName }}</span>
+                                                   <span class="userStoreName"
+                                                         @click="toReport(userStore.reportId)">{{ userStore.reportName }}</span>
                                                     <el-divider direction="vertical"></el-divider>
                                                     <span>by </span>
                                                     <span class="userName" v-dompurify-html="userStore.userName"/>
@@ -587,18 +586,18 @@ export default {
                 this.toReport(item.reportId)
             }
         },
-        //去报告页面
-        toReport(reportId) {
-            this.$router.push({
-                name: 'reportInfo',
-                query: {reportId}
-            })
-        },
         //去博客页面
         toBlog(blogId) {
             this.$router.push({
                 name: 'blogInfo',
                 query: {blogId}
+            })
+        },
+        //跳转博客
+        toReport(reportId) {
+            this.$router.push({
+                name: 'reportInfo',
+                query: {reportId}
             })
         },
         //去用户页面
@@ -727,5 +726,18 @@ export default {
 
 .pagination-container {
     margin: 15px auto;
+}
+
+.description {
+    margin: 5px 0px;
+    color: #909399;
+}
+
+.userStoreName {
+    margin-left: 15px
+}
+
+.userStoreName:hover {
+    color: #409EFF;
 }
 </style>
