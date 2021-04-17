@@ -72,9 +72,10 @@
                         <el-tab-pane label="博客" name="blog"/>
                         <el-tab-pane label="关注的人" name="user"/>
                         <el-tab-pane label="粉丝" name="follow"/>
+                        <el-tab-pane label="收藏夹" name="store"/>
                     </el-tabs>
                     <div
-                        v-if="reportOrBlogTabFlag==true&&userOrFollowTabFlag==false"
+                        v-if="reportOrBlogTabFlag==true&&userOrFollowTabFlag==false&&storeTabFlag==false"
                         v-for="item in this.tableData"
                         :key="item">
                         <div style="margin: 20px 0px;">
@@ -107,7 +108,7 @@
                         <el-divider/>
                     </div>
                     <el-table
-                        v-if="reportOrBlogTabFlag==false&&userOrFollowTabFlag==true"
+                        v-if="reportOrBlogTabFlag==false&&userOrFollowTabFlag==true&&storeTabFlag==false"
                         v-loading="listLoading"
                         element-loading-text="努力加载中..."
                         :data="tableData"
@@ -152,7 +153,61 @@
                             </template>
                         </el-table-column>
                     </el-table>
-                    <div class="pagination-container" style="float: right; margin-bottom: 15px">
+                    <el-row v-if="reportOrBlogTabFlag==false&&userOrFollowTabFlag==false&&storeTabFlag==true">
+                        <el-col :span="4">
+                            <el-menu class="el-menu-vertical-demo" style="text-align: center">
+                                <el-menu-item v-for="(userStoreFolder, index) in this.userStoreFolder"
+                                              :key="userStoreFolder"
+                                              :index="index"
+                                              @click="selectUserStoreFolder(index)">
+                                    <i class="iconfont el-icon-third-folder-open"
+                                       style="font-size: 20px; margin-right: 5px"></i>
+                                    <span slot="title">{{ userStoreFolder.name }}</span>
+                                </el-menu-item>
+                            </el-menu>
+                        </el-col>
+
+                        <el-col :span="20">
+                            <el-card>
+                                <div>
+                                    <span class="name">
+                                        {{ this.userStoreFolderItem.name }}
+                                    </span>
+                                </div>
+                                <p class="description">
+                                    {{ this.userStoreFolderItem.description }}
+                                </p>
+                                <!--收藏夹内容-->
+                                <el-row :gutter="10">
+                                    <el-col :span="24" v-for="userStore in this.userStore" :key="userStore"
+                                            style="margin-top: 10px">
+                                        <el-card shadow="hover">
+                                            <div>
+                                                <span v-if="userStore.blogFlag == 1">
+                                                    <el-tag>博客</el-tag>
+                                                    <span class="userStoreName"
+                                                          @click="toBlog(userStore.blogId)">{{ userStore.blogName }}</span>
+                                                    <el-divider direction="vertical"></el-divider>
+                                                    <span>by </span>
+                                                    <span class="userName" v-dompurify-html="userStore.userName"/>
+                                                </span>
+                                                <span v-if="userStore.reportFlag == 1">
+                                                    <el-tag type="danger">报告</el-tag>
+                                                    <span class="userStoreName">{{ userStore.reportName }}</span>
+                                                    <el-divider direction="vertical"></el-divider>
+                                                    <span>by </span>
+                                                    <span class="userName" v-dompurify-html="userStore.userName"/>
+                                                </span>
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
+                            </el-card>
+                        </el-col>
+                    </el-row>
+                    <div class="pagination-container"
+                         v-if="reportOrBlogTabFlag==true||userOrFollowTabFlag==true"
+                         style="float: right; margin-bottom: 15px">
                         <el-pagination
                             background
                             @size-change="handleSizeChange"
@@ -187,7 +242,9 @@ import {
     getUserExtByUserId,
     getUserRadarByUserId,
     listFollowUserPage,
-    listUserPage
+    listUserPage,
+    getUserStoreFolder,
+    listUserStoreByParentId
 } from '@/network/api/user';
 import {getOrganizationByUserId} from '@/network/api/organization';
 import {getTeamAllInfoByUserId} from "@/network/api/team";
@@ -252,10 +309,22 @@ export default {
             followShowFlag: true,
             //用户能力图
             userRadar: [],
-            //是否报告或博客标记
+            //是否报告或博客面板标记
             reportOrBlogTabFlag: true,
-            //是否用户或用户追随标记
-            userOrFollowTabFlag: false
+            //是否用户面板标记
+            userOrFollowTabFlag: false,
+            //是否收藏夹面板标记
+            storeTabFlag: false,
+            //用户收藏夹
+            userStoreFolder: [],
+            //记录用户第几个收藏的文件夹
+            userStoreFolderIndex: '',
+            userStoreFolderItem: {
+                id: 0,
+                showFlag: 0
+            },
+            //用户收藏夹内容
+            userStore: [],
         }
     },
     created() {
@@ -369,15 +438,23 @@ export default {
                 this.query.pageSize = 10;
             }
         },
-        //报告或者博客表单
+        //报告或者博客面板
         toReportOrBlogTab() {
             this.reportOrBlogTabFlag = true;
             this.userOrFollowTabFlag = false;
+            this.storeTabFlag = false;
         },
-        //关注表单
+        //关注面板
         toUserOrFollowTab() {
             this.reportOrBlogTabFlag = false;
             this.userOrFollowTabFlag = true;
+            this.storeTabFlag = false;
+        },
+        //收藏面板
+        toStoreTabTab() {
+            this.reportOrBlogTabFlag = false;
+            this.userOrFollowTabFlag = false;
+            this.storeTabFlag = true;
         },
         //获取表单数据
         getList() {
@@ -402,6 +479,11 @@ export default {
                 this.toUserOrFollowTab();
                 this.getFollowUserList();
             }
+            if (this.activeTab == 'store') {
+                this.oldTab = 'store';
+                this.toStoreTabTab();
+                this.getUserStoreFolder();
+            }
         },
         //切换tab
         handleClick(tab) {
@@ -425,6 +507,11 @@ export default {
                 this.oldTab = 'follow';
                 this.toUserOrFollowTab();
                 this.getFollowUserList();
+            }
+            if (this.activeTab == 'store') {
+                this.oldTab = 'store';
+                this.toStoreTabTab();
+                this.getUserStoreFolder();
             }
         },
         //获取用户博客列表
@@ -576,7 +663,41 @@ export default {
                 this.userRadar.push(res.data);
                 this.$refs.userRadar.init();
             })
-        }
+        },
+        //获取收藏夹
+        getUserStoreFolder() {
+            const userStore = {
+                userId: this.userId,
+                folderFlag: 0,
+                showFlag: 1
+            }
+            getUserStoreFolder(userStore).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.userStoreFolder = res.data
+                this.selectUserStoreFolder(0)
+            })
+        },
+        //选择收藏夹
+        selectUserStoreFolder(index) {
+            if (index === this.userStoreFolderIndex){
+                return;
+            }
+            this.userStore = [];
+            this.userStoreFolderIndex = index;
+            this.userStoreFolderItem = this.userStoreFolder[index];
+            const userStore = {
+                parentId: this.userStoreFolderItem.id,
+                showFlag: 1
+            }
+            listUserStoreByParentId(userStore).then(res => {
+                if (res.code !== 200) {
+                    return this.$message.error(res.message);
+                }
+                this.userStore = res.data
+            })
+        },
     }
 }
 </script>

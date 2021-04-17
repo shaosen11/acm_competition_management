@@ -220,12 +220,13 @@ export function deleteUserStore(userStore) {
 }
 
 //查询收藏夹内容
-export function listUserStoreByParentId(parentId) {
+export function listUserStoreByParentId(userStore) {
     return request({
         url: '/userStore/listByParentId',
         method: 'post',
         data: {
-            parentId
+            parentId: userStore.parentId,
+            showFlag: userStore.showFlag,
         }
     })
 }

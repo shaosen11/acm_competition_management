@@ -150,6 +150,7 @@
                     showFlag: 0
                 },
                 userStoreFolderIndex: 0,
+                oldUserStoreFolderIndex: '',
                 userStoreFolderNameEditFlag: false,
                 userStoreFolderNameCopy: '',
                 userStoreFolderDescriptionEditFlag: false,
@@ -179,8 +180,28 @@
                     if (res.code !== 200) {
                         return this.$message.error(res.message);
                     }
-                    this.userStoreFolder = res.data
+                    this.userStoreFolder = res.data;
+                    this.userStoreFolderItem = this.userStoreFolder[this.userStoreFolderIndex];
                     this.selectUserStoreFolder(this.userStoreFolderIndex)
+                })
+            },
+            //选择收藏夹
+            selectUserStoreFolder(index) {
+                if (index === this.oldUserStoreFolderIndex){
+                    return;
+                }
+                this.userStore = [];
+                this.userStoreFolderIndex = index;
+                this.oldUserStoreFolderIndex = this.userStoreFolderIndex
+                this.userStoreFolderItem = this.userStoreFolder[index];
+                const userStore = {
+                    parentId: this.userStoreFolderItem.id,
+                }
+                listUserStoreByParentId(userStore).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.userStore = res.data
                 })
             },
             //创建文件夹
@@ -194,6 +215,7 @@
             createStoreDialogVisibleFalse() {
                 this.createStoreDialogVisible = false;
             },
+            //创建收藏夹
             createStore(userStore) {
                 createUserStore(userStore).then(res => {
                     if (res.code !== 200) {
@@ -201,17 +223,6 @@
                     }
                     this.getUserStoreFolder()
                     this.createStoreDialogVisible = false;
-                })
-            },
-            //选择收藏夹
-            selectUserStoreFolder(index) {
-                this.userStoreFolderIndex = index;
-                this.userStoreFolderItem = this.userStoreFolder[index];
-                listUserStoreByParentId(this.userStoreFolderItem.id).then(res => {
-                    if (res.code !== 200) {
-                        return this.$message.error(res.message);
-                    }
-                    this.userStore = res.data
                 })
             },
             //跳转博客
@@ -259,9 +270,11 @@
                 this.userStoreFolderNameCopy = this.userStoreFolderItem.name
                 this.userStoreFolderNameEditFlag = true
             },
+            //修改收藏夹名称标记
             userStoreFolderNameEditFlagFalse() {
                 this.userStoreFolderNameEditFlag = false
             },
+            //修改收藏夹名称
             updateUserStoreFolderName() {
                 const userStoreBody = {
                     id: this.userStoreFolderItem.id,
@@ -280,9 +293,11 @@
                 this.userStoreFolderDescriptionCopy = this.userStoreFolderItem.description
                 this.userStoreFolderDescriptionEditFlag = true
             },
+            //修改收藏夹描述标记
             userStoreFolderDescriptionEditFlagFalse() {
                 this.userStoreFolderDescriptionEditFlag = false
             },
+            //修改收藏夹描述
             updateUserStoreFolderDescription() {
                 const userStoreBody = {
                     id: this.userStoreFolderItem.id,
