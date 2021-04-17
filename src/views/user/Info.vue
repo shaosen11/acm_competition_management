@@ -122,7 +122,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="userName"
                             label="姓名"
                             width="150"
                             align="center">
@@ -133,7 +132,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="organization"
                             label="班级"
                             width="300"
                             align="center">
@@ -144,7 +142,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="teamName"
                             label="队伍名称"
                             width="300"
                             align="center">
@@ -194,7 +191,7 @@ import {
 } from '@/network/api/user';
 import {getOrganizationByUserId} from '@/network/api/organization';
 import {getTeamAllInfoByUserId} from "@/network/api/team";
-import {getHotReportByUserId, listReportPage} from '@/network/api/report'
+import {listReportPage, getHotReportByUserId} from '@/network/api/report'
 import {listBlogPage, getHotBlogByUserId} from "@/network/api/blog";
 
 
@@ -210,19 +207,29 @@ export default {
     },
     data() {
         return {
+            //团队
             team: {},
+            //班级
             organization: {
                 year: '',
                 name: '',
                 userCount: ''
             },
+            //用户
             users: '',
+            //当前tab
             activeTab: 'report',
+            //旧tab
             oldTab: 'report',
+            //当前页面用户id
             userId: '',
+            //用户扩展数据
             userExt: {},
+            //热门报告列表
             reportHotList: [],
+            //热门博客列表
             blogHotList: [],
+            //表单查询实体
             query: {
                 userId: '',
                 status: 3,
@@ -239,10 +246,15 @@ export default {
             listLoading: false,
             //是否分页隐藏
             isHide: true,
+            //关注标记
             followFlag: false,
+            //是否展示关注标记
             followShowFlag: true,
+            //用户能力图
             userRadar: [],
+            //是否报告或博客标记
             reportOrBlogTabFlag: true,
+            //是否用户或用户追随标记
             userOrFollowTabFlag: false
         }
     },
@@ -280,6 +292,7 @@ export default {
                 }
             })
         },
+        //获取团队信息
         getTeamAllInfoByUserId(userId) {
             getTeamAllInfoByUserId(userId).then(res => {
                 if (res.code != 200) {
