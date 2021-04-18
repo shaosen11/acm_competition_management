@@ -109,6 +109,7 @@ export default {
                 ],
                 name: [
                     {required: true, message: '请输入名称', trigger: 'blur'},
+                    {min: 1, max: 10, message: '长度在1到10之间', trigger: 'blur'},
                 ],
                 password: [
                     {required: true, message: '请输入密码', trigger: 'blur'},

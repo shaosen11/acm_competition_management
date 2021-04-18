@@ -215,6 +215,7 @@ export function deleteUserStore(userStore) {
             blogId: userStore.blogId,
             blogFlag: userStore.blogFlag,
             folderFlag: userStore.folderFlag,
+            sort: userStore.sort
         }
     })
 }
@@ -240,7 +241,8 @@ export function updateUserStore(userStore) {
             id: userStore.id,
             name: userStore.name,
             description: userStore.description,
-            showFlag: userStore.showFlag
+            showFlag: userStore.showFlag,
+            sort: userStore.sort
         }
     })
 }

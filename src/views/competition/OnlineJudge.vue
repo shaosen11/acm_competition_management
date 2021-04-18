@@ -7,7 +7,7 @@
         </el-breadcrumb>
         <el-row :gutter="20" style="margin: 50px 0px">
             <el-col :span="8" v-for="item in this.list" :key="item">
-                <el-card shadow="hover">
+                <el-card shadow="hover" style="height: 150px;">
                     <h2 class="name">
                         {{ item.name }}
                         <el-tooltip class="item" effect="dark" :content="item.url" placement="top">

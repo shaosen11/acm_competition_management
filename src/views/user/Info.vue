@@ -160,14 +160,16 @@
                                               :key="userStoreFolder"
                                               :index="index"
                                               @click="selectUserStoreFolder(index)">
-                                    <i class="iconfont el-icon-third-folder-open"
-                                       style="font-size: 20px; margin-right: 5px"></i>
-                                    <span slot="title">{{ userStoreFolder.name }}</span>
+                                    <span class="folderName" slot="title">
+                                        <i class="iconfont el-icon-third-folder-open"
+                                           style="font-size: 20px; margin-right: 5px"/>
+                                        {{ userStoreFolder.name|ellipsis }}
+                                    </span>
                                 </el-menu-item>
                             </el-menu>
                         </el-col>
 
-                        <el-col :span="20">
+                        <el-col :span="20" v-if="userStoreShowFlag">
                             <el-card>
                                 <div>
                                     <b>{{ this.userStoreFolderItem.name }}</b>
@@ -184,7 +186,9 @@
                                                 <span v-if="userStore.blogFlag == 1">
                                                     <el-tag>博客</el-tag>
                                                     <span class="userStoreName"
-                                                          @click="toBlog(userStore.blogId)">{{ userStore.blogName }}</span>
+                                                          @click="toBlog(userStore.blogId)">{{
+                                                            userStore.blogName
+                                                        }}</span>
                                                     <el-divider direction="vertical"></el-divider>
                                                     <span>by </span>
                                                     <span class="userName" v-dompurify-html="userStore.userName"/>
@@ -192,7 +196,9 @@
                                                 <span v-if="userStore.reportFlag == 1">
                                                     <el-tag type="danger">报告</el-tag>
                                                    <span class="userStoreName"
-                                                         @click="toReport(userStore.reportId)">{{ userStore.reportName }}</span>
+                                                         @click="toReport(userStore.reportId)">{{
+                                                           userStore.reportName
+                                                       }}</span>
                                                     <el-divider direction="vertical"></el-divider>
                                                     <span>by </span>
                                                     <span class="userName" v-dompurify-html="userStore.userName"/>
@@ -324,6 +330,7 @@ export default {
             },
             //用户收藏夹内容
             userStore: [],
+            userStoreShowFlag: false
         }
     },
     created() {
@@ -674,28 +681,45 @@ export default {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }
-                this.userStoreFolder = res.data
-                this.selectUserStoreFolder(0)
+                if (res.data != '') {
+                    this.userStoreFolder = res.data;
+                    this.userStoreShowFlag = true;
+                    this.selectUserStoreFolder(0);
+                } else {
+                    this.userStoreShowFlag = false;
+                }
             })
         },
         //选择收藏夹
         selectUserStoreFolder(index) {
-            if (index === this.userStoreFolderIndex){
+            if (index === this.userStoreFolderIndex) {
                 return;
             }
             this.userStore = [];
             this.userStoreFolderIndex = index;
             this.userStoreFolderItem = this.userStoreFolder[index];
-            const userStore = {
-                parentId: this.userStoreFolderItem.id,
-                showFlag: 1
-            }
-            listUserStoreByParentId(userStore).then(res => {
-                if (res.code !== 200) {
-                    return this.$message.error(res.message);
+            if (this.userStoreFolderItem.id != '') {
+                const userStore = {
+                    parentId: this.userStoreFolderItem.id,
+                    showFlag: 1
                 }
-                this.userStore = res.data
-            })
+                listUserStoreByParentId(userStore).then(res => {
+                    if (res.code !== 200) {
+                        return this.$message.error(res.message);
+                    }
+                    this.userStore = res.data;
+
+                })
+            }
+        },
+    },
+    filters: {
+        ellipsis(value) {
+            if (!value) return ''
+            if (value.length > 5) {
+                return value.slice(0, 5)
+            }
+            return value
         },
     }
 }
@@ -740,4 +764,13 @@ export default {
 .userStoreName:hover {
     color: #409EFF;
 }
+
+.folderName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
 </style>

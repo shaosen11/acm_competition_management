@@ -17,7 +17,7 @@
                                 <el-form-item label="位置">
                                     <el-input v-model="activity.position"></el-input>
                                 </el-form-item>
-                                <el-form-item label="比赛时间" prop="time">
+                                <el-form-item label="时间" prop="time">
                                     <div class="block">
                                         <el-date-picker
                                                 v-model="activity.time"
