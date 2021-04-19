@@ -5,24 +5,24 @@
                 <el-menu
                     class="el-menu-vertical-demo">
                     <el-menu-item index="1" @click="toUserLoginAnalysis">
-                        <i class="iconfont el-icon-third-barchart"></i>
+                        <i class="iconfont el-icon-third-barchart"/>
                         <span slot="title">用户登录日志</span>
                     </el-menu-item>
                     <el-menu-item index="2" @click="toNotice">
-                        <i class="iconfont el-icon-third-notification"></i>
+                        <i class="iconfont el-icon-third-notification"/>
                         <span slot="title">公告管理</span>
                     </el-menu-item>
                     <el-menu-item index="3" @click="toTeacher">
-                        <i class="iconfont el-icon-third-laoshi"></i>
+                        <i class="iconfont el-icon-third-laoshi"/>
                         <span slot="title">老师管理</span>
                     </el-menu-item>
                     <el-menu-item index="4" @click="toStudent">
-                        <i class="iconfont el-icon-third-student"></i>
+                        <i class="iconfont el-icon-third-student"/>
                         <span slot="title">学生管理</span>
                     </el-menu-item>
                     <el-submenu index="5">
                         <template slot="title">
-                            <i class="iconfont el-icon-third-organization"></i>
+                            <i class="iconfont el-icon-third-organization"/>
                             <span>班级管理</span>
                         </template>
                         <el-menu-item-group>
@@ -32,13 +32,13 @@
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="6" @click="toTeam">
-                        <i class="iconfont el-icon-third-team"></i>
+                        <i class="iconfont el-icon-third-team"/>
                         <span slot="title">队伍管理</span>
                     </el-menu-item>
 
                     <el-submenu index="7">
                         <template slot="title">
-                            <i class="iconfont el-icon-third-trophy"></i>
+                            <i class="iconfont el-icon-third-trophy"/>
                             <span>比赛管理</span>
                         </template>
                         <el-menu-item-group>
@@ -53,15 +53,19 @@
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="8" @click="toReport">
-                        <i class="iconfont el-icon-third-file-text"></i>
+                        <i class="iconfont el-icon-third-file-text"/>
                         <span slot="title">报告管理</span>
                     </el-menu-item>
                     <el-menu-item index="9" @click="toBlog">
-                        <i class="iconfont el-icon-third-blog"></i>
+                        <i class="iconfont el-icon-third-blog"/>
                         <span slot="title">论坛管理</span>
                     </el-menu-item>
-                    <el-menu-item index="10" @click="toESManagement">
-                        <i class="iconfont el-icon-third-search"></i>
+                    <el-menu-item index="10" @click="toTask">
+                        <i class="iconfont  el-icon-third-reloadtime"/>
+                        <span slot="title">定时任务</span>
+                    </el-menu-item>
+                    <el-menu-item index="11" @click="toESManagement">
+                        <i class="iconfont el-icon-third-search"/>
                         <span slot="title">ES索引管理</span>
                     </el-menu-item>
                 </el-menu>
@@ -138,6 +142,9 @@ export default {
         toESManagement() {
             this.$router.push("/admin/ESManagement")
         },
+        toTask(){
+            this.$router.push("/admin/task")
+        }
     }
 }
 </script>

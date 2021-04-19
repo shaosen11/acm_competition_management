@@ -197,6 +197,14 @@ const routers = [
                 components: {
                     admin: () => import('@/views/admin/ESManagement'),
                 }
+            },
+            {
+                path: 'task',
+                name: 'task',
+                meta: {title: '定时任务', requireAuth: true, requireLogin: true},
+                components: {
+                    admin: () => import('@/views/admin/Task'),
+                }
             }
         ]
     }
