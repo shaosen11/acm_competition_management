@@ -131,8 +131,8 @@
         filters: {
             ellipsis(value) {
                 if (!value) return ''
-                if (value.length > 8) {
-                    return value.slice(0, 8) + '...'
+                if (value.length > 6) {
+                    return value.slice(0, 6) + '...'
                 }
                 return value
             },

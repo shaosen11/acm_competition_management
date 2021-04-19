@@ -61,6 +61,7 @@ const user = {
                     commit('SET_CLUB_FLAG', data.clubFlag);
                     //设置队伍信息
                     if (data.teamName != null) {
+                        console.log(true)
                         commit('SET_MY_TEAM_FLAG', true)
                         commit('SET_TEAM_NAME', data.teamName)
                     }

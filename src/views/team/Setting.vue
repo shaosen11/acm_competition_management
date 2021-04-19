@@ -167,7 +167,7 @@ export default {
         },
         //获取队伍信息
         getTeamByName() {
-            this.isLoading = true
+            this.isLoading = true;
             getTeamByName(this.$store.state.team.teamName).then(res => {
                 if (res.code != 200) {
                     this.isLoading = false
@@ -180,7 +180,7 @@ export default {
         },
         //修改队伍信息
         updateTeamInfo() {
-            this.updateTeamInfoButtonLoading = true
+            this.updateTeamInfoButtonLoading = true;
             this.$refs.teamForm.validate(async (valid) => {
                 if (!valid) {
                     this.updateTeamInfoButtonLoading = false;
@@ -193,23 +193,15 @@ export default {
                 }
                 this.$message.success(res.message);
                 this.updateTeamInfoButtonLoading = false;
+                await this.$store.dispatch('setTeamInfo', this.newTeam.name);
                 this.getTeamByName();
             })
-            // updateTeam(this.team).then(res => {
-            //     if (res.code != 200) {
-            //         this.updateTeamInfoButtonLoading = false;
-            //         return this.$message.error(res.message);
-            //     }
-            //     this.$message.success(res.message);
-            //     this.updateTeamInfoButtonLoading = false;
-            //     this.getTeamByName();
-            // })
         },
         //退出队伍
         outTeam() {
             this.outTeamDialogButtonLoading = true
             const teamUserRelation = {
-                teamId: this.form.teamId,
+                teamId: this.team.teamId,
                 userId: this.$store.state.user.userId
             }
             outTeam(teamUserRelation).then(res => {
@@ -236,7 +228,7 @@ export default {
         //删除队伍
         deleteTeam() {
             this.deleteTeamDialogButtonLoading = true
-            deleteTeam(this.form.teamId).then(res => {
+            deleteTeam(this.team.teamId).then(res => {
                 if (res.code != 200) {
                     this.deleteTeamDialogButtonLoading = true;
                     this.deleteTeamDialogVisible = false;

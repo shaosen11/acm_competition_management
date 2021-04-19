@@ -234,8 +234,8 @@ export default {
     filters: {
         ellipsis(value) {
             if (!value) return ''
-            if (value.length > 15) {
-                return value.slice(0, 15) + '...'
+            if (value.length > 10) {
+                return value.slice(0, 10) + '...'
             }
             return value
         },

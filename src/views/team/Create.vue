@@ -68,10 +68,12 @@
                 rules: {
                     name: [
                         {required: true, message: '请输入队名', trigger: 'blur'},
+                        {min: 3, max: 15, message: '长度在3到15之间', trigger: 'blur'},
                         {required: true, validator: validateTeamName, trigger: 'blur'},
                     ],
                     englishName: [
                         {required: true, message: '请输入英语昵称', trigger: 'blur'},
+                        {min: 3, max: 30, message: '长度在3到30之间', trigger: 'blur'},
                         {required: true, validator: validateTeamEnglishName, trigger: 'blur'},
                     ],
                 }

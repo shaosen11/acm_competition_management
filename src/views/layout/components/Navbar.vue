@@ -52,16 +52,15 @@
                 队伍
             </template>
             <el-menu-item
-                    index="5-1"
-                    @click="toMyTeam"
-                    v-if="this.teamFlag">我的队伍
+                index="5-1"
+                @click="toMyTeam"
+                v-if="this.$store.state.team.myTeamFlag">我的队伍
             </el-menu-item>
             <el-menu-item index="5-2" @click="toTeamList">队伍列表</el-menu-item>
             <el-menu-item
-                    v-if="!this.teamFlag"
-                    index="5-3"
-                    @click="toCreateTeam"
-                    v-else>创建队伍
+                v-if="!this.$store.state.team.myTeamFlag"
+                index="5-3"
+                @click="toCreateTeam">创建队伍
             </el-menu-item>
         </el-submenu>
         <el-submenu index="6">
@@ -70,9 +69,9 @@
                 班级
             </template>
             <el-menu-item
-                    index="6-1"
-                    @click="toMyOrganization"
-                    v-if="this.myOrganizationFlag">我的班级
+                index="6-1"
+                @click="toMyOrganization"
+                v-if="this.$store.state.organization.myOrganizationFlag">我的班级
             </el-menu-item>
             <el-menu-item index="6-2" @click="toOrganization">班级列表</el-menu-item>
         </el-submenu>
@@ -104,9 +103,9 @@
                             个人收藏
                         </el-dropdown-item>
                         <el-dropdown-item
-                                v-if="this.identityFlag==1"
-                                icon="iconfont el-icon-third-control"
-                                @click.native="toAdmin">
+                            v-if="this.identityFlag==1"
+                            icon="iconfont el-icon-third-control"
+                            @click.native="toAdmin">
                             后台管理
                         </el-dropdown-item>
                         <el-dropdown-item icon="iconfont el-icon-third-logout" @click.native="toLoginOut">
@@ -125,114 +124,105 @@
 </template>
 
 <script>
-    import store from '@/store'
+import store from '@/store'
 
-    export default {
-        name: "Navbar",
-        data() {
-            return {
-                userId: store.getters.userId,
-                isLogin: store.getters.isLogin,
-                teamFlag: store.getters.myTeamFlag,
-                teamName: store.getters.teamName,
-                year: store.getters.year,
-                organizationName: store.getters.organizationName,
-                myOrganizationFlag: store.getters.myOrganizationFlag,
-                icon: store.getters.icon,
-                identityFlag: store.getters.identityFlag,
-                restaurants: [],
-                keyword: '',
-                blogList: []
-            }
+export default {
+    name: "Navbar",
+    data() {
+        return {
+            userId: store.getters.userId,
+            isLogin: store.getters.isLogin,
+            year: store.getters.year,
+            organizationName: store.getters.organizationName,
+            myOrganizationFlag: store.getters.myOrganizationFlag,
+            icon: store.getters.icon,
+            identityFlag: store.getters.identityFlag,
+            restaurants: [],
+            keyword: '',
+            blogList: []
+        }
+    },
+    created() {
+    },
+    methods: {
+        toHome() {
+            this.$router.push('/')
         },
-        created() {
-            this.init()
+        toOnlineJudge() {
+            this.$router.push('/onlineJudge')
         },
-        methods: {
-            init() {
-                if (this.$route.query.keyword != null) {
-                    this.keyword = this.$route.query.keyword;
-                    this.$router.push({name: 'blog', query: {keyword: this.$route.query.keyword}})
+        toCompetition() {
+            this.$router.push('/competition')
+        },
+        toCompetitionType() {
+            this.$router.push('/competitionType')
+        },
+        toCompetitionProblemType() {
+            this.$router.push('/competitionProblemType')
+        },
+        toMyReportList() {
+            this.$router.push('/reportList')
+        },
+        toCreateReport() {
+            this.$router.push('/reportCreate')
+        },
+        toMyBlogList() {
+            this.$router.push('/blogList')
+        },
+        toCreateBlog() {
+            this.$router.push('/blogCreate')
+        },
+        toMyTeam() {
+            this.$router.push({name: 'teamInfo', query: {teamName: this.$store.state.team.teamName}})
+        },
+        toTeamList() {
+            this.$router.push('/teamList')
+        },
+        toCreateTeam() {
+            this.$router.push("/teamCreate")
+        },
+        toMyOrganization() {
+            this.$router.push({
+                name: 'organizationInfo',
+                query: {
+                    year: this.year,
+                    name: this.organizationName
                 }
-            },
-            toHome() {
-                this.$router.push('/')
-            },
-            toOnlineJudge() {
-                this.$router.push('/onlineJudge')
-            },
-            toCompetition() {
-                this.$router.push('/competition')
-            },
-            toCompetitionType() {
-                this.$router.push('/competitionType')
-            },
-            toCompetitionProblemType() {
-                this.$router.push('/competitionProblemType')
-            },
-            toMyReportList() {
-                this.$router.push('/reportList')
-            },
-            toCreateReport() {
-                this.$router.push('/reportCreate')
-            },
-            toMyBlogList() {
-                this.$router.push('/blogList')
-            },
-            toCreateBlog() {
-                this.$router.push('/blogCreate')
-            },
-            toMyTeam() {
-                this.$router.push({name: 'teamInfo', query: {teamName: this.teamName}})
-            },
-            toTeamList() {
-                this.$router.push('/teamList')
-            },
-            toCreateTeam() {
-                this.$router.push("/teamCreate")
-            },
-            toMyOrganization() {
-                this.$router.push({
-                    name: 'organizationInfo',
-                    query: {
-                        year: this.year,
-                        name: this.organizationName
-                    }
-                })
-            },
-            toOrganization() {
-                this.$router.push('/organizationList')
-            },
-            toClub() {
-                this.$router.push('/clubInfo')
-            },
-            toSearch() {
-                this.$router.push('/search')
-            },
-            toUserInfo() {
-                this.$router.push({name: 'userInfo', query: {userId: this.userId}})
-            },
-            toUserSetting() {
-                this.$router.push('/user/setting')
-            },
-            toUserDaily() {
-                this.$router.push('/user/userDaily');
-            },
-            toUserStore() {
-                this.$router.push('/user/userStore');
-            },
-            toAdmin() {
-                this.$router.push('/admin')
-            },
-            toLogin() {
-                this.$router.push('/login')
-            },
-            toLoginOut() {
-                this.$store.dispatch('LoginOut');
-                this.$router.push('/loginOut')
-            },
+            })
         },
-    };
+        toOrganization() {
+            this.$router.push('/organizationList')
+        },
+        toClub() {
+            this.$router.push('/clubInfo')
+        },
+        toSearch() {
+            this.$router.push('/search')
+        },
+        toUserInfo() {
+            this.$router.push({name: 'userInfo', query: {userId: this.userId}})
+        },
+        toUserSetting() {
+            this.$router.push('/user/setting')
+        },
+        toUserDaily() {
+            this.$router.push('/user/userDaily');
+        },
+        toUserStore() {
+            this.$router.push('/user/userStore');
+        },
+        toAdmin() {
+            this.$router.push('/admin')
+        },
+        toLogin() {
+            this.$router.push('/login')
+        },
+        toLoginOut() {
+            this.$store.dispatch('LoginOut');
+            this.$router.push('/loginOut')
+        },
+    },
+};
 </script>
 
 <style scoped>

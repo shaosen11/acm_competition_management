@@ -11,6 +11,14 @@
                 stripe
                 style="width: 100%">
                 <el-table-column
+                    label="头像"
+                    width="100"
+                    align="center">
+                    <template slot-scope="scope">
+                        <el-avatar :src="scope.row.userIcon"></el-avatar>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="userId"
                     label="学号"
                     width="150"
@@ -34,7 +42,7 @@
                 <el-table-column
                     prop="organizationName"
                     label="班级"
-                    width="200"
+                    width="150"
                     align="center">
                 </el-table-column>
                 <el-table-column

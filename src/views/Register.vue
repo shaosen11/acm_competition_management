@@ -180,7 +180,7 @@ export default {
                 this.toLogin();
             })
         }
-    }
+    },
 }
 </script>
 

@@ -11,7 +11,7 @@
                                   :key="userStoreFolder"
                                   :index="index"
                                   @click="selectUserStoreFolder(index)">
-                        <span class="folderName" slot="title">
+                        <span slot="title">
                             <i class="iconfont el-icon-third-folder-open"
                                style="font-size: 20px; margin-right: 5px"/>
                              <span v-if="userStoreFolder.sort==0">

@@ -132,23 +132,6 @@
                     this.isLoading = false;
                 })
             },
-            // getUserRadarByUserId(userId) {
-            //     getUserRadarByUserId(userId).then(res => {
-            //         if (res.code !== 200) {
-            //             return this.$message.error(res.message);
-            //         }
-            //         this.userRadar.push({
-            //             problemTypeOne: res.data.problemTypeOne,
-            //             problemTypeTwo: res.data.problemTypeTwo,
-            //             problemTypeThree: res.data.problemTypeThree,
-            //             problemTypeFour: res.data.problemTypeFour,
-            //             problemTypeFive: res.data.problemTypeFive,
-            //             problemTypeSix: res.data.problemTypeSix,
-            //             problemTypeSeven: res.data.problemTypeSeven,
-            //             problemTypeEight: res.data.problemTypeEight,
-            //         });
-            //     })
-            // },
             //跳转申请列表
             toSetting() {
                 this.$router.push('/team/setting');
