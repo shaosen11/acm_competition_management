@@ -22,12 +22,11 @@
                         <div style="margin: 20px 0px;">
                             <span class="title"
                                   @click="beforeTo(item)">
-                                <span v-dompurify-html="item.name"/>
+                                <span>{{ item.name|ellipsis }}</span>
                             </span>
                             <el-divider direction="vertical"></el-divider>
                             <el-tag v-if="item.blogId!=null">博客</el-tag>
                             <el-tag type="danger" v-if="item.reportId!=null">报告</el-tag>
-                            <!--                            <p class="content markdown-body" v-dompurify-html="item.subContent"></p>-->
                         </div>
                         <div class="data">
                             <span>编辑于 </span>
@@ -251,6 +250,15 @@ export default {
                 name: 'blogInfo',
                 query: {blogId}
             })
+        },
+    },
+    filters: {
+        ellipsis(value) {
+            if (!value) return ''
+            if (value.length > 15) {
+                return value.slice(0, 15) + '...'
+            }
+            return value
         },
     }
 }

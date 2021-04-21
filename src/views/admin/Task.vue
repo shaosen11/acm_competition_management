@@ -41,6 +41,7 @@
                     width="200"
                     align="center">
                 </el-table-column>
+            </el-table>
             <div class="pagination-container" style="float: right;">
                 <el-pagination
                     background
@@ -54,7 +55,6 @@
                     :hide-on-single-page="isHide">
                 </el-pagination>
             </div>
-            </el-table>
         </el-card>
     </div>
 </template>

@@ -12,14 +12,28 @@
                         <i class="iconfont el-icon-third-notification"/>
                         <span slot="title">公告管理</span>
                     </el-menu-item>
-                    <el-menu-item index="3" @click="toTeacher">
-                        <i class="iconfont el-icon-third-laoshi"/>
-                        <span slot="title">老师管理</span>
-                    </el-menu-item>
-                    <el-menu-item index="4" @click="toStudent">
-                        <i class="iconfont el-icon-third-student"/>
-                        <span slot="title">学生管理</span>
-                    </el-menu-item>
+                    <el-submenu index="3">
+                        <template slot="title">
+                            <i class="iconfont el-icon-third-user"/>
+                            <span>用户管理</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="3-1" @click="toTeacher">
+                                老师管理
+                            </el-menu-item>
+                            <el-menu-item index="3-2" @click="toStudent">
+                                学生管理
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+<!--                    <el-menu-item index="3" @click="toTeacher">-->
+<!--                        -->
+<!--                        <span slot="title">老师管理</span>-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="4" @click="toStudent">-->
+<!--                        -->
+<!--                        <span slot="title">学生管理</span>-->
+<!--                    </el-menu-item>-->
                     <el-submenu index="5">
                         <template slot="title">
                             <i class="iconfont el-icon-third-organization"/>

@@ -83,14 +83,24 @@
                     </p>
                     <!--收藏夹内容-->
                     <el-row :gutter="10">
-                        <el-col :span="24" v-for="userStore in this.userStore" :key="userStore"
-                                style="margin-top: 10px">
+                        <el-col :span="24" v-if="this.userStore==''">
+                            <el-card shadow="hover" style="margin-top: 10px">
+                                收藏夹为空
+                            </el-card>
+                        </el-col>
+                        <el-col v-el
+                                :span="24"
+                                style="margin-top: 10px"
+                                v-for="userStore in this.userStore"
+                                :key="userStore">
                             <el-card shadow="hover">
                                 <div>
                                     <span v-if="userStore.blogFlag == 1">
                                         <el-tag>博客</el-tag>
                                         <span class="userStoreName"
-                                              @click="toBlog(userStore.blogId)">{{ userStore.blogName }}</span>
+                                              @click="toBlog(userStore.blogId)">{{
+                                                userStore.blogName|ellipsisBlogName
+                                            }}</span>
                                         <el-divider direction="vertical"></el-divider>
                                         <span>by </span>
                                         <span class="userName" v-dompurify-html="userStore.userName"/>
@@ -98,7 +108,9 @@
                                     <span v-if="userStore.reportFlag == 1">
                                         <el-tag type="danger">报告</el-tag>
                                         <span class="userStoreName"
-                                              @click="toReport(userStore.reportId)">{{ userStore.reportName }}</span>
+                                              @click="toReport(userStore.reportId)">{{
+                                                userStore.reportName|ellipsisBlogName
+                                            }}</span>
                                         <el-divider direction="vertical"></el-divider>
                                         <span>by </span>
                                         <span class="userName" v-dompurify-html="userStore.userName"/>
@@ -338,6 +350,13 @@ export default {
             if (!value) return ''
             if (value.length > 5) {
                 return value.slice(0, 5) + '...'
+            }
+            return value
+        },
+        ellipsisBlogName(value) {
+            if (!value) return ''
+            if (value.length > 15) {
+                return value.slice(0, 15) + '...'
             }
             return value
         },
