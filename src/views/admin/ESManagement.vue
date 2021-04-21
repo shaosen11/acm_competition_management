@@ -2,9 +2,9 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>
+                <b>
                     Es索引管理
-                </span>
+                </b>
             </div>
             <el-row :gutter="20">
                 <el-col :span="12">

@@ -1,6 +1,6 @@
 <template>
     <el-card>
-        热门博客
+        <b>热门博客</b>
         <div class="onePxDivider"></div>
         <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
             <el-row style="margin: 15px auto;">

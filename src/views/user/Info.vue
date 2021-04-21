@@ -13,7 +13,7 @@
                 <hot-blog v-if="this.blogHotList!=''" :blogHotList="this.blogHotList" style="margin-top: 10px"/>
                 <hot-report v-if="this.reportHotList!=''" :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                 <el-card style="margin-top: 10px">
-                    能力图
+                    <b>能力图</b>
                     <div class="onePxDivider"></div>
                     <UserRadar
                         :user-radar="userRadar"
@@ -24,7 +24,7 @@
                 <el-row :gutter="20">
                     <el-col :span="12">
                         <el-card>
-                            <span>班级</span>
+                            <b>班级</b>
                             <div class="divider"/>
                             <i class="iconfont el-icon-third-organization">
                                 <span @click="toOrganizationInfo">
@@ -41,7 +41,7 @@
                     </el-col>
                     <el-col :span="12">
                         <el-card>
-                            <span>队伍</span>
+                            <b>队伍</b>
                             <div class="divider"/>
                             <i class="iconfont el-icon-third-team">
                         <span>

@@ -2,7 +2,7 @@
     <div>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>比赛设置</span>
+                <b>比赛设置</b>
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">

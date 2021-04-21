@@ -2,7 +2,7 @@
     <div>
         <el-card class="index-container">
             <div slot="header" class="clearfix">
-                <span>安全设置</span>
+                <b>安全设置</b>
             </div>
             <el-row :gutter="10">
                 <el-col :span="10">

@@ -13,7 +13,7 @@
                     :reportHotList="this.reportHotList"
                     style="margin-top: 10px"/>
                 <el-card style="margin-top: 10px">
-                    能力图
+                    <b>能力图</b>
                     <div class="onePxDivider"></div>
                     <UserRadar
                             :user-radar="userRadar"

@@ -2,9 +2,9 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>
+                <b>
                     用户登录日志
-                </span>
+                </b>
             </div>
             <el-row :gutter="20">
                 <el-col :span="24">

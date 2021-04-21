@@ -59,7 +59,7 @@
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>博客列表</span>
+                <b>博客列表</b>
             </div>
             <el-table
                     v-loading="listLoading"

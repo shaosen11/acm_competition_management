@@ -2,7 +2,7 @@
     <div>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>OJ系统列表</span>
+                <b>OJ系统列表</b>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateOnlineJudge">
                     添加OJ系统
                 </el-button>

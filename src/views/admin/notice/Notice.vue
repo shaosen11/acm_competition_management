@@ -2,7 +2,7 @@
     <div>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>公告列表</span>
+                <b>公告列表</b>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateNotice">
                     创建公告
                 </el-button>

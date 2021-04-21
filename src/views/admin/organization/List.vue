@@ -40,7 +40,7 @@
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>班级列表</span>
+                <b>班级列表</b>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateOrganization">
                     创建班级
                 </el-button>

@@ -2,7 +2,7 @@
     <div>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>比赛类型列表</span>
+                <b>比赛类型列表</b>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetitionType">
                     创建比赛类型
                 </el-button>

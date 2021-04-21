@@ -10,9 +10,10 @@
                         :follow-show-flag="followShowFlag"
                         @follow="follow"
                         @cancelFollow="cancelFollow"/>
+                    <!--题目信息-->
                     <el-card class="box-card" style="margin-top: 10px">
                         <div slot="header">
-                            <span>题目信息</span>
+                            <b>题目信息</b>
                         </div>
                         <el-form :model="report" label-width="50px">
                             <el-form-item label="原文" prop="link">
@@ -57,7 +58,7 @@
                     <!--热门报告-->
                     <HotReport v-if="this.reportHotList!=''" :reportHotList="this.reportHotList" style="margin-top: 10px"/>
                     <el-card style="margin-top: 10px">
-                        能力图
+                        <b>能力图</b>
                         <div class="onePxDivider"></div>
                         <UserRadar
                             :user-radar="userRadar"

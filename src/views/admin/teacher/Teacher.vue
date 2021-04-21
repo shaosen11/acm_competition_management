@@ -32,7 +32,7 @@
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>老师列表</span>
+                <b>老师列表</b>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateTeacher">
                     添加老师
                 </el-button>

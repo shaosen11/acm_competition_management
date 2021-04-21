@@ -1,6 +1,6 @@
 <template>
     <el-card>
-        个人站点
+        <b>个人站点</b>
         <div class="onePxDivider"></div>
         <div>
             <div class="webSite">

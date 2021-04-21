@@ -2,7 +2,7 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>个人数据统计</span>
+                <b>个人数据统计</b>
             </div>
             <el-row :gutter="20" style="margin: 10px auto">
                 <el-col :span="6">

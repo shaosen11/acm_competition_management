@@ -2,7 +2,7 @@
     <div>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>定时任务列表</span>
+                <b>定时任务列表</b>
             </div>
             <el-table
                 v-loading="listLoading"

@@ -4,7 +4,7 @@
             <el-col :span="18">
                 <el-card>
                     <div slot="header" class="clearfix">
-                        <span>公告列表</span>
+                        <b>公告列表</b>
                     </div>
                     <div v-for="item in this.tableData" :key="item" class="text item">
                     <span class="title" @click="toNoticeInfo(item.noticeId)">
@@ -37,7 +37,7 @@
             </el-col>
             <el-col :span="6">
                 <el-card>
-                    热门博客
+                    <b>热门博客</b>
                     <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
                         <el-row style="margin: 15px auto;">
                             <el-col :span="2">

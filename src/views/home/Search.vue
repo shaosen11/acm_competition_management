@@ -67,7 +67,7 @@
             </el-col>
             <el-col :span="6">
                 <el-card>
-                    热门博客
+                    <b>热门博客</b>
                     <div v-for="(blogHot,index) in this.blogHotList" :key="blogHot" class="text item">
                         <el-row style="margin: 15px auto;">
                             <el-col :span="2">

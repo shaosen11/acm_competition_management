@@ -50,7 +50,7 @@
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>比赛题型</span>
+                <b>比赛题型</b>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="toCreateCompetitionProblemType">
                     创建比赛题型
                 </el-button>

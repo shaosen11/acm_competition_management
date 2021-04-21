@@ -39,7 +39,7 @@
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>队伍列表</span>
+                <b>队伍列表</b>
             </div>
             <el-table
                 v-loading="listLoading"

@@ -60,7 +60,7 @@
         </el-card>
         <el-card class="table-container">
             <div slot="header" class="clearfix">
-                <span>报告列表</span>
+                <b>报告列表</b>
             </div>
             <el-table
                     v-loading="listLoading"

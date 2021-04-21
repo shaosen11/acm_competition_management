@@ -44,7 +44,7 @@
         </el-card>
         <el-card style="margin: 30px auto">
             <div slot="header" class="clearfix">
-                <span>班级列表</span>
+                <b>班级列表</b>
             </div>
             <el-table
                 v-loading="listLoading"
