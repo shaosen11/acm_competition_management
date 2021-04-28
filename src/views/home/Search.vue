@@ -20,13 +20,14 @@
                     </el-tabs>
                     <div v-for="item in this.tableData" :key="item" class="text item">
                         <div style="margin: 20px 0px;">
-                            <span class="title"
-                                  @click="beforeTo(item)">
-                                <span>{{ item.name|ellipsis }}</span>
-                            </span>
-                            <el-divider direction="vertical"></el-divider>
                             <el-tag v-if="item.blogId!=null">博客</el-tag>
                             <el-tag type="danger" v-if="item.reportId!=null">报告</el-tag>
+                            <el-divider direction="vertical"></el-divider>
+                            <span class="title"
+                                  @click="beforeTo(item)">
+                                <span v-dompurify-html="item.name"/>
+                            </span>
+
                         </div>
                         <div class="data">
                             <span>编辑于 </span>
@@ -74,7 +75,7 @@
                                 <span>{{ index + 1 }}</span>
                             </el-col>
                             <el-col :span="20">
-                                <div class="name" @click="toBlog(blogHot.blogId)">{{ blogHot.name }}</div>
+                                <div class="hotBlogName" @click="toBlog(blogHot.blogId)">{{ blogHot.name }}</div>
                                 <el-col :span="16">
                                     <div class="userName" @click="toUserInfo(blogHot.userId)">{{ blogHot.userName }}
                                     </div>
@@ -142,14 +143,15 @@ export default {
             });
             this.beforeSearch();
             this.getList();
-            this.getBlogHotList()
-            loading.close()
+            this.getBlogHotList();
+            loading.close();
         },
         beforeSearch() {
             beforeSearch().then(res => {
                 if (res.code != 200) {
                     return this.$message.error("系统出bug了，请重新刷新页面");
                 }
+
             })
         },
         //获取表单信息
@@ -285,16 +287,7 @@ export default {
     color: #409eff;
 }
 
-.content {
-    color: #909399;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-}
-
-.name {
+.hotBlogName {
     font-size: 16px;
     font-weight: 500;
     overflow: hidden;
@@ -304,7 +297,7 @@ export default {
     -webkit-box-orient: vertical;
 }
 
-.name:hover {
+.hotBlogName:hover {
     color: #409EFF;
 }
 </style>

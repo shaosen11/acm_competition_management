@@ -34,7 +34,7 @@
                         <div style="margin: 20px 0px;">
                             <span class="title"
                                   @click="toReport(item.reportId)">
-                                {{ item.name }}
+                                {{ item.name|ellipsis }}
                             </span>
                             <el-tag :type="computeTabStatue(item)" style="margin-left: 10px">{{
                                     computeStatue(item)
@@ -336,6 +336,15 @@ export default {
                 this.$refs.userRadar.init();
             })
         }
+    },
+    filters: {
+        ellipsis(value) {
+            if (!value) return ''
+            if (value.length > 15) {
+                return value.slice(0, 15) + '...'
+            }
+            return value
+        },
     }
 }
 </script>
