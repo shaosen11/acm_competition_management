@@ -64,6 +64,7 @@ export function updateTeam(team) {
         data: {
             teamId: team.teamId,
             name: team.name,
+            englishName: team.englishName,
             userId: team.userId,
             motto: team.motto
         }

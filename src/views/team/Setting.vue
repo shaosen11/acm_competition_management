@@ -186,6 +186,7 @@ export default {
                     this.updateTeamInfoButtonLoading = false;
                     return this.$message.error("修改失败");
                 }
+                console.log(this.newTeam)
                 const res = await updateTeam(this.newTeam);
                 if (res.code != 200) {
                     this.$message.error(res.message);
