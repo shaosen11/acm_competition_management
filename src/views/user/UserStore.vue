@@ -120,15 +120,15 @@
                                             （博客已被博主删除）
                                             <el-divider direction="vertical"></el-divider>
                                         </span>
-                                        <span>仅自己可见：
-                                            <el-switch
-                                                @change="handleShowFlagStatusChange(userStore)"
-                                                :active-value="1"
-                                                :inactive-value="0"
-                                                v-model="userStore.showFlag">
-                                            </el-switch>
-                                        </span>
-                                        <el-divider direction="vertical"></el-divider>
+<!--                                        <span>仅自己可见：-->
+<!--                                            <el-switch-->
+<!--                                                @change="handleShowFlagStatusChange(userStore)"-->
+<!--                                                :active-value="1"-->
+<!--                                                :inactive-value="0"-->
+<!--                                                v-model="userStore.showFlag">-->
+<!--                                            </el-switch>-->
+<!--                                        </span>-->
+<!--                                        <el-divider direction="vertical"></el-divider>-->
                                         <i class="iconfont el-icon-third-heart"
                                            style="font-size: 20px; color: #F56C6C;"
                                            @click="cancelStore(userStore)"/>
@@ -287,8 +287,11 @@ export default {
         },
         //是否向大家展示收藏夹内容
         handleShowFlagStatusChange(userStore) {
+            console.log(userStore)
             const userStoreBody = {
                 id: userStore.id,
+                name: userStore.name,
+                description: userStore.description,
                 showFlag: userStore.showFlag
             }
             updateUserStore(userStoreBody).then(res => {

@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import {ListUser, updateUserInfo} from "@/network/api/user";
+import {ListUser, updateUserInfoById} from "@/network/api/user";
 import {getOrganizationYearList} from '@/network/api/organization';
 
 export default {
@@ -192,6 +192,7 @@ export default {
                 if (res.code !== 200) {
                     this.$message.error(res.message);
                 }
+                console.log(res)
                 this.tableData = res.data.list;
                 this.total = res.data.total;
                 this.totalPage = res.data.totalPage;
@@ -257,7 +258,7 @@ export default {
                 userId: row.userId,
                 enableFlag: row.enableFlag,
             }
-            updateUserInfo(user).then(res => {
+            updateUserInfoById(user).then(res => {
                 if (res.code !== 200) {
                     return this.$message.error(res.message);
                 }

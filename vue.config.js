@@ -2,7 +2,7 @@ const CompressionPlugin = require("compression-webpack-plugin")
 
 module.exports={
     //基本路径
-    publicPath: process.env.NODE_ENV === 'prod' ? '/acm/' : '/',
+    publicPath: process.env.NODE_ENV === 'prod' ? '/acm' : '/',
     // 构建时的输出目录
     outputDir: "dist",
     // 放置静态资源的目录

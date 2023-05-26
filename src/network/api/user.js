@@ -71,6 +71,18 @@ export function updateUserInfo(user) {
     })
 }
 
+//修改用户信息
+export function updateUserInfoById(user) {
+    return request({
+        url: '/user/updateById',
+        method: 'post',
+        data: {
+            userId: user.userId,
+            enableFlag: user.enableFlag
+        }
+    })
+}
+
 //修改密码
 export function updatePassword(user) {
     return request({

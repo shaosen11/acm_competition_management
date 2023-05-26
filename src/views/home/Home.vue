@@ -145,6 +145,7 @@ export default {
                     return this.$message.error(res.message);
                 }
                 this.blogHotList = res.data
+                console.log(this.blogHotList)
             })
         },
         toUserInfo(userId) {
